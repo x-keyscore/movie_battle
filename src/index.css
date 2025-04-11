@@ -1,3 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root {
-	background-color: #242424;
+	--primary: #1B1F22;
+    --primary-light: #24292d; /*lightness +3*/
+    --secondary: #ff9f1c;
+    --text: #ffffff;
+    --text-warning: #000;
+    --text-placeholder: #000;
+}
+
+a, button, input, label, select, span, strong {
+    outline: none;
+}
+
+h1, h2, p {
+    margin: 0;
+}
+
+button {
+    cursor: pointer;
+}
+
+input {
+	color: var(--text);
+	font: inherit;
+	text-rendering: inherit;
+    outline: none;
+    appearance: none;
+    background: none;
+    width: 100%;
+    min-width: 0;
+    padding-block: 0;
+    padding-inline: 0;
+    border: none;
+    cursor: text;
+}
+
+html, body {
+    background-color: var(--primary);
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    user-select: none;
+}
+
+body {
+    font-family: "Albert Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-size: 1rem;
+    font-weight: 500;
+    font-style: normal;
+    text-rendering: optimizeLegibility;
 }
