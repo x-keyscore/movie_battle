@@ -1,20 +1,26 @@
-import { Link, Outlet } from "react-router";
+import { Outlet } from "react-router";
+import { Header } from "./components/header";
+import styles from "./App.module.css"
 
 export function App() {
 	return (
 		<>
-			<header>
-				<nav>
-					<Link to="/">Home</Link>
-					<Link to="/search">Search</Link>
-					<Link to="/movie">movie</Link>
-					<Link to="/watchlist">Watchlist</Link>
-				</nav>
-			</header>
-			<main>
+			<Header />
+			<div className={styles.body}>
 				<Outlet />
-			</main>
+			</div>
 			<footer>footer</footer>
 		</>
 	);
 }
+
+/*
+<header>
+	<nav>
+		<Link to="/">Home</Link>
+		<Link to="/search">Search</Link>
+		<Link to="/movie">movie</Link>
+		<Link to="/watchlist">Watchlist</Link>
+	</nav>
+</header>
+*/
