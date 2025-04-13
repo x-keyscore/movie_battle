@@ -1,12 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
-	--primary: #1B1F22;
-    --primary-light: #24292d; /*lightness +3*/
-    --secondary: #ff9f1c;
-    --text: #ffffff;
-    --text-warning: #000;
-    --text-placeholder: #000;
+    --color-background: #1B1F22;
+    --color-surface: #24292d;/* lightness +3 of background*/
+	--color-primary: #eca54e;
+    --color-secondary: #2d3439;/* lightness +8 of background*/
+    --color-text: #ffffff;
+    --color-text-warning: #000;
+    --color-text-placeholder: #ccd2d6;
 }
 
 a, button, input, label, select, span, strong {
@@ -17,15 +18,10 @@ h1, h2, p {
     margin: 0;
 }
 
-button {
-    cursor: pointer;
-}
-
 input {
-	color: var(--text);
+	color: var(--color-text);
 	font: inherit;
 	text-rendering: inherit;
-    outline: none;
     appearance: none;
     background: none;
     width: 100%;
@@ -37,7 +33,8 @@ input {
 }
 
 html, body {
-    background-color: var(--primary);
+    background-color: var(--color-background);
+    color: var(--text);
     margin: 0;
     padding: 0;
     height: 100%;
@@ -52,4 +49,8 @@ body {
     font-weight: 500;
     font-style: normal;
     text-rendering: optimizeLegibility;
+}
+
+#root {
+	height: 100%;
 }

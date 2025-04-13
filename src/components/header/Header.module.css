@@ -1,0 +1,139 @@
+.header {
+    position: relative;
+}
+
+.backdrop {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+}
+
+.backdrop::before {
+    content: "";
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 50%, var(--color-background) 100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+}
+
+.backdrop-image {
+    object-position: top;
+    object-fit: cover;
+    width: 100%;
+    height: 100vh;
+}
+
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 16px clamp(12px, 1.5%, 1.5%);
+    box-sizing: border-box;
+    z-index: 100;
+}
+
+.topbar-left {
+    flex: 1;
+}
+
+.topbar-left > .logo {
+    display: block;
+    height: 46px;
+    width: 46px;
+}
+
+.topbar-left > .logo > svg {
+    height: 100%;
+    width: 100%;
+}
+
+.topbar-center {
+    background-color: var(--color-surface);
+    display: flex;
+    gap: 4px;
+    width: 100%;
+    max-width: 550px;
+    height: 48px;
+    border-radius: 12px;
+}
+
+.topbar-center > .search {
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 0 10px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    transition: background-color .10s ease-in-out, color .10s ease-in-out;
+}
+
+.topbar-center > .search > svg {
+    width: 22px;
+    padding: 0 12px 0 4px;
+}
+
+.topbar-center > .search > input {
+    flex: 1;
+    font-size: 1.1rem;
+}
+
+.topbar-center > .search > input::placeholder {
+    color: var(--color-text-placeholder);
+}
+
+.topbar-center > .search:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+}
+
+.topbar-center > .search:has(> input:focus) {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+}
+
+.topbar-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.topmovie {
+    color: var(--color-text);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 70vh;
+    margin: 0 4%;
+}
+
+.topmovie-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 550px;
+}
+
+.topmovie-content > .title {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+
+.topmovie-action {
+    display: flex;
+    gap: 12px;
+}
