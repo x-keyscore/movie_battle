@@ -1,0 +1,97 @@
+.card {
+	color: var(--color-text);
+	background-color: var(--color-surface);
+	display: block;
+	max-width: 310px;
+	aspect-ratio: 310 / 226;
+	overflow: hidden;
+	transition: .2s transform ease-in-out;
+	border-radius: 8px;
+}
+
+.card-figure {
+	margin: 0;
+	height: 100%;
+	position: relative;
+}
+
+.card-img {
+	height: 100%;
+	width: 100%;
+	display: block;
+	object-fit: cover;
+}
+
+.card-infos-container {
+	background: linear-gradient(to top, var(--color-surface), transparent 50%);
+	position: absolute;
+	bottom: 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	gap: 8px;
+	width: 100%;
+	height: 100%;
+	padding: 20px 24px;
+	box-sizing: border-box;
+	pointer-events: none;
+}
+
+.title {
+	font-size: 1rem;
+	margin-bottom: 8px;
+}
+
+.genres {
+	list-style-type: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	padding: 0;
+	margin: 0;
+	font-size: .7rem;
+}
+
+.genre {
+	color: var(--color-primary);
+	text-decoration: none;
+	opacity: 1;
+	transition: .1s opacity ease-in-out;
+	pointer-events: auto;
+	padding: 4px 0;
+	margin: -4px 0;
+}
+
+.button {
+	color: var(--color-text);
+	background-color: transparent;
+	border: none;
+	margin-bottom: -4px;
+	margin-right: -4px;
+	padding: 0;
+	pointer-events: auto;
+}
+
+.button > svg {
+	width: 22px;
+}
+
+@media (hover: hover) {
+	.card:hover {
+		transform: scale(1.08);
+		z-index: 1;
+	}
+
+	.card-infos-container {
+		bottom: -100px;
+		transition: .2s bottom ease-in-out;
+	}
+
+	.card:hover .card-infos-container {
+		bottom: 0;
+	}
+
+	.genre:hover {
+		opacity: 0.8;
+	}
+}
