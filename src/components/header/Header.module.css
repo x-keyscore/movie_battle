@@ -127,7 +127,7 @@
     width: 100%;
 }
 
-.topmovie-content > .data {
+.topmovie-content > .info {
     flex: 1 1 350px;
     display: flex;
     flex-direction: column;
@@ -135,12 +135,12 @@
     max-width: 650px;
 }
 
-.topmovie-content > .data > .title {
+.topmovie-content > .info > .title {
     font-size: 1.8rem;
     font-weight: 700;
 }
 
-.topmovie-content > .data > .synopsis {
+.topmovie-content > .info > .synopsis {
     font-size: 1.1rem;
 }
 

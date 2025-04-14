@@ -5,24 +5,30 @@
 	max-width: 310px;
 	aspect-ratio: 310 / 226;
 	overflow: hidden;
+	transform: translateZ(0);
 	transition: .2s transform ease-in-out;
 	border-radius: 8px;
 }
 
-.card-figure {
+.card:focus-within {
+	transform: scale(1.08);
+	z-index: 1;
+}
+
+.figure {
 	margin: 0;
 	height: 100%;
 	position: relative;
 }
 
-.card-img {
+.figure-image {
 	height: 100%;
 	width: 100%;
 	display: block;
 	object-fit: cover;
 }
 
-.card-infos-container {
+.figcaption {
 	background: linear-gradient(to top, var(--color-surface), transparent 50%);
 	position: absolute;
 	bottom: 0;
@@ -37,43 +43,42 @@
 	pointer-events: none;
 }
 
-.title {
-	font-size: 1rem;
-	margin-bottom: 8px;
+.card:focus-within .figcaption {
+	bottom: 0;
 }
 
-.genres {
+.figcaption-info {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.figcaption-info > .title {
+	font-size: 1rem
+}
+
+.figcaption-info > .genres {
 	list-style-type: none;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 4px;
 	padding: 0;
 	margin: 0;
-	font-size: .7rem;
+	font-size: .8rem;
 }
 
-.genre {
+.figcaption-info > .genres .link {
 	color: var(--color-primary);
 	text-decoration: none;
-	opacity: 1;
-	transition: .1s opacity ease-in-out;
 	pointer-events: auto;
-	padding: 4px 0;
-	margin: -4px 0;
+}
+
+.figcaption-info > .genres .link:hover,
+.figcaption-info > .genres .link:focus-visible {
+	text-decoration: underline;
 }
 
 .button {
-	color: var(--color-text);
-	background-color: transparent;
-	border: none;
-	margin-bottom: -4px;
-	margin-right: -4px;
-	padding: 0;
 	pointer-events: auto;
-}
-
-.button > svg {
-	width: 22px;
 }
 
 @media (hover: hover) {
@@ -81,17 +86,11 @@
 		transform: scale(1.08);
 		z-index: 1;
 	}
-
-	.card-infos-container {
-		bottom: -100px;
+	.figcaption {
+		bottom: -50%;
 		transition: .2s bottom ease-in-out;
 	}
-
-	.card:hover .card-infos-container {
+	.card:hover .figcaption {
 		bottom: 0;
-	}
-
-	.genre:hover {
-		opacity: 0.8;
 	}
 }
