@@ -36,7 +36,7 @@ export function Header() {
             </div>
             <div className={styles.topmovie}>
                 <div className={styles.topmovieContent}>
-                    <div className={styles.data}>
+                    <div className={styles.info}>
                         <div className={styles.title}>
                             Novocaine
                         </div>
