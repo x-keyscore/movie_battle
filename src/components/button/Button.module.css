@@ -1,16 +1,21 @@
 .button {
-    background-color: var(--color-surface);
-    color: var(--color-text);
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 48px;
-    height: 48px;
     padding: 0;
     border: none;
-    border-radius: 12px;
     cursor: pointer;
     transition: color .10s ease-in-out, background-color .10s ease-in-out;
+}
+
+.button.primary {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+}
+
+.button.secondary {
+    background-color: var(--color-surface);
+    color: var(--color-text);
 }
 
 .button:hover {
@@ -23,6 +28,18 @@
     color: var(--color-primary);
 }
 
+.button.small {
+    min-width: 42px;
+    height: 42px;
+    border-radius: 8px;
+}
+
+.button.medium {
+    min-width: 48px;
+    height: 48px;
+    border-radius: 12px;
+}
+
 .button:has(> span) {
     min-width: 150px;
 }
@@ -30,6 +47,12 @@
 .button > span {
     font-size: 1.1rem;
     font-weight: 600;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    min-width: 125px;
+    max-width: 200px;
+    padding: 0 10px;
 }
 
 .button > svg {
