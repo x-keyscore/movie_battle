@@ -1,4 +1,4 @@
-import { Icons } from "../icons";
+import { Icons } from "../Icons";
 import styles from "./ActorCard.module.css";
 
 interface ActorCardProps {

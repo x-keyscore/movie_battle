@@ -6,6 +6,7 @@
     padding: 0;
     border: none;
     cursor: pointer;
+    pointer-events: auto;
     transition: color .10s ease-in-out, background-color .10s ease-in-out;
 }
 

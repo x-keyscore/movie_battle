@@ -3,7 +3,7 @@
 :root {
     --color-background: #1B1F22;
     --color-surface: #24292d;/* lightness +3 of background*/
-	--color-primary: #eca54e;
+	--color-primary: #eca54e;/*#ff9f1c*/
     --color-secondary: #2d3439;/* lightness +8 of background*/
     --color-text: #ffffff;
     --color-text-warning: #000;

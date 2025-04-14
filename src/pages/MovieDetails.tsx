@@ -1,5 +1,5 @@
 import movieCredits from "./../mocks/credits-movie.json";
-import { ActorCard } from "./../components/actorCard";
+import { ActorCard } from "../components/ActorCard";
 
 const MovieDetailsPage = () => {
 	return (
