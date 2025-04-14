@@ -1,4 +1,4 @@
-import { MovieCard } from "../components/movieCard";
+import { MovieCard } from "../components/MovieCard";
 import moviesData from "./../mocks/movies.json";
 
 const TESTMOVIES = moviesData.results;
@@ -22,8 +22,8 @@ const HomePage = () => {
 							key={TESTMOVIE.id}
 							id={TESTMOVIE.id}
 							title={TESTMOVIE.title}
-							genre_ids={TESTMOVIE.genre_ids}
-							backdrop_path={TESTMOVIE.backdrop_path}
+							genreIds={TESTMOVIE.genre_ids}
+							backdropPath={TESTMOVIE.backdrop_path}
 						/>
 					);
 				})}

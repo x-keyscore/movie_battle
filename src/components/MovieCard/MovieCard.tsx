@@ -1,34 +1,47 @@
 import { Link } from "react-router";
-import { Icons } from "../icons";
+import { Button } from "../Button";
+import { Icons } from "../Icons";
 import styles from "./MovieCard.module.css";
 
 import genresData from "../../mocks/genres.json";
-import { Button } from "../button";
 
 interface MovieCardProps {
 	id: number;
 	title: string;
-	genre_ids: number[];
-	backdrop_path: string;
+	genreIds: number[];
+	backdropPath: string;
 }
 
 export const MovieCard = ({
 	id,
 	title,
-	genre_ids,
-	backdrop_path,
+	genreIds,
+	backdropPath,
 }: MovieCardProps) => {
+	const getMovieGenres = () => {
+		return (
+			genreIds.map((genreId) => {
+				const { name } = genresData.genres.find((genre) => genre.id === genreId)!;
+
+				return ({
+					name,
+					genreId
+				})
+			})
+		);
+	}
+
 	const handleWatchlist = (id: number) => {
 		console.log("ADD/REM Watchlist: ", id);
 	};
 
 	return (
-		<div className={styles.card} role="button" tab-index="0">
+		<div className={styles.card} role="button">
 			<figure className={styles.figure}>
 				<Link to={`/movie/${id}`}>
 					<img
 						className={styles.figureImage}
-						src={`https://image.tmdb.org/t/p/w780${backdrop_path}`}
+						src={`https://image.tmdb.org/t/p/w780${backdropPath}`}
 						alt={title}
 					/>
 				</Link>
@@ -37,19 +50,16 @@ export const MovieCard = ({
 						<h2 className={styles.title}>{title}</h2>
 						<ul className={styles.genres}>
 							{
-								genre_ids.map((genre_id, index) => {
-									const genre = genresData.genres.find(
-										(genre) => genre.id === genre_id,
-									)!;
+								getMovieGenres().map(({ name, genreId }, index) => {
 									return (
-										<li key={genre_id}>
+										<li key={genreId}>
 											<Link
-												to={`/search/genre/${genre_id}`}
+												to={`/search/genre/${genreId}`}
 												className={styles.link}
 											>
-												{genre.name}
+												{name}
 											</Link>
-											{index < genre_ids.length - 1 && " -"}
+											{index < genreIds.length - 1 && " -"}
 										</li>
 									);
 								})

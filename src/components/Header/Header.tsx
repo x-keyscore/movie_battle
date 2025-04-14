@@ -1,18 +1,24 @@
+import { useState } from "react";
 import { Link } from "react-router";
-import { Button } from "../button";
-import { Icons } from "../icons";
+import { GenreList } from "./dropdown";
+import { Button } from "../Button";
+import { Icons } from "../Icons";
 import styles from "./Header.module.css";
 
+import genresData from "../../mocks/genres.json";
+import { Collapsible } from "../Collapsible";
+
 export function Header() {
+    const [toggle, setToggle] = useState<{ 
+        genreList: boolean,
+        watchList: boolean
+    }>({
+        genreList: false,
+        watchList: false
+    });
+
     return (
         <div className={styles.header}>
-            <div className={styles.backdrop}>
-                <img
-                    className={styles.backdropImage}
-                    src="/mocks/backdrop.png"
-                    alt=""
-                />
-            </div>
             <div className={styles.topbar}>
                 <div className={styles.topbarLeft}>
                     <Link to="/" className={styles.logo} aria-label="Menu">
@@ -24,9 +30,17 @@ export function Header() {
                         <Icons.Search />
                         <input type="text" placeholder="Recherche" />
                     </div>
-                    <Button aria-label="Films par catégories">
+                    <Button
+                        onClick={() => setToggle((prev) => ({ ...prev, genreList: !prev.genreList }))}
+                        aria-label="Films par catégories"
+                    >
                         <Icons.Category />
                     </Button>
+                    <div className={styles.dropdown}>
+                        <Collapsible direction="down" isOpen={toggle.genreList}>
+                            <GenreList genres={genresData.genres} />
+                        </Collapsible>
+                    </div>
                 </div>
                 <div className={styles.topbarRight}>
                     <Button aria-label="Vos films enregistrés">
@@ -35,6 +49,9 @@ export function Header() {
                 </div>
             </div>
             <div className={styles.topmovie}>
+                <div className={styles.topmovieBackdrop}>
+                    <img src="/mocks/backdrop.png" role="presentation" />
+                </div>
                 <div className={styles.topmovieContent}>
                     <div className={styles.info}>
                         <div className={styles.title}>
