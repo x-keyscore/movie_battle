@@ -36,25 +36,27 @@ export function Header() {
             </div>
             <div className={styles.topmovie}>
                 <div className={styles.topmovieContent}>
-                    <div className={styles.title}>
-                        Novocaine
-                    </div>
-                    <div className={styles.synopsis}>
-                        Quand la femme de ses rêves est kidnappée, Nate, un homme ordinaire,
-                        réussit à mettre à profit sa capacité à ne pas ressentir la douleur.
-                        Une force imprévue qui l'aidera dans sa lutte pour la récupérer.
-                    </div>
-                    <div className={styles.genres}>
+                    <div className={styles.data}>
+                        <div className={styles.title}>
+                            Novocaine
+                        </div>
+                        <div className={styles.synopsis}>
+                            Quand la femme de ses rêves est kidnappée, Nate, un homme ordinaire,
+                            réussit à mettre à profit sa capacité à ne pas ressentir la douleur.
+                            Une force imprévue qui l'aidera dans sa lutte pour la récupérer.
+                        </div>
+                        <div className={styles.genres}>
 
+                        </div>
                     </div>
-                </div>
-                <div className={styles.topmovieAction}>
-                    <Button aria-label="Voir plus">
-                        <span>Voir plus</span>
-                    </Button>
-                    <Button aria-label="Ajouter aux films enregistrés">
-                        <Icons.AddToList />
-                    </Button>
+                    <div className={styles.action}>
+                        <Button size="small">
+                            <span>Voir plus</span>
+                        </Button>
+                        <Button aria-label="Ajouter aux films enregistrés" size="small">
+                            <Icons.AddToList />
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>
