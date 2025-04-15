@@ -83,7 +83,7 @@
     color: var(--color-primary);
 }
 
-.topbar-center > .dropdown {
+.topbar-center > .droparea {
     position: absolute;
     top: 64px;
     width: 100%;

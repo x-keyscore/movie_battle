@@ -61,7 +61,7 @@
 }
 
 .button > span {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     overflow: hidden;
     white-space: nowrap;
@@ -72,5 +72,5 @@
 }
 
 .button > svg {
-    padding: 10px;
+    padding: 12px;
 }

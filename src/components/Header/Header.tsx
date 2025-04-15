@@ -13,13 +13,22 @@ type ToggleState = {
     watchList: boolean;
 };
 
-type ToggleAction = "GENRE_LIST" | "WATCH_LIST" |"RESET";
+type ToggleAction =
+    | "CLOSE_GENRE_LIST"
+    | "TOGGLE_GENRE_LIST"
+    | "OPEN_WATCH_LIST"
+    | "TOGGLE_WATCH_LIST"
+    | "RESET";
 
 const toggleReducer = (state: ToggleState, action: ToggleAction): ToggleState => {
     switch (action) {
-        case "GENRE_LIST":
+        case "CLOSE_GENRE_LIST":
+            return { ...state, genreList: false };
+        case "TOGGLE_GENRE_LIST":
             return { ...state, genreList: !state.genreList };
-        case "WATCH_LIST":
+        case "OPEN_WATCH_LIST":
+            return { ...state, watchList: true };
+        case "TOGGLE_WATCH_LIST":
             return { ...state, watchList: !state.watchList };
         case "RESET":
             return { genreList: false, watchList: false };
@@ -48,15 +57,25 @@ export function Header() {
                         <input type="text" placeholder="Recherche" />
                     </div>
                     <Button
-                        aria-label="Films par catégories"
                         isActive={toggle.genreList}
-                        onClick={() => setToggle("GENRE_LIST")}
-                        onFocus={() => setToggle("GENRE_LIST")}
+                        aria-label="Choisir une catégorie"
+                        aria-expanded={toggle.genreList}
+                        aria-controls="genre-list-controls"
+                        onClick={() => setToggle("TOGGLE_GENRE_LIST")}
+                        onBlur={(e) => {
+                            if (!e.relatedTarget?.closest('#genre-list-controls')) {
+                                setToggle("CLOSE_GENRE_LIST");
+                            }
+                        }}
                     >
                         <Icons.Category />
                     </Button>
-                    <div className={styles.dropdown}>
-                        <Collapsible without="bottom" isOpen={toggle.genreList}>
+                    <div className={styles.dropdown} id="genre-list-controls">
+                        <Collapsible
+                            without="bottom"
+                            isOpen={toggle.genreList}
+                            onBlur={() => setToggle("TOGGLE_GENRE_LIST")}
+                        >
                             <GenreList genres={genresData.genres} />
                         </Collapsible>
                     </div>
