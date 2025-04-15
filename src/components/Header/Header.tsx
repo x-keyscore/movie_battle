@@ -70,7 +70,7 @@ export function Header() {
                     >
                         <Icons.Category />
                     </Button>
-                    <div className={styles.dropdown} id="genre-list-controls">
+                    <div className={styles.droparea} id="genre-list-controls">
                         <Collapsible
                             without="bottom"
                             isOpen={toggle.genreList}
