@@ -19,17 +19,15 @@ export const MovieCard = ({
 	backdropPath,
 }: MovieCardProps) => {
 	const getMovieGenres = () => {
-		return (
-			genreIds.map((genreId) => {
-				const { name } = genresData.genres.find((genre) => genre.id === genreId)!;
+		return genreIds.map((genreId) => {
+			const { name } = genresData.genres.find((genre) => genre.id === genreId)!;
 
-				return ({
-					name,
-					genreId
-				})
-			})
-		);
-	}
+			return {
+				name,
+				genreId,
+			};
+		});
+	};
 
 	const handleWatchlist = (id: number) => {
 		console.log("ADD/REM Watchlist: ", id);
@@ -49,21 +47,19 @@ export const MovieCard = ({
 					<div className={styles.figcaptionInfo}>
 						<h2 className={styles.title}>{title}</h2>
 						<ul className={styles.genres}>
-							{
-								getMovieGenres().map(({ name, genreId }, index) => {
-									return (
-										<li key={genreId}>
-											<Link
-												to={`/search/genre/${genreId}`}
-												className={styles.link}
-											>
-												{name}
-											</Link>
-											{index < genreIds.length - 1 && " -"}
-										</li>
-									);
-								})
-							}
+							{getMovieGenres().map(({ name, genreId }, index) => {
+								return (
+									<li key={genreId}>
+										<Link
+											to={`/search/genre/${genreId}`}
+											className={styles.link}
+										>
+											{name}
+										</Link>
+										{index < genreIds.length - 1 && " -"}
+									</li>
+								);
+							})}
 						</ul>
 					</div>
 					<Button

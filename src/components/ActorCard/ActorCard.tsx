@@ -31,7 +31,7 @@ export const ActorCard = ({
 					</div>
 					<figcaption className={styles.cardInfosContainer}>
 						<p className={styles.characterName}>{character} joué par</p>
-						<div className={styles.actorName}>{name}</div>
+						<p>{name}</p>
 					</figcaption>
 				</figure>
 			</div>
