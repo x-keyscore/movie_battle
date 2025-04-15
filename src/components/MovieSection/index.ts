@@ -1,0 +1,1 @@
+export { MovieSection } from "./MovieSection";
