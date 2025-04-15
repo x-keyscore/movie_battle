@@ -11,7 +11,11 @@ export function GenreList({ genres }: GenreListProps) {
         {
             genres.map((genre) => {
                 return (
-                   <li key={genre.id} className={styles.link}>{genre.name}</li>
+                    <li key={genre.id} className={styles.item}>
+                        <a href="#">
+                            {genre.name}
+                        </a>
+                    </li>
                 );
             })
         }

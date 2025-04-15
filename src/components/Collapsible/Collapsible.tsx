@@ -1,11 +1,13 @@
-import { ReactNode, useRef, useLayoutEffect, useState, ComponentRef } from "react";
+import type { ReactNode, ComponentRef, CSSProperties} from "react";
+import { useRef, useLayoutEffect, useState } from "react";
 
 interface CollapsibleProps {
+	className?: string;
 	children?: ReactNode;
+	/** @description Define the direction of the animation. */
+	without: "bottom" | "right";
     /** @description Define whether the display is open or closed. */
 	isOpen: boolean;
-    /** @description Define the direction of the animation. */
-	direction: "down" | "right";
 	/** @description Define the time before the start of the animation. Unit in second. Default 0s */
 	delay?: number;
 	/** @description Define the duration of the animation. Unit in second. Default .25s */
@@ -14,87 +16,60 @@ interface CollapsibleProps {
 
 /**
  * Create a downward or rightward opening animation.
- * 
- * Props: `open`, `dir`, `delay`, `duration`
  */
 export function Collapsible({
+	className,
     children,
+	without,
     isOpen,
-    direction,
     delay = 0,
-    duration = .25
+    duration = .20
 }: CollapsibleProps) {
-	const targetRef = useRef<ComponentRef<"div">>(null);
-	const [targetSize, setTargetSize] = useState<{
-		isCapture: boolean,
-		width: number,
-		height: number
-	}>({
-		isCapture: false,
-		width: 0,
-		height: 0
-	});
+	const ref = useRef<ComponentRef<"div">>(null);
+	const [rect, setRect] = useState<DOMRect | null>(null);
 
 	useLayoutEffect(() => {
-		if (targetRef.current) {
-			setTargetSize({
-				isCapture: true,
-				width: targetRef.current.offsetWidth,
-				height: targetRef.current.offsetHeight
-			});
+		if (ref.current) {
+			const rect = ref.current.getBoundingClientRect();
+			setRect(rect);
 		}
 	}, []);
 
-	let staticStyle = {};
-	if (direction === "right")
-	{
+	let staticStyle: CSSProperties = {};
+	let mutableStyle: CSSProperties = {};
+	if (without === "right") {
 		staticStyle = {
+			width: "100%",
 			overflow: "hidden",
+			visibility: "hidden",
 			transitionDelay: `${delay.toString()}s`,
-			// Visibility transition for deactivate the focus
-			transition: `width ${duration.toString()}s linear, visibility ${duration.toString()}s linear`,
-			height: "100%"
+			transition: `width ${duration.toString()}s linear, visibility ${duration.toString()}s linear`	
 		}
+
+		if (rect && isOpen) mutableStyle = { visibility: "visible", width: rect.width };
+		else mutableStyle = { visibility: "hidden", width: "0px" };
 	}
-	else if (direction === "down")
-	{
+	else if (without === "bottom") {
 		staticStyle = {
+			height: "100%",
 			overflow: "hidden",
+			visibility: "hidden",
 			transitionDelay: `${delay.toString()}s`,
-			// Visibility transition for deactivate the focus
-			transition: `height ${duration.toString()}s linear, visibility ${duration.toString()}s linear`,
-			width: "100%"
+			transition: `height ${duration.toString()}s linear, visibility ${duration.toString()}s linear`
 		}
+
+		if (rect && isOpen) mutableStyle = { visibility: "visible", height: rect.height };
+		else if (rect && !isOpen) mutableStyle = { visibility: "hidden", height: "0px" };
 	}
 
-	let mutableStyle = {};
-	if (targetSize.isCapture && !isOpen) {
-		if (direction === "right") mutableStyle = { visibility: "hidden", width: "0px" }
-		else if (direction === "down") mutableStyle = { visibility: "hidden", height: "0px" }
-	} else if (targetSize.isCapture && isOpen) {
-		if (direction === "right") mutableStyle = { visibility: "visible", width: targetSize.width + "px" }
-		else if (direction === "down") mutableStyle = { visibility: "visible", height: targetSize.height + "px" }
-	}
-
-    /*
-	let contentStaticStyle = {};
-	if (targetSize.isCapture) {
-		if (direction === "right") contentStaticStyle = { width: targetSize.width + "px"}
-		else if (direction === "down") contentStaticStyle = { height: targetSize.height + "px"}
-	}
+	let contentStaticStyle: CSSProperties = {};
+	if (rect) contentStaticStyle = { height: rect?.height + "px"};
 
 	return (
-		<div ref={targetRef} style={{...staticStyle, ...mutableStyle}} >
+		<div ref={ref} className={className} style={{ ...staticStyle, ...mutableStyle }} >
 			<div style={contentStaticStyle}>
 				{children}
 			</div>
-		</div>
-	);
-    */
-
-    return (
-		<div ref={targetRef} style={{...staticStyle, ...mutableStyle}} >
-			{children}
 		</div>
 	);
 }

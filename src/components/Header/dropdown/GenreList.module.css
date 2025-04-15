@@ -1,11 +1,33 @@
 .list {
-    margin: 0;
-    padding: 0;
+    background-color: var(--color-surface);
     list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 8px;
 }
 
-/*
-.list > .link {
-
+.list > .item {
+    flex: 1 1 auto;
 }
-*/
+
+.list > .item:hover,
+.list > .item:focus-visible {
+    color: var(--color-primary);
+}
+
+.list > .item > a {
+    text-decoration: none;
+    background-color: var(--color-secondary);
+    color: var(--color-text);
+    display: block;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.list > .item > a:hover,
+.list > .item > a:focus-visible {
+    color: var(--color-primary);
+}

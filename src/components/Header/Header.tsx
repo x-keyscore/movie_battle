@@ -1,18 +1,35 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import { Link } from "react-router";
+import { Collapsible } from "../Collapsible";
 import { GenreList } from "./dropdown";
 import { Button } from "../Button";
 import { Icons } from "../Icons";
 import styles from "./Header.module.css";
 
 import genresData from "../../mocks/genres.json";
-import { Collapsible } from "../Collapsible";
+
+type ToggleState = {
+    genreList: boolean;
+    watchList: boolean;
+};
+
+type ToggleAction = "GENRE_LIST" | "WATCH_LIST" |"RESET";
+
+const toggleReducer = (state: ToggleState, action: ToggleAction): ToggleState => {
+    switch (action) {
+        case "GENRE_LIST":
+            return { ...state, genreList: !state.genreList };
+        case "WATCH_LIST":
+            return { ...state, watchList: !state.watchList };
+        case "RESET":
+            return { genreList: false, watchList: false };
+        default:
+            return state;
+    }
+};
 
 export function Header() {
-    const [toggle, setToggle] = useState<{ 
-        genreList: boolean,
-        watchList: boolean
-    }>({
+    const [toggle, setToggle] = useReducer(toggleReducer, {
         genreList: false,
         watchList: false
     });
@@ -31,13 +48,15 @@ export function Header() {
                         <input type="text" placeholder="Recherche" />
                     </div>
                     <Button
-                        onClick={() => setToggle((prev) => ({ ...prev, genreList: !prev.genreList }))}
                         aria-label="Films par catégories"
+                        isActive={toggle.genreList}
+                        onClick={() => setToggle("GENRE_LIST")}
+                        onFocus={() => setToggle("GENRE_LIST")}
                     >
                         <Icons.Category />
                     </Button>
                     <div className={styles.dropdown}>
-                        <Collapsible direction="down" isOpen={toggle.genreList}>
+                        <Collapsible without="bottom" isOpen={toggle.genreList}>
                             <GenreList genres={genresData.genres} />
                         </Collapsible>
                     </div>

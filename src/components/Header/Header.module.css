@@ -84,13 +84,14 @@
 }
 
 .topbar-center > .dropdown {
-    background-color: var(--color-surface);
     position: absolute;
     top: 64px;
     width: 100%;
     max-height: calc(100vh - (2 * 80px));
     clip-path: inset(0 0 0 0 round 12px);
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #fff #dd0000;
 }
 
 .topbar-right {
