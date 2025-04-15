@@ -103,7 +103,8 @@
 .topmovie {
     display: flex;
     align-items: end;
-    height: 85vh;
+    height: 84vh;
+    margin-bottom: 42px;
 }
 
 .topmovie-backdrop {
