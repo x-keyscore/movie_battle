@@ -1,0 +1,31 @@
+.section-title {
+	color: var(--color-text);
+	/* 	margin-bottom: 32px; */
+	margin-left: 4%;
+}
+
+.container {
+	padding: 16px 0;
+	overflow-x: auto;
+	scrollbar-width: none;
+}
+
+.movies-list {
+	display: flex;
+	gap: 16px;
+	padding: 0;
+	margin: 0;
+	/* 	overflow-x: auto;
+	scrollbar-width: none; */
+}
+
+.movie-item:first-child {
+	margin-left: 4%;
+}
+
+.movie-item:last-child {
+	margin-right: 4%;
+}
+
+/* .movie-item {
+} */

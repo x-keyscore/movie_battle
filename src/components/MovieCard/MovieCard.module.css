@@ -1,7 +1,7 @@
 .card {
 	color: var(--color-text);
 	background-color: var(--color-surface);
-	max-width: 310px;
+	width: 300px;
 	aspect-ratio: 310 / 226;
 	overflow: hidden;
 	transform: translateZ(0);
@@ -52,7 +52,7 @@
 	gap: 8px;
 }
 .figcaption-info > .title {
-	font-size: 1rem
+	font-size: 1rem;
 }
 
 .figcaption-info > .genres {
