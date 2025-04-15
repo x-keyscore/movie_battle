@@ -1,12 +1,15 @@
 .card {
 	color: var(--color-text);
 	background-color: var(--color-surface);
-	max-width: 310px;
+	max-height: 226px;
+	width: 100%;
+	max-width: 410px;
 	aspect-ratio: 310 / 226;
 	overflow: hidden;
 	transform: translateZ(0);
 	transition: .2s transform ease-in-out;
 	clip-path: inset(0 0 0 0 round 8px);
+	margin: 0 auto;
 }
 
 .card:focus-within {
@@ -52,7 +55,7 @@
 	gap: 8px;
 }
 .figcaption-info > .title {
-	font-size: 1rem
+	font-size: 1rem;
 }
 
 .figcaption-info > .genres {
