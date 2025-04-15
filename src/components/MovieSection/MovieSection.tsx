@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import moviesData from "./../../mocks/movies.json";
 import { MovieCard } from "./../MovieCard";
 import styles from "./MovieSection.module.css";
@@ -16,7 +17,12 @@ export const MovieSection = ({
 	return (
 		<>
 			<div className={styles.sectionMovies}>
-				<h2 className={styles.sectionTitle}>Films - {type}</h2>
+				<h2 className={styles.sectionTitle}>
+					Films -{" "}
+					<Link to={`/search/genre/${type}`} className={styles.link}>
+						{type}
+					</Link>
+				</h2>
 				<div className={styles.container}>
 					<ul
 						className={oneLine ? styles.moviesListOneLine : styles.moviesList}
