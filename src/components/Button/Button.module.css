@@ -15,7 +15,8 @@
 }
 
 .button.ghost:hover,
-.button.ghost:focus-visible {
+.button.ghost:focus-visible,
+.button.ghost.active {
     color: var(--color-primary);
 }
 
@@ -30,13 +31,15 @@
 }
 
 .button.primary:hover,
-.button.primary:focus-visible {
+.button.primary:focus-visible,
+.button.primary.active {
     background-color: var(--color-secondary);
     color: var(--color-primary);
 }
 
 .button.secondary:hover,
-.button.secondary:focus-visible {
+.button.secondary:focus-visible,
+.button.secondary.active {
     background-color: var(--color-secondary);
     color: var(--color-primary);
 }
@@ -58,7 +61,7 @@
 }
 
 .button > span {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     overflow: hidden;
     white-space: nowrap;
@@ -69,5 +72,5 @@
 }
 
 .button > svg {
-    padding: 10px;
+    padding: 12px;
 }

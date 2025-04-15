@@ -1,100 +1,111 @@
-import { ReactNode, useRef, useLayoutEffect, useState, ComponentRef } from "react";
+import type { ReactNode, ComponentRef, CSSProperties, FocusEvent, FocusEventHandler} from "react";
+import { useRef, useState, useLayoutEffect, useEffect } from "react";
 
 interface CollapsibleProps {
-	children?: ReactNode;
-    /** @description Define whether the display is open or closed. */
-	isOpen: boolean;
-    /** @description Define the direction of the animation. */
-	direction: "down" | "right";
-	/** @description Define the time before the start of the animation. Unit in second. Default 0s */
-	delay?: number;
-	/** @description Define the duration of the animation. Unit in second. Default .25s */
-	duration?: number;
+    children: ReactNode;
+    /** **Description:** Define whether the display is open or closed. */
+    isOpen: boolean;
+    id?: string;
+    /**
+     * **Description:** Define the direction of the animation. 
+     * 
+     * **Default**: `"bottom"`
+     */
+    without?: "bottom" | "right";
+    /** 
+     * **Description:** Define the time before the start of the animation.
+     * 
+     * **Unit:** second
+     * 
+     * **Default:** `0`
+     */
+    delay?: number;
+    /**
+     * **Description:** Define the duration of the animation.
+     * 
+     * **Unit**: second
+     * 
+     * **Default**: `0.25`
+     */
+    duration?: number;
+    onBlur?: (e: FocusEvent<HTMLDivElement, Element>) => void;
 }
 
-/**
- * Create a downward or rightward opening animation.
- * 
- * Props: `open`, `dir`, `delay`, `duration`
- */
 export function Collapsible({
     children,
     isOpen,
-    direction,
+    id,
+    without = "bottom",
     delay = 0,
-    duration = .25
+    duration = .25,
+    onBlur,
 }: CollapsibleProps) {
-	const targetRef = useRef<ComponentRef<"div">>(null);
-	const [targetSize, setTargetSize] = useState<{
-		isCapture: boolean,
-		width: number,
-		height: number
-	}>({
-		isCapture: false,
-		width: 0,
-		height: 0
-	});
+    const ref = useRef<ComponentRef<"div">>(null);
+    const [rect, setRect] = useState<DOMRect | null>(null);
+    const [style, setStyle] = useState<CSSProperties>({
+            overflow: "hidden",
+            visibility: "hidden",
+            transitionDelay: `${delay}s`,
+            transition: 
+                `width ${duration}s linear,` +
+                `height ${duration}s linear,` +
+                `visibility ${duration}s linear`
+        }
+    );
 
-	useLayoutEffect(() => {
-		if (targetRef.current) {
-			setTargetSize({
-				isCapture: true,
-				width: targetRef.current.offsetWidth,
-				height: targetRef.current.offsetHeight
-			});
-		}
-	}, []);
+    useLayoutEffect(() => {
+        if (!ref.current) return;
 
-	let staticStyle = {};
-	if (direction === "right")
-	{
-		staticStyle = {
-			overflow: "hidden",
-			transitionDelay: `${delay.toString()}s`,
-			// Visibility transition for deactivate the focus
-			transition: `width ${duration.toString()}s linear, visibility ${duration.toString()}s linear`,
-			height: "100%"
-		}
-	}
-	else if (direction === "down")
-	{
-		staticStyle = {
-			overflow: "hidden",
-			transitionDelay: `${delay.toString()}s`,
-			// Visibility transition for deactivate the focus
-			transition: `height ${duration.toString()}s linear, visibility ${duration.toString()}s linear`,
-			width: "100%"
-		}
-	}
+        setRect(ref.current.getBoundingClientRect());
+    }, []);
 
-	let mutableStyle = {};
-	if (targetSize.isCapture && !isOpen) {
-		if (direction === "right") mutableStyle = { visibility: "hidden", width: "0px" }
-		else if (direction === "down") mutableStyle = { visibility: "hidden", height: "0px" }
-	} else if (targetSize.isCapture && isOpen) {
-		if (direction === "right") mutableStyle = { visibility: "visible", width: targetSize.width + "px" }
-		else if (direction === "down") mutableStyle = { visibility: "visible", height: targetSize.height + "px" }
-	}
+    useEffect(() => {
+        if (!ref.current || !rect) return;
 
-    /*
-	let contentStaticStyle = {};
-	if (targetSize.isCapture) {
-		if (direction === "right") contentStaticStyle = { width: targetSize.width + "px"}
-		else if (direction === "down") contentStaticStyle = { height: targetSize.height + "px"}
-	}
+        if (isOpen) {
+            if (without === "right") {
+                setStyle((prev) => ({
+                    ...prev,
+                    visibility: "visible",
+                    width: rect.width + "px"
+                }));
+            }
+            else if (without === "bottom") {
+                setStyle((prev) => ({
+                    ...prev,
+                    visibility: "visible",
+                    height: rect.height + "px"
+                }));
+            }
+        } else {
+            if (without === "right") {
+                setStyle((prev) => ({
+                    ...prev,
+                    visibility: "hidden",
+                    width: "0px"
+                }));
+            }
+            else if (without === "bottom") {
+                setStyle((prev) => ({
+                    ...prev,
+                    visibility: "hidden",
+                    height: "0px"
+                }));
+            }
+        };
+    }, [isOpen, without, rect]);
 
-	return (
-		<div ref={targetRef} style={{...staticStyle, ...mutableStyle}} >
-			<div style={contentStaticStyle}>
-				{children}
-			</div>
-		</div>
-	);
-    */
+    const handleOnBlur: FocusEventHandler<HTMLDivElement> = (e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+            onBlur?.(e);
+        }
+    }
 
     return (
-		<div ref={targetRef} style={{...staticStyle, ...mutableStyle}} >
-			{children}
-		</div>
-	);
+        <div id={id} ref={ref} style={style} onBlur={handleOnBlur}>
+            <div style={{ height: rect?.height + "px" }}>
+                {children}
+            </div>
+        </div>
+    );
 }

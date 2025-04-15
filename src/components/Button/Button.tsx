@@ -6,18 +6,20 @@ type Children = ReactElement<"svg" | "img" | "span">;
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: Children | [Children, Children];
-    variant?: "ghost" | "primary" | "secondary";
     size?: "small" | "medium";
+    variant?: "ghost" | "primary" | "secondary";
     className?: string;
     ariaLabel?: string;
+    isActive?: boolean;
 }
 
 export function Button({
-    variant = "secondary",
     size = "medium",
+    variant = "secondary",
     children,
     className,
     ariaLabel,
+    isActive,
     ...props
 }: ButtonProps) {
     const variants: Record<typeof variant, string> = {
@@ -34,7 +36,13 @@ export function Button({
     return (
         <button
             type="button"
-            className={clsx(styles.button, variants[variant], sizes[size], className)}
+            className={clsx(
+                className,
+                styles.button,
+                sizes[size],
+                variants[variant],
+                isActive && styles.active
+            )}
             aria-label={ariaLabel}
             {...props}
         >

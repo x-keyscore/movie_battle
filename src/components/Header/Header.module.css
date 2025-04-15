@@ -83,14 +83,15 @@
     color: var(--color-primary);
 }
 
-.topbar-center > .dropdown {
-    background-color: var(--color-surface);
+.topbar-center > .droparea {
     position: absolute;
     top: 64px;
     width: 100%;
     max-height: calc(100vh - (2 * 80px));
     clip-path: inset(0 0 0 0 round 12px);
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #fff #dd0000;
 }
 
 .topbar-right {
@@ -102,7 +103,8 @@
 .topmovie {
     display: flex;
     align-items: end;
-    height: 85vh;
+    height: 84vh;
+    margin-bottom: 42px;
 }
 
 .topmovie-backdrop {

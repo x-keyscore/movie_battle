@@ -1,18 +1,44 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import { Link } from "react-router";
+import { Collapsible } from "../Collapsible";
 import { GenreList } from "./dropdown";
 import { Button } from "../Button";
 import { Icons } from "../Icons";
 import styles from "./Header.module.css";
 
 import genresData from "../../mocks/genres.json";
-import { Collapsible } from "../Collapsible";
+
+type ToggleState = {
+    genreList: boolean;
+    watchList: boolean;
+};
+
+type ToggleAction =
+    | "CLOSE_GENRE_LIST"
+    | "TOGGLE_GENRE_LIST"
+    | "OPEN_WATCH_LIST"
+    | "TOGGLE_WATCH_LIST"
+    | "RESET";
+
+const toggleReducer = (state: ToggleState, action: ToggleAction): ToggleState => {
+    switch (action) {
+        case "CLOSE_GENRE_LIST":
+            return { ...state, genreList: false };
+        case "TOGGLE_GENRE_LIST":
+            return { ...state, genreList: !state.genreList };
+        case "OPEN_WATCH_LIST":
+            return { ...state, watchList: true };
+        case "TOGGLE_WATCH_LIST":
+            return { ...state, watchList: !state.watchList };
+        case "RESET":
+            return { genreList: false, watchList: false };
+        default:
+            return state;
+    }
+};
 
 export function Header() {
-    const [toggle, setToggle] = useState<{ 
-        genreList: boolean,
-        watchList: boolean
-    }>({
+    const [toggle, setToggle] = useReducer(toggleReducer, {
         genreList: false,
         watchList: false
     });
@@ -31,13 +57,25 @@ export function Header() {
                         <input type="text" placeholder="Recherche" />
                     </div>
                     <Button
-                        onClick={() => setToggle((prev) => ({ ...prev, genreList: !prev.genreList }))}
-                        aria-label="Films par catégories"
+                        isActive={toggle.genreList}
+                        aria-label="Choisir une catégorie"
+                        aria-expanded={toggle.genreList}
+                        aria-controls="genre-list-controls"
+                        onClick={() => setToggle("TOGGLE_GENRE_LIST")}
+                        onBlur={(e) => {
+                            if (!e.relatedTarget?.closest('#genre-list-controls')) {
+                                setToggle("CLOSE_GENRE_LIST");
+                            }
+                        }}
                     >
                         <Icons.Category />
                     </Button>
-                    <div className={styles.dropdown}>
-                        <Collapsible direction="down" isOpen={toggle.genreList}>
+                    <div className={styles.droparea} id="genre-list-controls">
+                        <Collapsible
+                            without="bottom"
+                            isOpen={toggle.genreList}
+                            onBlur={() => setToggle("TOGGLE_GENRE_LIST")}
+                        >
                             <GenreList genres={genresData.genres} />
                         </Collapsible>
                     </div>
