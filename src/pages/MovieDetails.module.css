@@ -1,7 +1,57 @@
 .movie-details {
 	color: var(--color-text);
+	margin-top: 30%;
 }
 
 .page-title {
+	font-size: 1.6rem;
 	margin-left: 4%;
+	margin-bottom: 24px;
+}
+
+.container {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+	margin: 0 4%;
+}
+
+.detail-item {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-bottom: 24px;
+}
+
+.detail-item:last-child {
+	margin-bottom: 0;
+}
+
+.detail-title {
+	font-size: .9rem;
+	font-weight: 200;
+	margin: 0;
+}
+
+.detailList {
+	margin: 0;
+}
+
+.column {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.img-container {
+	height: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.img {
+	width: 100%;
+	max-width: 200px;
+	height: auto;
+	object-fit: contain;
 }
