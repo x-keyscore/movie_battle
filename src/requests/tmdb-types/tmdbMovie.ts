@@ -38,6 +38,7 @@ export interface movieDetails extends movie {
 	}[];
 	homepage: string;
 	imdb_id: string;
+	origin_country: string[];
 	production_companies: {
 		id: number;
 		logo_path: string;

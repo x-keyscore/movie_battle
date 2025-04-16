@@ -1,10 +1,33 @@
-import movie from "./../mocks/movie.json";
 import movieCredits from "./../mocks/credits-movie.json";
-import { MovieSection } from "../components/MovieSection";
 import { ActorCard } from "../components/ActorCard";
+import { useParams } from "react-router";
+import { useEffect, useState } from "react";
+import type { movieDetails } from "../requests/tmdb-types/tmdbMovie";
 import styles from "./MovieDetails.module.css";
 
 const MovieDetailsPage = () => {
+	const { movie_id } = useParams();
+
+	const [movie, setMovie] = useState<movieDetails | null>(null);
+
+	useEffect(() => {
+		const url = `https://api.themoviedb.org/3/movie/${movie_id}?language=fr-FR`;
+		const options = {
+			method: "GET",
+			headers: {
+				accept: "application/json",
+				Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_TOKEN}`,
+			},
+		};
+
+		fetch(url, options)
+			.then((res) => res.json())
+			.then((json) => setMovie(() => json))
+			.catch((err) => console.error(err));
+	}, [movie_id]);
+
+	if (!movie) return <h1>Can't find movie</h1>;
+
 	return (
 		<div className={styles.movieDetails}>
 			<h1 className={styles.pageTitle}>Details</h1>
@@ -36,7 +59,7 @@ const MovieDetailsPage = () => {
 					</div>
 					<div className={styles.detailItem}>
 						<h3 className={styles.detailTitle}>Pays d'origine :</h3>
-						<p className={styles.detail}>{movie.origin_country}</p>
+						<p className={styles.detail}>{movie.origin_country[0]}</p>
 					</div>
 					<div className={styles.detailItem}>
 						<h3 className={styles.detailTitle}>Directeurs :</h3>
