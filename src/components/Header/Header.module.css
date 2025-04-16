@@ -83,15 +83,19 @@
     color: var(--color-primary);
 }
 
-.topbar-center > .droparea {
+.topbar-center > .collapsible {
     position: absolute;
     top: 64px;
     width: 100%;
+    border-radius: 12px;
+}
+
+.topbar-center > .collapsible > .collapsible-content {
+    background: var(--color-surface);
     max-height: calc(100vh - (2 * 80px));
-    clip-path: inset(0 0 0 0 round 12px);
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #fff #dd0000;
+    scrollbar-color: var(--color-primary) var(--color-surface);
 }
 
 .topbar-right {

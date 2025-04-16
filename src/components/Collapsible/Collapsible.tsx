@@ -1,25 +1,20 @@
-import type { ReactNode, ComponentRef, CSSProperties, FocusEvent, FocusEventHandler} from "react";
+import type { ReactNode, ComponentRef, CSSProperties, FocusEvent } from "react";
 import { useRef, useState, useLayoutEffect, useEffect } from "react";
 
 interface CollapsibleProps {
     children: ReactNode;
-    /** **Description:** Define whether the display is open or closed. */
+    id: string;
     isOpen: boolean;
-    id?: string;
+    styles?: {
+        wrapper?: string;
+        content?: string;
+    };
     /**
      * **Description:** Define the direction of the animation. 
      * 
      * **Default**: `"bottom"`
      */
     without?: "bottom" | "right";
-    /** 
-     * **Description:** Define the time before the start of the animation.
-     * 
-     * **Unit:** second
-     * 
-     * **Default:** `0`
-     */
-    delay?: number;
     /**
      * **Description:** Define the duration of the animation.
      * 
@@ -28,27 +23,28 @@ interface CollapsibleProps {
      * **Default**: `0.25`
      */
     duration?: number;
-    onBlur?: (e: FocusEvent<HTMLDivElement, Element>) => void;
+    onClickOut?: (e: MouseEvent) => void;
+    onFocusOut?: (e: FocusEvent) => void;
 }
 
 export function Collapsible({
     children,
-    isOpen,
     id,
+    styles,
+    isOpen,
     without = "bottom",
-    delay = 0,
-    duration = .25,
-    onBlur,
+    duration = .20,
+    onFocusOut,
+    onClickOut
 }: CollapsibleProps) {
     const ref = useRef<ComponentRef<"div">>(null);
     const [rect, setRect] = useState<DOMRect | null>(null);
     const [style, setStyle] = useState<CSSProperties>({
             overflow: "hidden",
             visibility: "hidden",
-            transitionDelay: `${delay}s`,
-            transition: 
-                `width ${duration}s linear,` +
-                `height ${duration}s linear,` +
+            transition:
+                `max-width ${duration}s linear,` +
+                `max-height ${duration}s linear,` +
                 `visibility ${duration}s linear`
         }
     );
@@ -67,14 +63,14 @@ export function Collapsible({
                 setStyle((prev) => ({
                     ...prev,
                     visibility: "visible",
-                    width: rect.width + "px"
+                    maxWidth: rect.width + "px"
                 }));
             }
             else if (without === "bottom") {
                 setStyle((prev) => ({
                     ...prev,
                     visibility: "visible",
-                    height: rect.height + "px"
+                    maxHeight: rect.height + "px"
                 }));
             }
         } else {
@@ -82,28 +78,61 @@ export function Collapsible({
                 setStyle((prev) => ({
                     ...prev,
                     visibility: "hidden",
-                    width: "0px"
+                    maxWidth: "0px"
                 }));
             }
             else if (without === "bottom") {
                 setStyle((prev) => ({
                     ...prev,
                     visibility: "hidden",
-                    height: "0px"
+                    maxHeight: "0px"
                 }));
             }
         };
     }, [isOpen, without, rect]);
 
-    const handleOnBlur: FocusEventHandler<HTMLDivElement> = (e) => {
-        if (!e.currentTarget.contains(e.relatedTarget)) {
-            onBlur?.(e);
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const handleClick = (e: MouseEvent) => {
+            if (!ref.current) return;
+            const target = e.target;
+
+            if (target instanceof Element
+                && target.closest(`[aria-controls="${id}"]`)) return;
+
+            if (target instanceof Node
+                && !ref.current.contains(target)) onClickOut?.(e);
         }
+
+        document.addEventListener("click", handleClick);
+
+        return () => {
+          document.removeEventListener("click", handleClick);
+        };
+    }, [id, isOpen, onClickOut]);
+
+    const handleBlur = (e: FocusEvent) => {
+        if (!ref.current) return;
+        const relatedTarget = e.relatedTarget;
+
+        if (relatedTarget instanceof Node
+            && !ref.current.contains(relatedTarget)) onFocusOut?.(e);
     }
 
     return (
-        <div id={id} ref={ref} style={style} onBlur={handleOnBlur}>
-            <div style={{ height: rect?.height + "px" }}>
+        <div
+            id={id}
+            ref={ref}
+            style={style}
+            className={styles?.wrapper}
+            aria-hidden={!isOpen}
+            onBlur={handleBlur}
+        >
+            <div
+                style={{ height: rect?.height + "px" }}
+                className={styles?.content}
+            >
                 {children}
             </div>
         </div>

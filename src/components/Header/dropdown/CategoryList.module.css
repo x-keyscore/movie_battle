@@ -31,3 +31,10 @@
 .list > .item > a:focus-visible {
     color: var(--color-primary);
 }
+
+.spacer {
+    background-color: var(--color-secondary);
+    height: 2px;
+    margin: 4px 8%;
+    box-sizing: border-box;
+}
