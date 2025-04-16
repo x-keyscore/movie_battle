@@ -46,16 +46,16 @@ export function Header() {
                         isActive={toggle.categoryList}
                         aria-label="Catégories"
                         aria-expanded={toggle.categoryList}
-                        aria-controls="collaps-category-list"
+                        aria-controls="category-list-collapse"
                         onClick={() => setToggle("CATEGORY_LIST")}
                     >
                         <Icons.Category />
                     </Button>
                     <Collapsible
-                        id="collaps-category-list"
+                        id="category-list-collapse"
                         without="bottom"
                         styles={{
-                            wrapper: styles.collapsible,
+                            wrapper: styles.collapsibleWrapper,
                             content: styles.collapsibleContent
                         }}
                         isOpen={toggle.categoryList}
@@ -70,13 +70,13 @@ export function Header() {
                         isActive={toggle.watchList}
                         aria-label="Vos films enregistrés"
                         aria-expanded={toggle.watchList}
-                        aria-controls="collaps-watch-list"
+                        aria-controls="watch-list-collapse"
                         onClick={() => setToggle("WATCH_LIST")}
                     >
                         <Icons.Reel />
                     </Button>
                     <Collapsible
-                        id="collaps-watch-list"
+                        id="watch-list-collapse"
                         without="bottom"
                         styles={{
                             wrapper: styles.collapsible,
@@ -92,7 +92,7 @@ export function Header() {
             </div>
             <div className={styles.topmovie}>
                 <div className={styles.topmovieBackdrop}>
-                    <img src="/mocks/backdrop.png" role="presentation" />
+                    <img src="/mocks/backdrop.png" role="presentation" draggable="false" />
                 </div>
                 <div className={styles.topmovieContent}>
                     <div className={styles.info}>

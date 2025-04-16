@@ -41,6 +41,7 @@ export const MovieCard = ({
 						className={styles.figureImage}
 						src={`https://image.tmdb.org/t/p/w780${backdropPath}`}
 						alt={title}
+						draggable="false"
 					/>
 				</Link>
 				<figcaption className={styles.figcaption}>

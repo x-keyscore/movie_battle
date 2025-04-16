@@ -1,4 +1,4 @@
-import type { ReactNode, ComponentRef, CSSProperties, FocusEvent } from "react";
+import type { ReactNode, ComponentRef, CSSProperties } from "react";
 import { useRef, useState, useLayoutEffect, useEffect } from "react";
 
 interface CollapsibleProps {
@@ -55,70 +55,57 @@ export function Collapsible({
         setRect(ref.current.getBoundingClientRect());
     }, []);
 
-    useEffect(() => {
-        if (!ref.current || !rect) return;
-
-        if (isOpen) {
-            if (without === "right") {
-                setStyle((prev) => ({
-                    ...prev,
-                    visibility: "visible",
-                    maxWidth: rect.width + "px"
-                }));
-            }
-            else if (without === "bottom") {
-                setStyle((prev) => ({
-                    ...prev,
-                    visibility: "visible",
-                    maxHeight: rect.height + "px"
-                }));
-            }
-        } else {
-            if (without === "right") {
-                setStyle((prev) => ({
-                    ...prev,
-                    visibility: "hidden",
-                    maxWidth: "0px"
-                }));
-            }
-            else if (without === "bottom") {
-                setStyle((prev) => ({
-                    ...prev,
-                    visibility: "hidden",
-                    maxHeight: "0px"
-                }));
-            }
+    useLayoutEffect(() => {
+        if (!rect) return;
+    
+        const global: CSSProperties = {
+            visibility: isOpen ? "visible" : "hidden",
         };
+    
+        if (without === "right") {
+            setStyle((prev) => ({
+                ...prev,
+                ...global,
+                maxWidth: isOpen ? `${rect.width}px` : "0px"
+            }));
+        } else if (without === "bottom") {
+            setStyle((prev) => ({
+                ...prev,
+                ...global,
+                maxHeight: isOpen ? `${rect.height}px` : "0px"
+            }));
+        }
     }, [isOpen, without, rect]);
 
     useEffect(() => {
-        if (!isOpen) return;
+        const wrapper = ref.current;
+        if (!wrapper || !isOpen) return;
 
         const handleClick = (e: MouseEvent) => {
-            if (!ref.current) return;
             const target = e.target;
+            if (!wrapper || !(target instanceof Node)) return;
 
             if (target instanceof Element
                 && target.closest(`[aria-controls="${id}"]`)) return;
 
-            if (target instanceof Node
-                && !ref.current.contains(target)) onClickOut?.(e);
+            if (!wrapper.contains(target)) onClickOut?.(e);
         }
 
+        const handleFocusOut = (e: FocusEvent) => {
+            const relatedTarget = e.relatedTarget;
+            if (!wrapper || !(relatedTarget instanceof Node)) return;
+    
+            if (!wrapper.contains(relatedTarget)) onFocusOut?.(e);
+        };
+
         document.addEventListener("click", handleClick);
+        wrapper.addEventListener("focusout", handleFocusOut);
 
         return () => {
           document.removeEventListener("click", handleClick);
+          wrapper.removeEventListener("focusout", handleFocusOut);
         };
-    }, [id, isOpen, onClickOut]);
-
-    const handleBlur = (e: FocusEvent) => {
-        if (!ref.current) return;
-        const relatedTarget = e.relatedTarget;
-
-        if (relatedTarget instanceof Node
-            && !ref.current.contains(relatedTarget)) onFocusOut?.(e);
-    }
+    }, [id, isOpen, onClickOut, onFocusOut]);
 
     return (
         <div
@@ -127,7 +114,6 @@ export function Collapsible({
             style={style}
             className={styles?.wrapper}
             aria-hidden={!isOpen}
-            onBlur={handleBlur}
         >
             <div
                 style={{ height: rect?.height + "px" }}

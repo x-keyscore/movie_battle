@@ -83,14 +83,14 @@
     color: var(--color-primary);
 }
 
-.topbar-center > .collapsible {
+.topbar-center .collapsibleWrapper {
     position: absolute;
     top: 64px;
     width: 100%;
     border-radius: 12px;
 }
 
-.topbar-center > .collapsible > .collapsible-content {
+.topbar-center .collapsibleContent {
     background: var(--color-surface);
     max-height: calc(100vh - (2 * 80px));
     overflow-y: auto;
