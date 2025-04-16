@@ -83,25 +83,38 @@
     color: var(--color-primary);
 }
 
-.topbar-center .collapsibleWrapper {
+.topbar-center .collapsible-wrapper {
     position: absolute;
     top: 64px;
-    width: 100%;
+    left: 0;
     border-radius: 12px;
-}
-
-.topbar-center .collapsibleContent {
-    background: var(--color-surface);
-    max-height: calc(100vh - (2 * 80px));
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-primary) var(--color-surface);
 }
 
 .topbar-right {
     flex: 1;
     display: flex;
     justify-content: flex-end;
+}
+
+.topbar-right > .context {
+    position: relative;
+}
+
+.topbar-right > .context .collapsible-wrapper {
+    position: absolute;
+    top: 64px;
+    right: 0;
+    border-radius: 12px;
+}
+
+.topbar-center .collapsible-content,
+.topbar-right .collapsible-content {
+    background: var(--color-surface);
+    max-height: calc(100vh - (2 * 80px));
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) var(--color-surface);
+    pointer-events: auto;
 }
 
 .topmovie {

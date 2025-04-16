@@ -5,23 +5,12 @@ interface CollapsibleProps {
     children: ReactNode;
     id: string;
     isOpen: boolean;
+    zIndex?: number;
     styles?: {
         wrapper?: string;
         content?: string;
     };
-    /**
-     * **Description:** Define the direction of the animation. 
-     * 
-     * **Default**: `"bottom"`
-     */
     without?: "bottom" | "right";
-    /**
-     * **Description:** Define the duration of the animation.
-     * 
-     * **Unit**: second
-     * 
-     * **Default**: `0.25`
-     */
     duration?: number;
     onClickOut?: (e: MouseEvent) => void;
     onFocusOut?: (e: FocusEvent) => void;
@@ -31,6 +20,7 @@ export function Collapsible({
     children,
     id,
     styles,
+    zIndex,
     isOpen,
     without = "bottom",
     duration = .20,
@@ -60,8 +50,9 @@ export function Collapsible({
     
         const global: CSSProperties = {
             visibility: isOpen ? "visible" : "hidden",
+            zIndex: isOpen ? zIndex ? zIndex + 1 : undefined : zIndex
         };
-    
+
         if (without === "right") {
             setStyle((prev) => ({
                 ...prev,
@@ -75,7 +66,7 @@ export function Collapsible({
                 maxHeight: isOpen ? `${rect.height}px` : "0px"
             }));
         }
-    }, [isOpen, without, rect]);
+    }, [isOpen, zIndex, without, rect]);
 
     useEffect(() => {
         const wrapper = ref.current;

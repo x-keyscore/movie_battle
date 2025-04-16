@@ -8,16 +8,16 @@
     padding: 8px;
 }
 
-.list > .item {
+.item {
     flex: 1 1 auto;
 }
 
-.list > .item:hover,
-.list > .item:focus-visible {
+.item:hover,
+.item:focus-visible {
     color: var(--color-primary);
 }
 
-.list > .item > a {
+.item-link {
     text-decoration: none;
     background-color: var(--color-secondary);
     color: var(--color-text);
@@ -27,8 +27,8 @@
     text-align: center;
 }
 
-.list > .item > a:hover,
-.list > .item > a:focus-visible {
+.item-link:hover,
+.item-link:focus-visible {
     color: var(--color-primary);
 }
 

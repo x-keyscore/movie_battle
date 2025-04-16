@@ -19,7 +19,7 @@ export const MovieSection = ({
 			<div className={styles.sectionMovies}>
 				<h2 className={styles.sectionTitle}>
 					Films -{" "}
-					<Link to={`/search/genre/${type}`} className={styles.link}>
+					<Link className={styles.link} to={`/search/genre/${type}`}>
 						{type}
 					</Link>
 				</h2>

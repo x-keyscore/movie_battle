@@ -54,6 +54,7 @@ export function Header() {
                     <Collapsible
                         id="category-list-collapse"
                         without="bottom"
+                        zIndex={100}
                         styles={{
                             wrapper: styles.collapsibleWrapper,
                             content: styles.collapsibleContent
@@ -66,33 +67,36 @@ export function Header() {
                     </Collapsible>
                 </div>
                 <div className={styles.topbarRight}>
-                    <Button
-                        isActive={toggle.watchList}
-                        aria-label="Vos films enregistrés"
-                        aria-expanded={toggle.watchList}
-                        aria-controls="watch-list-collapse"
-                        onClick={() => setToggle("WATCH_LIST")}
-                    >
-                        <Icons.Reel />
-                    </Button>
-                    <Collapsible
-                        id="watch-list-collapse"
-                        without="bottom"
-                        styles={{
-                            wrapper: styles.collapsible,
-                            content: styles.collapsibleContent
-                        }}
-                        isOpen={toggle.watchList}
-                        onFocusOut={() => setToggle("WATCH_LIST")}
-                        onClickOut={() => setToggle("WATCH_LIST")}
-                    >
-                        <WatchList />
-                    </Collapsible>
+                    <div className={styles.context}>
+                        <Button
+                            isActive={toggle.watchList}
+                            aria-label="Vos films enregistrés"
+                            aria-expanded={toggle.watchList}
+                            aria-controls="watch-list-collapse"
+                            onClick={() => setToggle("WATCH_LIST")}
+                        >
+                            <Icons.Reel />
+                        </Button>
+                        <Collapsible
+                            id="watch-list-collapse"
+                            without="bottom"
+                            zIndex={100}
+                            styles={{
+                                wrapper: styles.collapsibleWrapper,
+                                content: styles.collapsibleContent
+                            }}
+                            isOpen={toggle.watchList}
+                            onFocusOut={() => setToggle("WATCH_LIST")}
+                            onClickOut={() => setToggle("WATCH_LIST")}
+                        >
+                            <WatchList />
+                        </Collapsible>
+                    </div>
                 </div>
             </div>
             <div className={styles.topmovie}>
                 <div className={styles.topmovieBackdrop}>
-                    <img src="/mocks/backdrop.png" role="presentation" draggable="false" />
+                    <img src="/mocks/backdrop.png" draggable="false" role="presentation" />
                 </div>
                 <div className={styles.topmovieContent}>
                     <div className={styles.info}>
@@ -112,7 +116,7 @@ export function Header() {
                         <Button size="small">
                             <span>Voir plus</span>
                         </Button>
-                        <Button aria-label="Ajouter aux films enregistrés" size="small">
+                        <Button size="small" aria-label="Ajouter aux films enregistrés">
                             <Icons.AddToList />
                         </Button>
                     </div>

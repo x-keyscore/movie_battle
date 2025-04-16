@@ -10,13 +10,19 @@ export function CategoryList({ genres }: GenreListProps) {
         <>
             <ul className={styles.list}>
                 <li className={styles.item}>
-                    <Link to="/category/popular">Populaires</Link>
+                    <Link  className={styles.itemLink} to="/category/popular">
+                        Populaires
+                    </Link>
                 </li>
                 <li className={styles.item}>
-                    <Link to="/category/recent">Récents</Link>
+                    <Link className={styles.itemLink} to="/category/recent">
+                        Récents
+                    </Link>
                 </li>
                 <li className={styles.item}>
-                    <Link to="/category/bestvote">Mieux notés</Link>
+                    <Link className={styles.itemLink} to="/category/bestvote">
+                        Meilleur notes
+                    </Link>
                 </li>
             </ul>
             <div className={styles.spacer} />
@@ -25,7 +31,10 @@ export function CategoryList({ genres }: GenreListProps) {
                     genres.map((genre) => {
                         return (
                             <li key={genre.id} className={styles.item}>
-                                <Link to={`/category/genre/${genre.id}`}>
+                                <Link 
+                                    className={styles.itemLink}
+                                    to={`/category/genre/${genre.id}`}
+                                >
                                     {genre.name}
                                 </Link>
                             </li>

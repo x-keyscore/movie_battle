@@ -135,6 +135,24 @@ export function Avatar({ className, style }: IconProps) {
 	);
 }
 
+export function Cross({ className, style }: IconProps) {
+	return (
+		<svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" className={className} style={style}>
+			<g transform="translate(0,512) scale(0.1,-0.1)">
+				<path
+					d="M491 5104 c-177 -39 -342 -170 -425 -338 -96 -195 -85 -416 31 -611
+					27 -45 231 -256 802 -827 l765 -768 -765 -767 c-832 -834 -821 -821 -871 -983
+					-32 -105 -32 -255 0 -360 97 -314 412 -502 729 -436 83 18 143 43 220 92 39
+					24 315 293 821 797 l762 762 763 -761 c419 -419 784 -776 810 -793 355 -239
+					833 -70 959 339 32 105 32 255 0 360 -50 162 -39 149 -871 983 l-765 767 761
+					763 c759 760 805 810 854 924 129 300 -8 660 -305 807 -201 99 -427 85 -623
+					-40 -39 -24 -315 -293 -820 -797 l-763 -761 -762 761 c-506 504 -782 773 -821
+					797 -151 96 -317 127 -486 90z"/>
+			</g>
+		</svg>
+	);
+};
+
 export function Logo({ className, style }: IconProps) {
 	return <LogoSvg aria-hidden="true" className={className} style={style} />;
 }
