@@ -43,6 +43,10 @@ const MovieDetailsPage = () => {
 					</div>
 					<figcaption className={styles.details}>
 						<h1 className={styles.pageTitle}>Details</h1>
+						<div className={`${styles.detailItem} ${styles.overview}`}>
+							<h3 className={styles.detailTitle}>Synopsis :</h3>
+							<p className={styles.detail}>{movie.overview}</p>
+						</div>
 						<ul className={styles.detailItemList}>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Durée :</h3>
