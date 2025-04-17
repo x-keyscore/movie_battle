@@ -36,13 +36,14 @@ const MovieDetailsPage = () => {
 				<figure className={styles.detailsContainer}>
 					<div className={styles.imgContainer}>
 						<img
-							src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
+							src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
 							alt={movie.title}
 							className={styles.img}
 						/>
 					</div>
 					<figcaption className={styles.details}>
-						<ul>
+						<h1 className={styles.pageTitle}>Details</h1>
+						<ul className={styles.detailItemList}>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Durée :</h3>
 								<p className={styles.detail}>{movie.runtime}</p>
@@ -69,7 +70,7 @@ const MovieDetailsPage = () => {
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Directeurs :</h3>
-								<ul className={styles.detailList}>
+								<ul /* className={styles.detailList} */>
 									{movieCredits.cast
 										.filter(
 											(member) => member.known_for_department === "Directing",
@@ -83,7 +84,7 @@ const MovieDetailsPage = () => {
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Maisons de production :</h3>
-								<ul className={styles.detailList}>
+								<ul /* className={styles.detailList} */>
 									{movie.production_companies.map((company) => {
 										return <li key={company.id}>{company.name}</li>;
 									})}
