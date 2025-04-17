@@ -1,4 +1,4 @@
-export interface creditMember {
+export interface CreditMember {
 	adult: boolean;
 	gender: number;
 	id: number;
@@ -10,19 +10,19 @@ export interface creditMember {
 	credit_id: string;
 }
 
-export interface castMember extends creditMember {
+export interface CastMember extends CreditMember {
 	cast_id: number;
 	character: string;
 	order: number;
 }
 
-export interface crewMember extends creditMember {
+export interface CrewMember extends CreditMember {
 	department: string;
 	job: string;
 }
 
 export interface credits {
 	id: number;
-	cast: castMember[];
-	crew: crewMember[];
+	cast: CastMember[];
+	crew: CrewMember[];
 }
