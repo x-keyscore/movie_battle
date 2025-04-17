@@ -1,4 +1,4 @@
-export interface movie {
+export interface Movie {
 	adult: boolean;
 	backdrop_path: string;
 	genre_ids: number[];
@@ -15,21 +15,21 @@ export interface movie {
 	vote_count: number;
 }
 
-export interface moviesList {
+export interface MoviesList {
 	page: number;
-	results: movie[];
+	results: Movie[];
 	total_pages: number;
 	total_results: number;
 }
 
-export interface moviesListDate extends moviesList {
+export interface MoviesListDate extends MoviesList {
 	dates: {
 		maximum: string;
 		minimum: string;
 	};
 }
 
-export interface movieDetails extends movie {
+export interface MovieDetails extends Movie {
 	belongs_to_collection: string;
 	budget: number;
 	genres: {

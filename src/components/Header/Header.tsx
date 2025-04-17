@@ -7,6 +7,7 @@ import { Icons } from "../Icons";
 import styles from "./Header.module.css";
 
 import genresData from "../../mocks/genres.json";
+import { useHeader } from "../../providers/HeaderProvider";
 
 type ToggleState = {
     genreList: boolean;
@@ -38,6 +39,7 @@ const toggleReducer = (state: ToggleState, action: ToggleAction): ToggleState =>
 };
 
 export function Header() {
+    const { topmovie } = useHeader();
     const [toggle, setToggle] = useReducer(toggleReducer, {
         genreList: false,
         watchList: false
@@ -93,12 +95,10 @@ export function Header() {
                 <div className={styles.topmovieContent}>
                     <div className={styles.info}>
                         <div className={styles.title}>
-                            Novocaine
+                            {topmovie?.title}
                         </div>
                         <div className={styles.synopsis}>
-                            Quand la femme de ses rêves est kidnappée, Nate, un homme ordinaire,
-                            réussit à mettre à profit sa capacité à ne pas ressentir la douleur.
-                            Une force imprévue qui l'aidera dans sa lutte pour la récupérer.
+                            {topmovie?.overview}
                         </div>
                         <div className={styles.genres}>
 
