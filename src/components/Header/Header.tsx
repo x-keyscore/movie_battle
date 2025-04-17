@@ -1,7 +1,9 @@
+import type { ToggleAction, ToggleState } from "./types";
 import { useReducer } from "react";
 import { Link } from "react-router";
 import { Collapsible } from "../Collapsible";
-import { GenreList } from "./dropdown";
+import { CategoryList } from "./dropdown";
+import { WatchList } from "./dropdown/WatchList";
 import { Button } from "../Button";
 import { Icons } from "../Icons";
 import styles from "./Header.module.css";
@@ -9,30 +11,14 @@ import styles from "./Header.module.css";
 import genresData from "../../mocks/genres.json";
 import { useHeader } from "../../providers/HeaderProvider";
 
-type ToggleState = {
-    genreList: boolean;
-    watchList: boolean;
-};
-
-type ToggleAction =
-    | "CLOSE_GENRE_LIST"
-    | "TOGGLE_GENRE_LIST"
-    | "OPEN_WATCH_LIST"
-    | "TOGGLE_WATCH_LIST"
-    | "RESET";
-
 const toggleReducer = (state: ToggleState, action: ToggleAction): ToggleState => {
     switch (action) {
-        case "CLOSE_GENRE_LIST":
-            return { ...state, genreList: false };
-        case "TOGGLE_GENRE_LIST":
-            return { ...state, genreList: !state.genreList };
-        case "OPEN_WATCH_LIST":
-            return { ...state, watchList: true };
-        case "TOGGLE_WATCH_LIST":
+        case "CATEGORY_LIST":
+            return { ...state, categoryList: !state.categoryList };
+        case "WATCH_LIST":
             return { ...state, watchList: !state.watchList };
         case "RESET":
-            return { genreList: false, watchList: false };
+            return { categoryList: false, watchList: false };
         default:
             return state;
     }
@@ -41,7 +27,7 @@ const toggleReducer = (state: ToggleState, action: ToggleAction): ToggleState =>
 export function Header() {
     const { topmovie } = useHeader();
     const [toggle, setToggle] = useReducer(toggleReducer, {
-        genreList: false,
+        categoryList: false,
         watchList: false
     });
 
@@ -59,38 +45,60 @@ export function Header() {
                         <input type="text" placeholder="Recherche" />
                     </div>
                     <Button
-                        isActive={toggle.genreList}
-                        aria-label="Choisir une catégorie"
-                        aria-expanded={toggle.genreList}
-                        aria-controls="genre-list-controls"
-                        onClick={() => setToggle("TOGGLE_GENRE_LIST")}
-                        onBlur={(e) => {
-                            if (!e.relatedTarget?.closest('#genre-list-controls')) {
-                                setToggle("CLOSE_GENRE_LIST");
-                            }
-                        }}
+                        isActive={toggle.categoryList}
+                        aria-label="Catégories"
+                        aria-expanded={toggle.categoryList}
+                        aria-controls="category-list-collapse"
+                        onClick={() => setToggle("CATEGORY_LIST")}
                     >
                         <Icons.Category />
                     </Button>
-                    <div className={styles.droparea} id="genre-list-controls">
-                        <Collapsible
-                            without="bottom"
-                            isOpen={toggle.genreList}
-                            onBlur={() => setToggle("TOGGLE_GENRE_LIST")}
-                        >
-                            <GenreList genres={genresData.genres} />
-                        </Collapsible>
-                    </div>
+                    <Collapsible
+                        id="category-list-collapse"
+                        without="bottom"
+                        zIndex={100}
+                        styles={{
+                            wrapper: styles.collapsibleWrapper,
+                            content: styles.collapsibleContent
+                        }}
+                        isOpen={toggle.categoryList}
+                        onFocusOut={() => setToggle("CATEGORY_LIST")}
+                        onClickOut={() => setToggle("CATEGORY_LIST")}
+                    >
+                        <CategoryList genres={genresData.genres} />
+                    </Collapsible>
                 </div>
                 <div className={styles.topbarRight}>
-                    <Button aria-label="Vos films enregistrés">
-                        <Icons.Reel />
-                    </Button>
+                    <div className={styles.context}>
+                        <Button
+                            isActive={toggle.watchList}
+                            aria-label="Vos films enregistrés"
+                            aria-expanded={toggle.watchList}
+                            aria-controls="watch-list-collapse"
+                            onClick={() => setToggle("WATCH_LIST")}
+                        >
+                            <Icons.Reel />
+                        </Button>
+                        <Collapsible
+                            id="watch-list-collapse"
+                            without="bottom"
+                            zIndex={100}
+                            styles={{
+                                wrapper: styles.collapsibleWrapper,
+                                content: styles.collapsibleContent
+                            }}
+                            isOpen={toggle.watchList}
+                            onFocusOut={() => setToggle("WATCH_LIST")}
+                            onClickOut={() => setToggle("WATCH_LIST")}
+                        >
+                            <WatchList />
+                        </Collapsible>
+                    </div>
                 </div>
             </div>
             <div className={styles.topmovie}>
                 <div className={styles.topmovieBackdrop}>
-                    <img src="/mocks/backdrop.png" role="presentation" />
+                    <img src="/mocks/backdrop.png" draggable="false" role="presentation" />
                 </div>
                 <div className={styles.topmovieContent}>
                     <div className={styles.info}>
@@ -108,7 +116,7 @@ export function Header() {
                         <Button size="small">
                             <span>Voir plus</span>
                         </Button>
-                        <Button aria-label="Ajouter aux films enregistrés" size="small">
+                        <Button size="small" aria-label="Ajouter aux films enregistrés">
                             <Icons.AddToList />
                         </Button>
                     </div>

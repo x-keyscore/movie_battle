@@ -20,28 +20,22 @@
     color: var(--color-primary);
 }
 
-.button.primary {
+.button.normal {
     background-color: var(--color-surface);
     color: var(--color-text);
 }
 
-.button.secondary {
-    background-color: var(--color-surface);
-    color: var(--color-text);
-}
-
-.button.primary:hover,
-.button.primary:focus-visible,
-.button.primary.active {
+.button.normal:hover,
+.button.normal:focus-visible,
+.button.normal.active {
     background-color: var(--color-secondary);
     color: var(--color-primary);
 }
 
-.button.secondary:hover,
-.button.secondary:focus-visible,
-.button.secondary.active {
-    background-color: var(--color-secondary);
-    color: var(--color-primary);
+.button.mini {
+    min-width: 36px;
+    height: 36px;
+    border-radius: 4px;
 }
 
 .button.small {
