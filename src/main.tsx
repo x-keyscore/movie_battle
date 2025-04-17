@@ -1,14 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import { Category } from "./pages/Category";
 import { App } from "./App";
 import "./main.css";
 
-import { HomePage, homeLoader } from "./pages/Home";
+import { HomePage } from "./pages/Home";
+import { CategoryPage } from "./pages/Category";
+
 import SearchPage from "./pages/Search";
 import MovieDetailsPage from "./pages/MovieDetails";
-import { CategoryPage } from "./pages/Category/Category";
 
 const router = createBrowserRouter([
 	{
@@ -16,26 +16,25 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: "/",
-				loader: homeLoader,
 				Component: HomePage
 			},
 			{
 				path: "/search",
-				element: <SearchPage />,
+				Component: SearchPage,
 			},
 			{
 				path: "/movie",
-				element: <MovieDetailsPage />,
+				Component: MovieDetailsPage,
 			},
 			{
 				path: "/category",
 				children: [
 					{
-						path: "/:category",
+						path: ":category",
 						Component: CategoryPage,
 					},
 					{
-						path: "/:category/:genre_id",
+						path: ":category/:genre_id",
 						Component: CategoryPage,
 					},
 				],
@@ -47,5 +46,5 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<RouterProvider router={router} />
-	</StrictMode>,
+	</StrictMode>
 );

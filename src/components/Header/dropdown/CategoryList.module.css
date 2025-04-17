@@ -14,12 +14,12 @@
 
 .item:hover,
 .item:focus-visible {
-    color: var(--color-primary);
+    color: var(--color-accent);
 }
 
 .item-link {
     text-decoration: none;
-    background-color: var(--color-secondary);
+    background-color: var(--color-surface-light);
     color: var(--color-text);
     display: block;
     padding: 8px 16px;
@@ -29,11 +29,11 @@
 
 .item-link:hover,
 .item-link:focus-visible {
-    color: var(--color-primary);
+    color: var(--color-accent);
 }
 
 .spacer {
-    background-color: var(--color-secondary);
+    background-color: var(--color-surface-light);
     height: 2px;
     margin: 4px 8%;
     box-sizing: border-box;

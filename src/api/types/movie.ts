@@ -15,21 +15,7 @@ export interface Movie {
 	vote_count: number;
 }
 
-export interface MovieList {
-	page: number;
-	results: Movie[];
-	total_pages: number;
-	total_results: number;
-}
-
-export interface MovieListWithDate extends MovieList {
-	dates: {
-		maximum: string;
-		minimum: string;
-	};
-}
-
-export interface MovieDetails extends Movie {
+export interface MovieWithDetails extends Movie {
 	belongs_to_collection: string;
 	budget: number;
 	genres: {
@@ -57,4 +43,18 @@ export interface MovieDetails extends Movie {
 	}[];
 	status: string;
 	tagline: string;
+}
+
+export interface MovieList {
+    page: number;
+    results: Movie[];
+    total_pages: number;
+    total_results: number;
+}
+
+export interface MovieListWithDate extends MovieList {
+    dates: {
+        maximum: string;
+        minimum: string;
+    };
 }

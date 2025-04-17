@@ -17,7 +17,7 @@
 .button.ghost:hover,
 .button.ghost:focus-visible,
 .button.ghost.active {
-    color: var(--color-primary);
+    color: var(--color-accent);
 }
 
 .button.normal {
@@ -28,8 +28,8 @@
 .button.normal:hover,
 .button.normal:focus-visible,
 .button.normal.active {
-    background-color: var(--color-secondary);
-    color: var(--color-primary);
+    background-color: var(--color-surface-light);
+    color: var(--color-accent);
 }
 
 .button.mini {

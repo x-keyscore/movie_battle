@@ -1,1 +1,1 @@
-export { Category } from "./Category";
+export { CategoryPage } from "./Category";

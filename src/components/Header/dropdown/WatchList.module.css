@@ -11,7 +11,7 @@
 }
 
 .item {
-    background-color: var(--color-secondary);
+    background-color: var(--color-surface-light);
     clip-path: inset(0 0 0 0 round 8px);
     height: 72px;
 }
@@ -45,7 +45,7 @@
 
 .item-link:hover > .info > .title,
 .item-link:focus-visible > .info > .title {
-    color: var(--color-primary);
+    color: var(--color-accent);
 }
 
 .item-link > .info > .duration {

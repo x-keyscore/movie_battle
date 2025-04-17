@@ -1,35 +1,53 @@
+import { useEffect } from "react";
 import { MovieSection } from "../components/MovieSection";
 import { useHeader } from "../providers/HeaderProvider";
-import type { MovieList } from "../api/tmdb";
-import { getPopularMovies, getRecentMovies } from "../api/tmdb";
-import { Params, useLoaderData } from "react-router";
-
-type HomeParams = Params<"category" | "genre_id">;
-
-interface HomeData {
-	popularMovies: MovieList,
-	recentMovies: MovieList,
-}
-
-export async function homeLoader({ params }: { params: HomeParams }): Promise<HomeData> {
-	console.log("homeLoader: ", params);
-	return ({
-		popularMovies: (await getPopularMovies()).data,
-		recentMovies: (await getRecentMovies()).data,
-		
-	});
-}
+import { movie } from "../api/requests/movie";
+import { useRequest } from "../hooks/useRequest";
 
 export function HomePage() {
-	const { popularMovies } = useLoaderData<HomeData>();
+	const [data] = useRequest(async () => {
+		const [popular, topRated, nowPlaying] = await Promise.all([
+			movie.getPopular(),
+			movie.getTopRated(),
+			movie.getNowPlaying()
+		]);
+
+		return {
+			popularMovies: popular.data,
+			topRatedMovies: topRated.data,
+			nowPlayingMovies: nowPlaying.data,
+		};
+	});
 	const { setTopmovie } = useHeader();
 
-	console.log("homeLoader: ", params);
+	useEffect(() => {
+		if (!data) return;
+
+		setTopmovie(data.popularMovies.results[0])
+	}, [data, setTopmovie])
+
+	if (!data) return (null);
+
 	return (
 		<>
-			<MovieSection type="Populaires" maxNbrCards={20} oneLine={true} />
-			<MovieSection type="Mieux notés" maxNbrCards={20} oneLine={true} />
-			<MovieSection type="Recents" maxNbrCards={20} oneLine={true} />
+			<MovieSection
+				title="Populaires"
+				movies={data.popularMovies}
+				maxCards={20}
+				inline={false}
+			/>
+			<MovieSection
+				title="Mieux notés"
+				movies={data.topRatedMovies}
+				maxCards={20}
+				inline={true}
+			/>
+			<MovieSection
+				title="Recents"
+				movies={data.nowPlayingMovies}
+				maxCards={20}
+				inline={true}
+			/>
 		</>
 	);
 }

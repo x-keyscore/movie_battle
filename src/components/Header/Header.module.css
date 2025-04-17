@@ -58,10 +58,14 @@
 }
 
 .topbar-center > .search:hover {
-    background-color: var(--color-secondary);
-    color: var(--color-primary);
+    background-color: var(--color-surface-light);
+    color: var(--color-accent);
 }
 
+.topbar-center > .search:has(> input:focus) {
+    background-color: var(--color-surface-light);
+    color: var(--color-accent);
+}
 
 .topbar-center > .search > svg {
     width: 22px;
@@ -76,11 +80,6 @@
 
 .topbar-center > .search > input::placeholder {
     color: var(--color-text-placeholder);
-}
-
-.topbar-center > .search:has(> input:focus) {
-    background-color: var(--color-secondary);
-    color: var(--color-primary);
 }
 
 .topbar-center .collapsible-wrapper {
@@ -113,7 +112,7 @@
     max-height: calc(100vh - (2 * 80px));
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: var(--color-primary) var(--color-surface);
+    scrollbar-color: var(--color-accent) var(--color-surface);
     pointer-events: auto;
 }
 
