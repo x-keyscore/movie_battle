@@ -1,5 +1,5 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react";
-import { Movie } from "../requests/tmdb-types/tmdbMovie";
+import { Movie } from "../api/tmdb/types/movie";
 
 type TopmovieState = Movie | null;
 

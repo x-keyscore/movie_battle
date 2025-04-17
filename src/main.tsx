@@ -1,17 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import { App } from "./App";
 import { Category } from "./pages/Category";
+import { App } from "./App";
 import "./main.css";
 
-// page components
-
-import HomePage from "./pages/Home";
+import { HomePage, homeLoader } from "./pages/Home";
 import SearchPage from "./pages/Search";
 import MovieDetailsPage from "./pages/MovieDetails";
-
-// router creation
+import { CategoryPage } from "./pages/Category/Category";
 
 const router = createBrowserRouter([
 	{
@@ -19,7 +16,8 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: "/",
-				element: <HomePage />,
+				loader: homeLoader,
+				Component: HomePage
 			},
 			{
 				path: "/search",
@@ -33,12 +31,12 @@ const router = createBrowserRouter([
 				path: "/category",
 				children: [
 					{
-						path: ":category",
-						element: <Category />,
+						path: "/:category",
+						Component: CategoryPage,
 					},
 					{
-						path: ":category/:genre_id",
-						element: <Category />,
+						path: "/:category/:genre_id",
+						Component: CategoryPage,
 					},
 				],
 			},
@@ -46,14 +44,8 @@ const router = createBrowserRouter([
 	},
 ]);
 
-// rendering
-
-const rootElement = document.getElementById("root");
-
-if (rootElement != null) {
-	ReactDOM.createRoot(rootElement).render(
-		<StrictMode>
-			<RouterProvider router={router} />
-		</StrictMode>,
-	);
-}
+ReactDOM.createRoot(document.getElementById("root")!).render(
+	<StrictMode>
+		<RouterProvider router={router} />
+	</StrictMode>,
+);

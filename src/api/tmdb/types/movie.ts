@@ -15,14 +15,14 @@ export interface Movie {
 	vote_count: number;
 }
 
-export interface MoviesList {
+export interface MovieList {
 	page: number;
 	results: Movie[];
 	total_pages: number;
 	total_results: number;
 }
 
-export interface MoviesListDate extends MoviesList {
+export interface MovieListWithDate extends MovieList {
 	dates: {
 		maximum: string;
 		minimum: string;

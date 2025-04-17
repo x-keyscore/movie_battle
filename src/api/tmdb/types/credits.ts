@@ -21,7 +21,7 @@ export interface CrewMember extends CreditMember {
 	job: string;
 }
 
-export interface credits {
+export interface Credits {
 	id: number;
 	cast: CastMember[];
 	crew: CrewMember[];
