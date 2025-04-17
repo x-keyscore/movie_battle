@@ -83,21 +83,38 @@
     color: var(--color-primary);
 }
 
-.topbar-center > .droparea {
+.topbar-center .collapsible-wrapper {
     position: absolute;
     top: 64px;
-    width: 100%;
-    max-height: calc(100vh - (2 * 80px));
-    clip-path: inset(0 0 0 0 round 12px);
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #fff #dd0000;
+    left: 0;
+    border-radius: 12px;
 }
 
 .topbar-right {
     flex: 1;
     display: flex;
     justify-content: flex-end;
+}
+
+.topbar-right > .context {
+    position: relative;
+}
+
+.topbar-right > .context .collapsible-wrapper {
+    position: absolute;
+    top: 64px;
+    right: 0;
+    border-radius: 12px;
+}
+
+.topbar-center .collapsible-content,
+.topbar-right .collapsible-content {
+    background: var(--color-surface);
+    max-height: calc(100vh - (2 * 80px));
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) var(--color-surface);
+    pointer-events: auto;
 }
 
 .topmovie {

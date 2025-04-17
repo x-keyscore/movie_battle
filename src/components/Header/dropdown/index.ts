@@ -1,1 +1,2 @@
-export { GenreList } from "./GenreList";
+export { CategoryList } from "./CategoryList";
+export { WatchList } from "./WatchList"

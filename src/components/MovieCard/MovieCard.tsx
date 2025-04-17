@@ -36,11 +36,12 @@ export const MovieCard = ({
 	return (
 		<div className={styles.card} role="button">
 			<figure className={styles.figure}>
-				<Link to={`/movie/${id}`}>
+				<Link to={`/movie/${id}`} draggable="false">
 					<img
 						className={styles.figureImage}
 						src={`https://image.tmdb.org/t/p/w780${backdropPath}`}
 						alt={title}
+						draggable="false"
 					/>
 				</Link>
 				<figcaption className={styles.figcaption}>
@@ -65,6 +66,7 @@ export const MovieCard = ({
 					<Button
 						size="small"
 						variant="ghost"
+						aria-label="Ajouter aux films enregistrés"
 						className={styles.button}
 						onClick={(e) => {
 							e.preventDefault();

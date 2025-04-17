@@ -1,54 +1,40 @@
-import type { ReactNode, ComponentRef, CSSProperties, FocusEvent, FocusEventHandler} from "react";
+import type { ReactNode, ComponentRef, CSSProperties } from "react";
 import { useRef, useState, useLayoutEffect, useEffect } from "react";
 
 interface CollapsibleProps {
     children: ReactNode;
-    /** **Description:** Define whether the display is open or closed. */
+    id: string;
     isOpen: boolean;
-    id?: string;
-    /**
-     * **Description:** Define the direction of the animation. 
-     * 
-     * **Default**: `"bottom"`
-     */
+    zIndex?: number;
+    styles?: {
+        wrapper?: string;
+        content?: string;
+    };
     without?: "bottom" | "right";
-    /** 
-     * **Description:** Define the time before the start of the animation.
-     * 
-     * **Unit:** second
-     * 
-     * **Default:** `0`
-     */
-    delay?: number;
-    /**
-     * **Description:** Define the duration of the animation.
-     * 
-     * **Unit**: second
-     * 
-     * **Default**: `0.25`
-     */
     duration?: number;
-    onBlur?: (e: FocusEvent<HTMLDivElement, Element>) => void;
+    onClickOut?: (e: MouseEvent) => void;
+    onFocusOut?: (e: FocusEvent) => void;
 }
 
 export function Collapsible({
     children,
-    isOpen,
     id,
+    styles,
+    zIndex,
+    isOpen,
     without = "bottom",
-    delay = 0,
-    duration = .25,
-    onBlur,
+    duration = .20,
+    onFocusOut,
+    onClickOut
 }: CollapsibleProps) {
     const ref = useRef<ComponentRef<"div">>(null);
     const [rect, setRect] = useState<DOMRect | null>(null);
     const [style, setStyle] = useState<CSSProperties>({
             overflow: "hidden",
             visibility: "hidden",
-            transitionDelay: `${delay}s`,
-            transition: 
-                `width ${duration}s linear,` +
-                `height ${duration}s linear,` +
+            transition:
+                `max-width ${duration}s linear,` +
+                `max-height ${duration}s linear,` +
                 `visibility ${duration}s linear`
         }
     );
@@ -59,51 +45,71 @@ export function Collapsible({
         setRect(ref.current.getBoundingClientRect());
     }, []);
 
-    useEffect(() => {
-        if (!ref.current || !rect) return;
-
-        if (isOpen) {
-            if (without === "right") {
-                setStyle((prev) => ({
-                    ...prev,
-                    visibility: "visible",
-                    width: rect.width + "px"
-                }));
-            }
-            else if (without === "bottom") {
-                setStyle((prev) => ({
-                    ...prev,
-                    visibility: "visible",
-                    height: rect.height + "px"
-                }));
-            }
-        } else {
-            if (without === "right") {
-                setStyle((prev) => ({
-                    ...prev,
-                    visibility: "hidden",
-                    width: "0px"
-                }));
-            }
-            else if (without === "bottom") {
-                setStyle((prev) => ({
-                    ...prev,
-                    visibility: "hidden",
-                    height: "0px"
-                }));
-            }
+    useLayoutEffect(() => {
+        if (!rect) return;
+    
+        const global: CSSProperties = {
+            visibility: isOpen ? "visible" : "hidden",
+            zIndex: isOpen ? zIndex ? zIndex + 1 : undefined : zIndex
         };
-    }, [isOpen, without, rect]);
 
-    const handleOnBlur: FocusEventHandler<HTMLDivElement> = (e) => {
-        if (!e.currentTarget.contains(e.relatedTarget)) {
-            onBlur?.(e);
+        if (without === "right") {
+            setStyle((prev) => ({
+                ...prev,
+                ...global,
+                maxWidth: isOpen ? `${rect.width}px` : "0px"
+            }));
+        } else if (without === "bottom") {
+            setStyle((prev) => ({
+                ...prev,
+                ...global,
+                maxHeight: isOpen ? `${rect.height}px` : "0px"
+            }));
         }
-    }
+    }, [isOpen, zIndex, without, rect]);
+
+    useEffect(() => {
+        const wrapper = ref.current;
+        if (!wrapper || !isOpen) return;
+
+        const handleClick = (e: MouseEvent) => {
+            const target = e.target;
+            if (!wrapper || !(target instanceof Node)) return;
+
+            if (target instanceof Element
+                && target.closest(`[aria-controls="${id}"]`)) return;
+
+            if (!wrapper.contains(target)) onClickOut?.(e);
+        }
+
+        const handleFocusOut = (e: FocusEvent) => {
+            const relatedTarget = e.relatedTarget;
+            if (!wrapper || !(relatedTarget instanceof Node)) return;
+    
+            if (!wrapper.contains(relatedTarget)) onFocusOut?.(e);
+        };
+
+        document.addEventListener("click", handleClick);
+        wrapper.addEventListener("focusout", handleFocusOut);
+
+        return () => {
+          document.removeEventListener("click", handleClick);
+          wrapper.removeEventListener("focusout", handleFocusOut);
+        };
+    }, [id, isOpen, onClickOut, onFocusOut]);
 
     return (
-        <div id={id} ref={ref} style={style} onBlur={handleOnBlur}>
-            <div style={{ height: rect?.height + "px" }}>
+        <div
+            id={id}
+            ref={ref}
+            style={style}
+            className={styles?.wrapper}
+            aria-hidden={!isOpen}
+        >
+            <div
+                style={{ height: rect?.height + "px" }}
+                className={styles?.content}
+            >
                 {children}
             </div>
         </div>
