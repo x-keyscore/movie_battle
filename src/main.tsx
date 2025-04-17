@@ -1,7 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
-import ReactDOM from "react-dom/client";
 import { StrictMode } from "react";
+import ReactDOM from "react-dom/client";
 import { App } from "./App";
+import { Category } from "./pages/Category";
 import "./main.css";
 
 // page components
@@ -9,7 +10,6 @@ import "./main.css";
 import HomePage from "./pages/Home";
 import SearchPage from "./pages/Search";
 import MovieDetailsPage from "./pages/MovieDetails";
-import WatchlistPage from "./pages/Watchlist";
 
 // router creation
 
@@ -30,8 +30,17 @@ const router = createBrowserRouter([
 				element: <MovieDetailsPage />,
 			},
 			{
-				path: "/watchlist",
-				element: <WatchlistPage />,
+				path: "/category",
+				children: [
+					{
+						path: ":category",
+						element: <Category />,
+					},
+					{
+						path: ":category/:genre_id",
+						element: <Category />,
+					},
+				],
 			},
 		],
 	},

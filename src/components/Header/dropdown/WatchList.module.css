@@ -22,16 +22,9 @@
     gap: 18px;
     width: 100%;
     height: 100%;
-    padding-right: 6px;
+    padding-right: 12px;
     text-decoration: none;
     box-sizing: border-box;
-    transition: padding-right .15s ease-in-out;
-}
-
-.item-link:hover,
-.item-link:focus-visible,
-.item-link:focus-within {
-    padding-right: 10px;
 }
 
 .item-link > .image {
