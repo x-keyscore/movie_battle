@@ -29,9 +29,15 @@ const MovieDetailsPage = () => {
 
 	if (!movie) return <h1>Can't find movie</h1>;
 
+	function hasInfo(value: string | number) {
+		if (value === 0 || value === "") return "Non renseigné";
+
+		return value;
+	}
+
 	return (
 		<>
-			<MovieSection type="Similaire" maxNbrCards={10} oneLine={true} />
+			<MovieSection type="Similaires" maxNbrCards={10} oneLine={true} />
 			<div className={styles.detailsSection}>
 				<figure className={styles.detailsContainer}>
 					<div className={styles.imgContainer}>
@@ -42,39 +48,46 @@ const MovieDetailsPage = () => {
 						/>
 					</div>
 					<figcaption className={styles.details}>
-						<h1 className={styles.pageTitle}>Details</h1>
+						<div className={styles.titleContainer}>
+							<h1 className={styles.pageTitle}>Details</h1>
+							<div className={styles.spacer} />
+						</div>
 						<div className={`${styles.detailItem} ${styles.overview}`}>
 							<h3 className={styles.detailTitle}>Synopsis :</h3>
-							<p className={styles.detail}>{movie.overview}</p>
+							<p className={styles.detail}>{hasInfo(movie.overview)}</p>
 						</div>
 						<ul className={styles.detailItemList}>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Durée :</h3>
-								<p className={styles.detail}>{movie.runtime}</p>
+								<p className={styles.detail}>{hasInfo(movie.runtime)}</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Date de sortie :</h3>
-								<p className={styles.detail}>{movie.release_date}</p>
+								<p className={styles.detail}>{hasInfo(movie.release_date)}</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Budgget :</h3>
-								<p className={styles.detail}>{movie.budget}</p>
+								<p className={styles.detail}>{hasInfo(movie.budget)}</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Revenue :</h3>
-								<p className={styles.detail}>{movie.revenue}</p>
+								<p className={styles.detail}>{hasInfo(movie.revenue)}</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Langue d'origine :</h3>
-								<p className={styles.detail}>{movie.original_language}</p>
+								<p className={styles.detail}>
+									{hasInfo(movie.original_language)}
+								</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Pays d'origine :</h3>
-								<p className={styles.detail}>{movie.origin_country[0]}</p>
+								<p className={styles.detail}>
+									{hasInfo(movie.origin_country[0])}
+								</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Directeurs :</h3>
-								<ul /* className={styles.detailList} */>
+								<ul>
 									{movieCredits.cast
 										.filter(
 											(member) => member.known_for_department === "Directing",
@@ -88,7 +101,7 @@ const MovieDetailsPage = () => {
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Maisons de production :</h3>
-								<ul /* className={styles.detailList} */>
+								<ul>
 									{movie.production_companies.map((company) => {
 										return <li key={company.id}>{company.name}</li>;
 									})}
@@ -98,27 +111,29 @@ const MovieDetailsPage = () => {
 					</figcaption>
 				</figure>
 			</div>
-			<div
-				style={{
-					display: "grid",
-					gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-					gap: "16px",
-					padding: "16px",
-				}}
-			>
-				{movieCredits.cast
-					.filter((member) => member.known_for_department === "Acting")
-					.map((actor) => {
-						return (
-							<ActorCard
-								key={actor.id}
-								id={actor.id}
-								name={actor.original_name}
-								character={actor.character}
-								profile_path={actor.profile_path}
-							/>
-						);
-					})}
+			<div className={styles.distribution}>
+				<div className={styles.titleContainer}>
+					<h2 className={styles.title}>Distribution</h2>
+					<div className={styles.spacer} />
+				</div>
+
+				<div className={styles.actorCardsContainer}>
+					<div className={styles.actorCards}>
+						{movieCredits.cast
+							.filter((member) => member.known_for_department === "Acting")
+							.map((actor) => {
+								return (
+									<ActorCard
+										key={actor.id}
+										id={actor.id}
+										name={actor.original_name}
+										character={actor.character}
+										profile_path={actor.profile_path}
+									/>
+								);
+							})}
+					</div>
+				</div>
 			</div>
 		</>
 	);
