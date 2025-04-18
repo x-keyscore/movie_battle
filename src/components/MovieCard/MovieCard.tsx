@@ -52,7 +52,7 @@ export const MovieCard = ({
 								return (
 									<li key={genreId}>
 										<Link
-											to={`/search/genre/${genreId}`}
+											to={`/category/genre/${genreId}`}
 											className={styles.link}
 										>
 											{name}
