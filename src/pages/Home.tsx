@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { MovieSection } from "../components/MovieSection";
 import { useHeader } from "../providers/HeaderProvider";
-
 import { useRequest } from "../hooks/useRequest";
 import { requests } from "../api";
 
@@ -10,7 +9,7 @@ export function HomePage() {
 		const [popular, topRated, nowPlaying] = await Promise.all([
 			requests.movie.getPopular(),
 			requests.movie.getTopRated(),
-			requests.movie.getNowPlaying()
+			requests.movie.getNowPlaying(),
 		]);
 
 		return {
@@ -24,10 +23,10 @@ export function HomePage() {
 	useEffect(() => {
 		if (!data) return;
 
-		setTopmovie(data.popularMovies.results[0])
-	}, [data, setTopmovie])
+		setTopmovie(data.popularMovies.results[0]);
+	}, [data, setTopmovie]);
 
-	if (!data) return (null);
+	if (!data) return null;
 
 	return (
 		<>

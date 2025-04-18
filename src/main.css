@@ -1,57 +1,71 @@
-@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
-    --color-accent: #eca54e;
-    --color-background: #1B1F22;
-    --color-surface: #24292d;/* lightness +3*/
-    --color-surface-light: #2d3439;/* lightness +8*/
-    --color-text: #ffffff;
-    --color-text-light: #ccd2d6;
-    --color-text-placeholder: #ccd2d6;
+	--color-accent: #eca54e;
+	--color-background: #1b1f22;
+	--color-surface: #24292d; /* lightness +3*/
+	--color-surface-light: #2d3439; /* lightness +8*/
+	--color-text: #ffffff;
+	--color-text-light: #ccd2d6;
+	--color-text-placeholder: #ccd2d6;
 }
 
-a, button, input, label, select, span, strong {
-    outline: none;
+a,
+button,
+input,
+label,
+select,
+span,
+strong {
+	outline: none;
 }
 
-h1, h2, p {
-    margin: 0;
+h1,
+h2,
+p {
+	margin: 0;
+}
+
+ul {
+	list-style-type: none;
+	padding-left: 0;
 }
 
 input {
 	color: var(--color-text);
 	font: inherit;
 	text-rendering: inherit;
-    appearance: none;
-    background: none;
-    width: 100%;
-    min-width: 0;
-    padding-block: 0;
-    padding-inline: 0;
-    border: none;
-    cursor: text;
+	appearance: none;
+	background: none;
+	width: 100%;
+	min-width: 0;
+	padding-block: 0;
+	padding-inline: 0;
+	border: none;
+	cursor: text;
 }
 
-html, body {
-    background-color: var(--color-background);
-    color: var(--text);
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
-    user-select: none;
+html,
+body {
+	background-color: var(--color-background);
+	color: var(--text);
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	overflow: hidden;
+	user-select: none;
 }
 
 body {
-    font-family: "Albert Sans", sans-serif;
-    font-optical-sizing: auto;
-    font-size: 1rem;
-    font-weight: 500;
-    font-style: normal;
-    text-rendering: optimizeLegibility;
+	font-family: "Albert Sans", sans-serif;
+	font-optical-sizing: auto;
+	font-size: 1rem;
+	font-weight: 500;
+	font-style: normal;
+	text-rendering: optimizeLegibility;
 }
 
 #root {
 	height: 100%;
-    overflow-y: auto;
+	overflow-y: auto;
 }

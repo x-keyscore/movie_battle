@@ -1,31 +1,143 @@
-import movieCredits from "./../mocks/credits-movie.json";
 import { ActorCard } from "../components/ActorCard";
+import { useParams } from "react-router";
+import { MovieSection } from "../components/MovieSection";
+import { useRequest } from "../hooks/useRequest";
+import { requests } from "../api";
+import styles from "./MovieDetails.module.css";
 
 const MovieDetailsPage = () => {
+	const { movie_id } = useParams();
+
+	const [data] = useRequest(async () => {
+		if (!movie_id) throw new Error("Movie id is null");
+
+		const [movie, similarMovie, credits] = await Promise.all([
+			requests.movie.getMovieDetail({ language: "fr-Fr", movie_id }),
+			requests.movie.getSimilar({ language: "fr-Fr", movie_id }),
+			requests.credits.getCredits({ language: "fr-Fr", movie_id }),
+		]);
+
+		return {
+			movie: movie.data,
+			similarMovie: similarMovie.data,
+			credits: credits.data,
+		};
+	});
+
+	function hasInfo(value: string | number) {
+		if (value === 0 || value === "") return "Non renseigné";
+
+		return value;
+	}
+
+	if (!data) return null;
+
 	return (
 		<>
-			<h1>Movie Details Page</h1>
-			<div
-				style={{
-					display: "grid",
-					gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-					gap: "16px",
-					padding: "16px",
-				}}
-			>
-				{movieCredits.cast
-					.filter((member) => member.known_for_department === "Acting")
-					.map((actor) => {
-						return (
-							<ActorCard
-								key={actor.id}
-								id={actor.id}
-								name={actor.original_name}
-								character={actor.character}
-								profile_path={actor.profile_path}
-							/>
-						);
-					})}
+			<MovieSection
+				title="Similaires"
+				maxCards={10}
+				inline={true}
+				movies={data.similarMovie}
+			/>
+			<div className={styles.detailsSection}>
+				<figure className={styles.detailsContainer}>
+					<div className={styles.imgContainer}>
+						<img
+							src={`https://image.tmdb.org/t/p/w780${data.movie.poster_path}`}
+							alt={data.movie.title}
+							className={styles.img}
+						/>
+					</div>
+					<figcaption className={styles.details}>
+						<div className={styles.titleContainer}>
+							<h1 className={styles.pageTitle}>Details</h1>
+							<div className={styles.spacer} />
+						</div>
+						<div className={`${styles.detailItem} ${styles.overview}`}>
+							<h3 className={styles.detailTitle}>Synopsis :</h3>
+							<p className={styles.detail}>{hasInfo(data.movie.overview)}</p>
+						</div>
+						<ul className={styles.detailItemList}>
+							<li className={styles.detailItem}>
+								<h3 className={styles.detailTitle}>Durée :</h3>
+								<p className={styles.detail}>{hasInfo(data.movie.runtime)}</p>
+							</li>
+							<li className={styles.detailItem}>
+								<h3 className={styles.detailTitle}>Date de sortie :</h3>
+								<p className={styles.detail}>
+									{hasInfo(data.movie.release_date)}
+								</p>
+							</li>
+							<li className={styles.detailItem}>
+								<h3 className={styles.detailTitle}>Budgget :</h3>
+								<p className={styles.detail}>{hasInfo(data.movie.budget)}</p>
+							</li>
+							<li className={styles.detailItem}>
+								<h3 className={styles.detailTitle}>Revenue :</h3>
+								<p className={styles.detail}>{hasInfo(data.movie.revenue)}</p>
+							</li>
+							<li className={styles.detailItem}>
+								<h3 className={styles.detailTitle}>Langue d'origine :</h3>
+								<p className={styles.detail}>
+									{hasInfo(data.movie.original_language)}
+								</p>
+							</li>
+							<li className={styles.detailItem}>
+								<h3 className={styles.detailTitle}>Pays d'origine :</h3>
+								<p className={styles.detail}>
+									{hasInfo(data.movie.origin_country[0])}
+								</p>
+							</li>
+							<li className={styles.detailItem}>
+								<h3 className={styles.detailTitle}>Directeurs :</h3>
+								<ul>
+									{data.credits.cast
+										.filter(
+											(member) => member.known_for_department === "Directing",
+										)
+										.map((director) => {
+											return (
+												<li key={director.id}>{director.original_name}</li>
+											);
+										})}
+								</ul>
+							</li>
+							<li className={styles.detailItem}>
+								<h3 className={styles.detailTitle}>Maisons de production :</h3>
+								<ul>
+									{data.movie.production_companies.map((company) => {
+										return <li key={company.id}>{company.name}</li>;
+									})}
+								</ul>
+							</li>
+						</ul>
+					</figcaption>
+				</figure>
+			</div>
+			<div className={styles.distribution}>
+				<div className={styles.titleContainer}>
+					<h2 className={styles.title}>Distribution</h2>
+					<div className={styles.spacer} />
+				</div>
+
+				<div className={styles.actorCardsContainer}>
+					<div className={styles.actorCards}>
+						{data.credits.cast
+							.filter((member) => member.known_for_department === "Acting")
+							.map((actor) => {
+								return (
+									<ActorCard
+										key={actor.id}
+										id={actor.id}
+										name={actor.original_name}
+										character={actor.character}
+										profile_path={actor.profile_path}
+									/>
+								);
+							})}
+					</div>
+				</div>
 			</div>
 		</>
 	);
