@@ -34,7 +34,7 @@ export function HomePage() {
 				title="Populaires"
 				movies={data.popularMovies}
 				maxCards={20}
-				inline={false}
+				inline={true}
 			/>
 			<MovieSection
 				title="Mieux notés"

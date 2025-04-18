@@ -7,7 +7,6 @@ import { WatchList } from "./dropdown/WatchList";
 import { Button } from "../Button";
 import { Icons } from "../Icons";
 import styles from "./Header.module.css";
-
 import genresData from "../../mocks/genres.json";
 import { useHeader } from "../../providers/HeaderProvider";
 
@@ -108,9 +107,17 @@ export function Header() {
                         <div className={styles.synopsis}>
                             {topmovie?.overview}
                         </div>
-                        <div className={styles.genres}>
-
-                        </div>
+                        <ul className={styles.genres}>
+                            {
+                                topmovie?.genre_ids.map((genre_id) => (
+                                    <li key={genre_id}>
+                                        <Link to={`/category/genre/${genre_id}`} className={styles.link}>
+                                            {genresData.genres.find(({ id }) => id === genre_id)?.name}
+                                        </Link>
+                                    </li>
+                                ))
+                            }
+                        </ul>
                     </div>
                     <div className={styles.action}>
                         <Button size="small">

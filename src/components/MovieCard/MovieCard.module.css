@@ -91,7 +91,7 @@
 		z-index: 1;
 	}
 	.figcaption {
-		bottom: -50%;
+		bottom: -75%;
 		transition: .2s bottom ease-in-out;
 	}
 	.card:hover .figcaption {
