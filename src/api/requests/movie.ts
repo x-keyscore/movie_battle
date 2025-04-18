@@ -7,7 +7,7 @@ interface GetPopularParams {
     region?: string;
 }
 
-const getPopular = async (params?: GetPopularParams) =>
+export const getPopular = async (params?: GetPopularParams) =>
     await tmdb.get<MovieList>("/movie/popular", { params });
 
 interface GetRatedMoviesParams {
@@ -16,7 +16,7 @@ interface GetRatedMoviesParams {
     region?: string;
 }
 
-const getTopRated = (params?: GetRatedMoviesParams) =>
+export const getTopRated = (params?: GetRatedMoviesParams) =>
     tmdb.get<MovieList>("/movie/top_rated", { params });
 
 interface GetNowPlayingParams {
@@ -25,11 +25,5 @@ interface GetNowPlayingParams {
     region?: string;
 }
 
-const getNowPlaying = (params?: GetNowPlayingParams) => 
+export const getNowPlaying = (params?: GetNowPlayingParams) => 
     tmdb.get<MovieListWithDate>("/movie/now_playing", { params });
-
-export const movie = {
-    getPopular,
-    getTopRated,
-    getNowPlaying
-};

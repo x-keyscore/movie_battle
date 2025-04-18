@@ -1,15 +1,16 @@
 import { useEffect } from "react";
 import { MovieSection } from "../components/MovieSection";
 import { useHeader } from "../providers/HeaderProvider";
-import { movie } from "../api/requests/movie";
+
 import { useRequest } from "../hooks/useRequest";
+import { requests } from "../api";
 
 export function HomePage() {
 	const [data] = useRequest(async () => {
 		const [popular, topRated, nowPlaying] = await Promise.all([
-			movie.getPopular(),
-			movie.getTopRated(),
-			movie.getNowPlaying()
+			requests.movie.getPopular(),
+			requests.movie.getTopRated(),
+			requests.movie.getNowPlaying()
 		]);
 
 		return {
