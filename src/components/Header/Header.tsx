@@ -29,7 +29,7 @@ export function Header() {
         categoryList: false,
         watchList: false
     });
-
+    console.log(topmovie?.backdrop_path);
     return (
         <div className={styles.header}>
             <div className={styles.topbar}>
@@ -97,7 +97,11 @@ export function Header() {
             </div>
             <div className={styles.topmovie}>
                 <div className={styles.topmovieBackdrop}>
-                    <img src="/mocks/backdrop.png" draggable="false" role="presentation" />
+                    <img
+                        src={`https://image.tmdb.org/t/p/original${topmovie?.backdrop_path}`}
+                        draggable="false"
+                        role="presentation"
+                    />
                 </div>
                 <div className={styles.topmovieContent}>
                     <div className={styles.info}>
