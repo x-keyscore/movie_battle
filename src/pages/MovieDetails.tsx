@@ -22,7 +22,7 @@ const MovieDetailsPage = () => {
 			similarMovie: similarMovie.data,
 			credits: credits.data,
 		};
-	});
+	}, [movie_id]);
 
 	function hasInfo(value: string | number) {
 		if (value === 0 || value === "") return "Non renseigné";

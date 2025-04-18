@@ -1,30 +1,42 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Status = "IDLE" | "PENDING" | "OK" | "ERROR";
 
-export function useRequest<T>(callback: () => Promise<T>) {
+export function useRequest<T>(callback: () => Promise<T>, deps: unknown[]) {
 	const [status, setStatus] = useState<Status>("IDLE");
 	const [data, setData] = useState<T | null>(null);
-	const isFetch = useRef(false);
 
-	const fetch = useCallback(async () => {
-		if (isFetch.current) return;
-		isFetch.current = true;
-
-		setStatus("PENDING");
-		try {
-			const result = await callback();
-			setData(result);
-			setStatus("OK");
-		} catch (err) {
-			console.error(err);
-			setStatus("ERROR");
-		}
+	const callbackRef = useRef(callback);
+	useEffect(() => {
+		callbackRef.current = callback;
 	}, [callback]);
 
 	useEffect(() => {
-		fetch();
-	}, [fetch]);
+		let ignore = false;
+		setStatus("PENDING");
+
+		console.log("exec");
+
+		(async () => {
+			try {
+				const result = await callbackRef.current();
+				if (!ignore) {
+					setData(result);
+					setStatus("OK");
+				}
+			} catch (err) {
+				if (!ignore) {
+					console.error(err);
+					setStatus("ERROR");
+				}
+			}
+		})();
+
+		return () => {
+			ignore = true;
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, deps);
 
 	return [data, status] as const;
 }

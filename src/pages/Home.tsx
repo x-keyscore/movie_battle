@@ -17,7 +17,7 @@ export function HomePage() {
 			topRatedMovies: topRated.data,
 			nowPlayingMovies: nowPlaying.data,
 		};
-	});
+	}, []);
 	const { setTopmovie } = useHeader();
 
 	useEffect(() => {
