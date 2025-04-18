@@ -29,7 +29,7 @@ export function Header() {
         categoryList: false,
         watchList: false
     });
-    console.log(topmovie?.backdrop_path);
+
     return (
         <div className={styles.header}>
             <div className={styles.topbar}>

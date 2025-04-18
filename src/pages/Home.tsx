@@ -6,6 +6,7 @@ import { requests } from "../api";
 
 export function HomePage() {
 	const [data] = useRequest(async () => {
+		console.log("fetch")
 		const [popular, topRated, nowPlaying] = await Promise.all([
 			requests.movie.getPopular(),
 			requests.movie.getTopRated(),
@@ -26,7 +27,7 @@ export function HomePage() {
 		setTopmovie(data.popularMovies.results[0]);
 	}, [data, setTopmovie]);
 
-	if (!data) return null;
+	if (!data) return (null);
 
 	return (
 		<>
