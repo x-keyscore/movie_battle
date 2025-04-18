@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import LogoSvg from "./files/logo.svg?react";
+import TmdbLogoSquareSvg from "./files/tmdb-square.svg?react";
 
 interface IconProps {
 	className?: string;
@@ -8,7 +9,13 @@ interface IconProps {
 
 export function Category({ className, style }: IconProps) {
 	return (
-		<svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" className={className} style={style}>
+		<svg
+			viewBox="0 0 512 512"
+			fill="currentColor"
+			aria-hidden="true"
+			className={className}
+			style={style}
+		>
 			<g transform="translate(0,512) scale(0.1,-0.1)">
 				<path
 					d="M590 4974 c-165 -44 -323 -170 -393 -314 -69 -141 -68 -130 -65 -807
@@ -40,7 +47,12 @@ export function Category({ className, style }: IconProps) {
 
 export function Search({ className, style }: IconProps) {
 	return (
-		<svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" className={className} style={style}
+		<svg
+			viewBox="0 0 512 512"
+			fill="currentColor"
+			aria-hidden="true"
+			className={className}
+			style={style}
 		>
 			<g transform="translate(0,512) scale(0.1,-0.1)">
 				<path
@@ -61,7 +73,13 @@ export function Search({ className, style }: IconProps) {
 
 export function AddToList({ className, style }: IconProps) {
 	return (
-		<svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" className={className} style={style}>
+		<svg
+			viewBox="0 0 512 512"
+			fill="currentColor"
+			aria-hidden="true"
+			className={className}
+			style={style}
+		>
 			<g transform="translate(0,512) scale(0.1,-0.1)">
 				<path
 					d="M183 4869 c-137 -53 -211 -207 -168 -354 13 -46 28 -70 74 -116 98
@@ -94,7 +112,13 @@ export function AddToList({ className, style }: IconProps) {
 
 export function Reel({ className, style }: IconProps) {
 	return (
-		<svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" className={className} style={style}>
+		<svg
+			viewBox="0 0 512 512"
+			fill="currentColor"
+			aria-hidden="true"
+			className={className}
+			style={style}
+		>
 			<g transform="translate(0,512) scale(0.1,-0.1)">
 				<path
 					d="M2321 5110 c-497 -48 -990 -251 -1376 -565 -114 -92 -294 -274 -384
@@ -125,7 +149,13 @@ export function Reel({ className, style }: IconProps) {
 
 export function Avatar({ className, style }: IconProps) {
 	return (
-		<svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" className={className} style={style}>
+		<svg
+			viewBox="0 0 512 512"
+			fill="currentColor"
+			aria-hidden="true"
+			className={className}
+			style={style}
+		>
 			<circle cx="256" cy="114.526" r="114.526" />
 			<path
 				d="M256,256c-111.619,0-202.105,90.487-202.105,202.105c0,29.765,24.13,53.895,53.895,53.895h296.421
@@ -137,7 +167,13 @@ export function Avatar({ className, style }: IconProps) {
 
 export function Cross({ className, style }: IconProps) {
 	return (
-		<svg viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" className={className} style={style}>
+		<svg
+			viewBox="0 0 512 512"
+			fill="currentColor"
+			aria-hidden="true"
+			className={className}
+			style={style}
+		>
 			<g transform="translate(0,512) scale(0.1,-0.1)">
 				<path
 					d="M491 5104 c-177 -39 -342 -170 -425 -338 -96 -195 -85 -416 31 -611
@@ -147,11 +183,18 @@ export function Cross({ className, style }: IconProps) {
 					833 -70 959 339 32 105 32 255 0 360 -50 162 -39 149 -871 983 l-765 767 761
 					763 c759 760 805 810 854 924 129 300 -8 660 -305 807 -201 99 -427 85 -623
 					-40 -39 -24 -315 -293 -820 -797 l-763 -761 -762 761 c-506 504 -782 773 -821
-					797 -151 96 -317 127 -486 90z"/>
+					797 -151 96 -317 127 -486 90z"
+				/>
 			</g>
 		</svg>
 	);
-};
+}
+
+export function TmdbLogoSquare({ className, style }: IconProps) {
+	return (
+		<TmdbLogoSquareSvg aria-hidden="true" className={className} style={style} />
+	);
+}
 
 export function Logo({ className, style }: IconProps) {
 	return <LogoSvg aria-hidden="true" className={className} style={style} />;
