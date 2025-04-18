@@ -31,7 +31,7 @@
 }
 
 .spacer {
-	background-color: var(--color-secondary);
+	background-color: var(--color-surface-light);
 	flex-grow: 1;
 	height: 2px;
 	margin: 0 4%;

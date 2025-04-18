@@ -69,7 +69,7 @@
 }
 
 .figcaption-info > .genres .link {
-	color: var(--color-primary);
+	color: var(--color-accent);
 	text-decoration: none;
 	pointer-events: auto;
 }

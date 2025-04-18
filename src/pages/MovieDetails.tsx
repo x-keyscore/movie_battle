@@ -1,33 +1,28 @@
-import movieCredits from "./../mocks/credits-movie.json";
 import { ActorCard } from "../components/ActorCard";
 import { useParams } from "react-router";
-import { useEffect, useState } from "react";
-import type { MovieDetails } from "../requests/tmdb-types/tmdbMovie";
-import styles from "./MovieDetails.module.css";
 import { MovieSection } from "../components/MovieSection";
+import { useRequest } from "../hooks/useRequest";
+import { requests } from "../api";
+import styles from "./MovieDetails.module.css";
 
 const MovieDetailsPage = () => {
 	const { movie_id } = useParams();
 
-	const [movie, setMovie] = useState<MovieDetails | null>(null);
+	const [data] = useRequest(async () => {
+		if (!movie_id) throw new Error("Movie id is null");
 
-	useEffect(() => {
-		const url = `https://api.themoviedb.org/3/movie/${movie_id}?language=fr-FR`;
-		const options = {
-			method: "GET",
-			headers: {
-				accept: "application/json",
-				Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_TOKEN}`,
-			},
+		const [movie, similarMovie, credits] = await Promise.all([
+			requests.movie.getMovieDetail({ language: "fr-Fr", movie_id }),
+			requests.movie.getSimilar({ language: "fr-Fr", movie_id }),
+			requests.credits.getCredits({ language: "fr-Fr", movie_id }),
+		]);
+
+		return {
+			movie: movie.data,
+			similarMovie: similarMovie.data,
+			credits: credits.data,
 		};
-
-		fetch(url, options)
-			.then((res) => res.json())
-			.then((json) => setMovie(json))
-			.catch((err) => console.error(err));
-	}, [movie_id]);
-
-	if (!movie) return <h1>Can't find movie</h1>;
+	});
 
 	function hasInfo(value: string | number) {
 		if (value === 0 || value === "") return "Non renseigné";
@@ -35,15 +30,22 @@ const MovieDetailsPage = () => {
 		return value;
 	}
 
+	if (!data) return null;
+
 	return (
 		<>
-			<MovieSection type="Similaires" maxNbrCards={10} oneLine={true} />
+			<MovieSection
+				title="Similaires"
+				maxCards={10}
+				inline={true}
+				movies={data.similarMovie}
+			/>
 			<div className={styles.detailsSection}>
 				<figure className={styles.detailsContainer}>
 					<div className={styles.imgContainer}>
 						<img
-							src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
-							alt={movie.title}
+							src={`https://image.tmdb.org/t/p/w780${data.movie.poster_path}`}
+							alt={data.movie.title}
 							className={styles.img}
 						/>
 					</div>
@@ -54,41 +56,43 @@ const MovieDetailsPage = () => {
 						</div>
 						<div className={`${styles.detailItem} ${styles.overview}`}>
 							<h3 className={styles.detailTitle}>Synopsis :</h3>
-							<p className={styles.detail}>{hasInfo(movie.overview)}</p>
+							<p className={styles.detail}>{hasInfo(data.movie.overview)}</p>
 						</div>
 						<ul className={styles.detailItemList}>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Durée :</h3>
-								<p className={styles.detail}>{hasInfo(movie.runtime)}</p>
+								<p className={styles.detail}>{hasInfo(data.movie.runtime)}</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Date de sortie :</h3>
-								<p className={styles.detail}>{hasInfo(movie.release_date)}</p>
+								<p className={styles.detail}>
+									{hasInfo(data.movie.release_date)}
+								</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Budgget :</h3>
-								<p className={styles.detail}>{hasInfo(movie.budget)}</p>
+								<p className={styles.detail}>{hasInfo(data.movie.budget)}</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Revenue :</h3>
-								<p className={styles.detail}>{hasInfo(movie.revenue)}</p>
+								<p className={styles.detail}>{hasInfo(data.movie.revenue)}</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Langue d'origine :</h3>
 								<p className={styles.detail}>
-									{hasInfo(movie.original_language)}
+									{hasInfo(data.movie.original_language)}
 								</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Pays d'origine :</h3>
 								<p className={styles.detail}>
-									{hasInfo(movie.origin_country[0])}
+									{hasInfo(data.movie.origin_country[0])}
 								</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Directeurs :</h3>
 								<ul>
-									{movieCredits.cast
+									{data.credits.cast
 										.filter(
 											(member) => member.known_for_department === "Directing",
 										)
@@ -102,7 +106,7 @@ const MovieDetailsPage = () => {
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Maisons de production :</h3>
 								<ul>
-									{movie.production_companies.map((company) => {
+									{data.movie.production_companies.map((company) => {
 										return <li key={company.id}>{company.name}</li>;
 									})}
 								</ul>
@@ -119,7 +123,7 @@ const MovieDetailsPage = () => {
 
 				<div className={styles.actorCardsContainer}>
 					<div className={styles.actorCards}>
-						{movieCredits.cast
+						{data.credits.cast
 							.filter((member) => member.known_for_department === "Acting")
 							.map((actor) => {
 								return (

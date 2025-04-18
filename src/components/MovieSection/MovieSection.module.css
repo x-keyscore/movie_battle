@@ -1,4 +1,4 @@
-.section-movies {
+.section {
 	margin-bottom: 24px;
 }
 
@@ -9,45 +9,47 @@
 	margin-left: 4%;
 }
 
-.link {
-	color: var(--color-primary);
+.section-title .highlight {
+	color: var(--color-accent);
+}
+.section-title .link {
+	color: var(--color-accent);
 	text-decoration: none;
 	transition: .1s text-decoration ease-in-out;
 }
 
-.link:hover {
-	color: var(--color-primary);
+.section-title .link:hover {
 	text-decoration: underline;
 }
 
-.movies-list-one-line {
-	display: flex;
-	gap: 16px;
-	padding: 0;
-	overflow-x: auto;
-	scrollbar-width: none;
+.section-movies {
 	padding: 10px 4%;
 	margin: 0;
 }
 
-.movies-list {
+.section-movies.inline {
+	display: flex;
+	gap: 16px;
+	overflow-x: auto;
+	scrollbar-width: none;
+}
+
+.section-movies.grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 	gap: 16px;
-	padding: 10px 4%;
-	margin: 0;
 }
 
-.movie-item-fixed-width {
+.section-movies.inline > .item {
 	min-width: 300px;
 }
 
 @media (any-pointer: coarse) {
-	.movies-list-one-line {
+	.section-movies.inline {
 		scroll-snap-type: x mandatory;
 	}
 
-	.movie-item-fixed-width {
+	.section-movies.inline > .item {
 		scroll-snap-align: center;
 	}
 }

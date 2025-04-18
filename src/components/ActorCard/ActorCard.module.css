@@ -10,8 +10,8 @@
 }
 
 .img-container {
-	background-color: var(--color-secondary);
-	color: var(--color-background);
+	background-color: var(--color-accent);
+	color: var(--color-bg);
 	width: 64px;
 	aspect-ratio: 1 / 1;
 	border-radius: 8px;

@@ -1,12 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
+	--color-accent: #eca54e;
 	--color-background: #1b1f22;
-	--color-surface: #24292d; /* lightness +3 of background*/
-	--color-primary: #eca54e; /*#ff9f1c*/
-	--color-secondary: #2d3439; /* lightness +8 of background*/
+	--color-surface: #24292d; /* lightness +3*/
+	--color-surface-light: #2d3439; /* lightness +8*/
 	--color-text: #ffffff;
-	--color-text-warning: #000;
+	--color-text-light: #ccd2d6;
 	--color-text-placeholder: #ccd2d6;
 }
 
