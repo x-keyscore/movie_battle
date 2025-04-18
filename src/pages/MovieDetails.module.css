@@ -89,17 +89,7 @@
 	gap: 16px;
 }
 
-@media (max-width: 630px) {
-	.actor-cards {
-		grid-template-columns: 1fr;
-		height: 50vh;
-		overflow-y: scroll;
-		scrollbar-width: thin;
-		scrollbar-color: var(--color-primary) var(--color-surface);
-	}
-}
-
-@media (max-width: 570px) {
+@media (max-width: 660px) {
 	.details-container {
 		grid-template-columns: 1fr;
 	}
@@ -114,5 +104,13 @@
 
 	.detail-item-list {
 		grid-template-columns: 1fr 1fr;
+	}
+
+	.actor-cards {
+		grid-template-columns: 1fr;
+		height: 50vh;
+		overflow-y: scroll;
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-primary) var(--color-surface);
 	}
 }
