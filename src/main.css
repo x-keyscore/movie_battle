@@ -31,6 +31,10 @@ ul {
 	padding-left: 0;
 }
 
+img {
+	font-size: 0
+}
+
 input {
 	color: var(--color-text);
 	font: inherit;

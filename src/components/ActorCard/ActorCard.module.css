@@ -10,7 +10,7 @@
 }
 
 .img-container {
-	background-color: var(--color-accent);
+	background-color: var(--color-surface-light);
 	color: var(--color-bg);
 	width: 64px;
 	aspect-ratio: 1 / 1;

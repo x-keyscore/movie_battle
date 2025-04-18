@@ -21,14 +21,14 @@
     flex: 1;
 }
 
-.topbar-left > .logo {
+.topbar-left>.logo {
     display: block;
     height: 46px;
     width: 46px;
     pointer-events: auto;
 }
 
-.topbar-left > .logo > svg {
+.topbar-left>.logo>svg {
     height: 100%;
     width: 100%;
 }
@@ -45,7 +45,7 @@
     pointer-events: auto;
 }
 
-.topbar-center > .search {
+.topbar-center>.search {
     color: var(--color-text);
     display: flex;
     align-items: center;
@@ -57,28 +57,28 @@
     transition: background-color .10s ease-in-out, color .10s ease-in-out;
 }
 
-.topbar-center > .search:hover {
+.topbar-center>.search:hover {
     background-color: var(--color-surface-light);
     color: var(--color-accent);
 }
 
-.topbar-center > .search:has(> input:focus) {
+.topbar-center>.search:has(> input:focus) {
     background-color: var(--color-surface-light);
     color: var(--color-accent);
 }
 
-.topbar-center > .search > svg {
+.topbar-center>.search>svg {
     width: 22px;
     padding: 0 12px 0 4px;
 }
 
-.topbar-center > .search > input {
+.topbar-center>.search>input {
     flex: 1;
     font-size: 1.1rem;
     font-weight: 600;
 }
 
-.topbar-center > .search > input::placeholder {
+.topbar-center>.search>input::placeholder {
     color: var(--color-text-placeholder);
 }
 
@@ -142,7 +142,7 @@
     height: 100%;
 }
 
-.topmovie-backdrop > img {
+.topmovie-backdrop>img {
     object-position: top;
     object-fit: cover;
     width: 100%;
@@ -175,6 +175,37 @@
 
 .topmovie-content > .info > .synopsis {
     font-size: 1.1rem;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.topmovie-content > .info > .genres {
+    list-style: none;
+    display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	padding: 0;
+	margin: 0;
+	font-size: 1rem;
+}
+
+.topmovie-content > .info > .genres > li:has(+ li):after {
+    content: " - ";
+}
+
+.topmovie-content > .info > .genres .link {
+    color: var(--color-accent);
+	text-decoration: none;
+	pointer-events: auto;
+}
+
+.topmovie-content > .info > .genres .link:hover,
+.topmovie-content > .info > .genres .link:focus-visible {
+	text-decoration: underline;
 }
 
 .topmovie-content > .action {
