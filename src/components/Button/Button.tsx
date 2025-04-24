@@ -8,7 +8,6 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: Children | [Children, Children];
     size?: "mini" | "small" | "medium";
     variant?: "ghost" | "normal";
-    className?: string;
     ariaLabel?: string;
     isActive?: boolean;
 }

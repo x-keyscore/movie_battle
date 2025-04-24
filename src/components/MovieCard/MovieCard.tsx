@@ -1,77 +1,74 @@
 import { Link } from "react-router";
 import { Button } from "../Button";
 import { Icons } from "../Icons";
+import { Movie, MovieWithDetails } from "../../api/types/movie";
+import { useApp } from "../../providers/AppProvider";
 import styles from "./MovieCard.module.css";
-
-import genresData from "../../mocks/genres.json";
+import genres from "../../data/genres.json";
+import { Image } from "../Image";
 
 interface MovieCardProps {
-	id: number;
-	title: string;
-	genreIds: number[];
-	backdropPath: string;
+	movie: Movie | MovieWithDetails;
 }
 
-export const MovieCard = ({
-	id,
-	title,
-	genreIds,
-	backdropPath,
-}: MovieCardProps) => {
+export const MovieCard = ({ movie }: MovieCardProps) => {
+	const { watchListPush } = useApp();
+
 	const getMovieGenres = () => {
-		return genreIds.map((genreId) => {
-			const { name } = genresData.genres.find((genre) => genre.id === genreId)!;
-
-			return {
-				name,
-				genreId,
-			};
-		});
+        if ("genres" in movie) {
+            return (movie.genres);
+        } else {
+            return (movie?.genre_ids.map((genre_id) => ({
+                id: genre_id,
+                name: genres.find(({ id }) => id === genre_id)?.name
+            })));
+        }
 	};
 
-	const handleWatchlist = (id: number) => {
-		console.log("ADD/REM Watchlist: ", id);
-	};
+	const movieGenres = getMovieGenres();
+	const movieImagePath = movie.backdrop_path || movie.poster_path;
 
 	return (
-		<div className={styles.card} role="button">
+		<div className={styles.card}>
 			<figure className={styles.figure}>
-				<Link to={`/movie/${id}`} draggable="false">
-					<img
-						className={styles.figureImage}
-						src={`https://image.tmdb.org/t/p/w780${backdropPath}`}
-						alt={title}
+				<Link
+					to={`/movie/${movie.id}`}
+					draggable="false"
+					aria-label={`Voir les détails du film ${movie.title}`}
+				>
+					<Image
+						className={styles.image}
 						draggable="false"
+						role="presentation"
+						loading="lazy"
+						src={`https://image.tmdb.org/t/p/original${movieImagePath}`}
 					/>
 				</Link>
 				<figcaption className={styles.figcaption}>
 					<div className={styles.figcaptionInfo}>
-						<h2 className={styles.title}>{title}</h2>
+						<h2 className={styles.title}>{movie.title}</h2>
 						<ul className={styles.genres}>
-							{getMovieGenres().map(({ name, genreId }, index) => {
+							{movieGenres.map((genre) => {
 								return (
-									<li key={genreId}>
+									<li key={genre.id}>
 										<Link
-											to={`/category/genre/${genreId}`}
+											to={`/category/genre/${genre.id}`}
 											className={styles.link}
 										>
-											{name}
+											{genre.name}
 										</Link>
-										{index < genreIds.length - 1 && " -"}
 									</li>
 								);
 							})}
 						</ul>
 					</div>
 					<Button
+						className={styles.button}
 						size="small"
 						variant="ghost"
 						aria-label="Ajouter aux films enregistrés"
-						className={styles.button}
-						onClick={(e) => {
-							e.preventDefault();
-							handleWatchlist(id);
-						}}
+						data-event-off="watch-list-collapse"
+						onClick={() => watchListPush(movie)}
 					>
 						<Icons.AddToList />
 					</Button>

@@ -9,7 +9,8 @@ interface MovieSectionProps {
 	title: string;
 	movies: MovieList;
 	inline: boolean;
-	maxCards: number;
+	startIndex?: number;
+	endIndex?: number
 }
 
 export const MovieSection = ({
@@ -17,7 +18,8 @@ export const MovieSection = ({
 	title,
 	movies,
 	inline,
-	maxCards,
+	startIndex = 0,
+	endIndex = movies.results.length
 }: MovieSectionProps) => {
 	return (
 		<div className={styles.section}>
@@ -34,17 +36,12 @@ export const MovieSection = ({
 			<ul
 				className={clsx(
 					styles.sectionMovies,
-					inline ? styles.inline : styles.grid,
+					inline ? styles.inline : styles.grid
 				)}
 			>
-				{movies.results.slice(0, maxCards).map((movie) => (
+				{movies.results.slice(startIndex, endIndex).map((movie) => (
 					<li key={movie.id} className={styles.item}>
-						<MovieCard
-							id={movie.id}
-							title={movie.title}
-							genreIds={movie.genre_ids}
-							backdropPath={movie.backdrop_path}
-						/>
+						<MovieCard movie={movie} />
 					</li>
 				))}
 			</ul>

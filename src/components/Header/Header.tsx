@@ -1,14 +1,14 @@
 import type { ToggleAction, ToggleState } from "./types";
 import { useReducer } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Collapsible } from "../Collapsible";
 import { CategoryList } from "./dropdown";
 import { WatchList } from "./dropdown/WatchList";
 import { Button } from "../Button";
 import { Icons } from "../Icons";
 import styles from "./Header.module.css";
-import genresData from "../../mocks/genres.json";
-import { useHeader } from "../../providers/HeaderProvider";
+import genres from "../../data/genres.json";
+import { useApp } from "../../providers/AppProvider";
 
 const toggleReducer = (state: ToggleState, action: ToggleAction): ToggleState => {
     switch (action) {
@@ -24,11 +24,27 @@ const toggleReducer = (state: ToggleState, action: ToggleAction): ToggleState =>
 };
 
 export function Header() {
-    const { topmovie } = useHeader();
+    const navigate = useNavigate();
+    const { topmovie, watchListPush } = useApp();
     const [toggle, setToggle] = useReducer(toggleReducer, {
         categoryList: false,
         watchList: false
     });
+
+    const getTopmovieGenres = () => {
+        if (!topmovie) return (null);
+
+        if ("genres" in topmovie) {
+            return (topmovie.genres);
+        } else {
+            return (topmovie?.genre_ids.map((genre_id) => ({
+                id: genre_id,
+                name: genres.find(({ id }) => id === genre_id)?.name
+            })));
+        }
+    }
+
+    const topmovieGenres = getTopmovieGenres();
 
     return (
         <div className={styles.header}>
@@ -54,17 +70,16 @@ export function Header() {
                     </Button>
                     <Collapsible
                         id="category-list-collapse"
-                        without="bottom"
-                        zIndex={100}
+                        isOpen={toggle.categoryList}
                         styles={{
                             wrapper: styles.collapsibleWrapper,
                             content: styles.collapsibleContent
                         }}
-                        isOpen={toggle.categoryList}
+                        without="bottom"
                         onFocusOut={() => setToggle("CATEGORY_LIST")}
                         onClickOut={() => setToggle("CATEGORY_LIST")}
                     >
-                        <CategoryList genres={genresData.genres} />
+                        <CategoryList />
                     </Collapsible>
                 </div>
                 <div className={styles.topbarRight}>
@@ -80,13 +95,13 @@ export function Header() {
                         </Button>
                         <Collapsible
                             id="watch-list-collapse"
-                            without="bottom"
-                            zIndex={100}
+                            isOpen={toggle.watchList}
                             styles={{
                                 wrapper: styles.collapsibleWrapper,
                                 content: styles.collapsibleContent
                             }}
-                            isOpen={toggle.watchList}
+                            without="bottom"
+                            onEventOff={[{ name: "data-event-off", value: "watch-list-collapse" }]}
                             onFocusOut={() => setToggle("WATCH_LIST")}
                             onClickOut={() => setToggle("WATCH_LIST")}
                         >
@@ -96,38 +111,59 @@ export function Header() {
                 </div>
             </div>
             <div className={styles.topmovie}>
-                <div className={styles.topmovieBackdrop}>
-                    <img
-                        src={`https://image.tmdb.org/t/p/original${topmovie?.backdrop_path}`}
-                        draggable="false"
-                        role="presentation"
-                    />
+                <div className={styles.topmovieUnderlay}>
+                    {topmovie?.backdrop_path ? (
+                        <img
+                            className={styles.backdrop}
+                            draggable="false"
+                            role="presentation"
+                            src={`https://image.tmdb.org/t/p/original${topmovie?.backdrop_path}`}
+                        />
+                    ) : (
+                        <img
+                            className={styles.poster}
+                            draggable="false"
+                            role="presentation"
+                            src={`https://image.tmdb.org/t/p/original${topmovie?.poster_path}`}
+                        />
+                    )}
                 </div>
                 <div className={styles.topmovieContent}>
                     <div className={styles.info}>
                         <div className={styles.title}>
                             {topmovie?.title}
                         </div>
-                        <div className={styles.synopsis}>
-                            {topmovie?.overview}
-                        </div>
-                        <ul className={styles.genres}>
-                            {
-                                topmovie?.genre_ids.map((genre_id) => (
-                                    <li key={genre_id}>
-                                        <Link to={`/category/genre/${genre_id}`} className={styles.link}>
-                                            {genresData.genres.find(({ id }) => id === genre_id)?.name}
+                        {topmovie?.overview && (
+                            <div className={styles.synopsis}>
+                                {topmovie.overview}
+                            </div>
+                        )}
+                        {topmovieGenres && (
+                            <ul className={styles.genres}>
+                                {topmovieGenres.map((genre) => (
+                                    <li key={genre.id}>
+                                        <Link
+                                            draggable="false"
+                                            className={styles.link}
+                                            to={`/category/genre/${genre.id}`}
+                                        >
+                                            {genre.name}
                                         </Link>
                                     </li>
-                                ))
-                            }
-                        </ul>
+                                ))}
+                            </ul>
+                        )}
                     </div>
                     <div className={styles.action}>
-                        <Button size="small">
+                        <Button size="small" onClick={() => navigate(`/movie/${topmovie?.id}`)}>
                             <span>Voir plus</span>
                         </Button>
-                        <Button size="small" aria-label="Ajouter aux films enregistrés">
+                        <Button
+                            size="small"
+                            aria-label="Ajouter aux films enregistrés"
+                            data-event-off="watch-list-collapse"
+                            onClick={() => topmovie && watchListPush(topmovie)}
+                        >
                             <Icons.AddToList />
                         </Button>
                     </div>
@@ -136,3 +172,7 @@ export function Header() {
         </div>
     );
 }
+
+/*
+
+*/

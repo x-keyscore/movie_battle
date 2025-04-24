@@ -2,102 +2,63 @@ import { useState, useRef, useEffect } from "react";
 
 type Status = "IDLE" | "PENDING" | "OK" | "ERROR";
 
-function isEqualDeps(prevDeps: unknown[], currDeps: unknown[]): boolean {
-	if (prevDeps.length !== currDeps.length) {
-	  return (false);
-	}
-
-	for (let i = 0; i < prevDeps.length; i++) {
-	  if (prevDeps[i] !== currDeps[i]) {
-		return (false);
-	  }
-	}
-
-	return (true);
+function isEqual(a: unknown[], b: unknown[]) {
+	return (a.length === b.length && a.every((val, i) => val === b[i]));
 }
 
 /**
- * Custom hook that handles async requests.
- * 
- * @param callback - The async function to be executed (e.g. fetching data).
- * @param deps - The dependency array to trigger re-fetch when values change.
- * 
- * If `deps` is `undefined` or `null` the execution of the fetch is only manual.
- * 
- * @returns An array with the following:
- *   - `data`: The fetched data (or null while loading).
- *   - `status`: The current status of the request (`IDLE`, `PENDING`, `OK`, or `ERROR`).
- *   - `fetcher`: A function to manually trigger the request.
- * 
- * @example
- * ```js
- * // One fetch every time id changes
- * function Component() {
- *     const [data, status, execute] = useRequest(async () => {
- *     const response = await fetch(`/api/data/${id}`);
- *         return response.json();
- *     }, [id]);
- * 
- *     return (<div>{data}</div>);
- * }
- * 
- * // No automatic fetch
- * function Component() {
- *     const [data, status, fetch] = useRequest(async () => {
- *     const response = await fetch(`/api/data/${id}`);
- *         return response.json();
- *     });
- * 
- *     useEffect(() => {
- *         execute();
- *     }, [])
- * 
- *     return (<div>{data}</div>);
- * }
+ * Custom React hook to manage async requests with status tracking and dependency-based triggering.
+ *
+ * This hook executes the provided async `callback` function whenever the `dependencies` array changes.
+ * It also provides a manual `fetcher()` method to trigger the request on demand.
+ *
+ * Usage:
+ * ```tsx
+ * const [data, status, fetcher] = useRequest(fetchUserData, [userId]);
  * ```
+ *
+ * @template T - The return type of the async `callback` function
+ * @param callback - An async function to be executed
+ * @param dependencies - Optional array of dependencies to watch for automatic execution
+ * @returns [data, status, fetcher] - The fetched data, current status, and manual trigger function
  */
 export function useRequest<T>(callback: () => Promise<T>, dependencies?: unknown[]) {
 	const [status, setStatus] = useState<Status>("IDLE");
 	const [data, setData] = useState<T | null>(null);
-	const dependenciesRef = useRef<unknown[] | null>(null);
+	const prevDepsRef = useRef<unknown[]>(null);
 	const callbackRef = useRef(callback);
+	const launchIdRef = useRef(0);
+
 	callbackRef.current = callback;
 
-	const execute = () => {
-		let ignore = false;
-
-		const run = async () => {
-			setStatus("PENDING");
-			try {
-				const result = await callbackRef.current();
-				console.log("test")
-				if (!ignore) {
-					setData(result);
-					setStatus("OK");
-				}
-			} catch (err) {
-				if (!ignore) {
-					console.error(err);
-					setStatus("ERROR");
-				}
+	const launch = async (launchId: number) => {
+		setStatus("PENDING");
+		try {
+			const result = await callbackRef.current();
+			if (launchIdRef.current === launchId) {
+				setStatus("OK");
+				setData(result);
+			}
+		} catch (err) {
+			if (launchIdRef.current === launchId) {
+				setStatus("ERROR");
+				console.error(err);
 			}
 		}
-		run();
-
-		return (() => {
-			ignore = true;
-		});
 	}
 
 	useEffect(() => {
 		if (!dependencies) return;
 
-		const prevdependencies = dependenciesRef.current;
-		if (!prevdependencies || !isEqualDeps(prevdependencies, dependencies)) {
-			dependenciesRef.current = [...dependencies];
-			execute();
+		if (!prevDepsRef.current || !isEqual(prevDepsRef.current, dependencies)) {
+			prevDepsRef.current = dependencies;
+			launch(++launchIdRef.current);
 		}
-	}, [dependencies]);
+	});
 
-	return [data, status, execute] as const;
+	const fetcher = () => {
+		launch(++launchIdRef.current);
+	}
+
+	return [data, status, fetcher] as const;
 }

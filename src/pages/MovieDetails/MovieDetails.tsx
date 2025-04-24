@@ -1,15 +1,18 @@
-import { ActorCard } from "../components/ActorCard";
+import { useEffect } from "react";
 import { useParams } from "react-router";
-import { MovieSection } from "../components/MovieSection";
-import { useRequest } from "../hooks/useRequest";
-import { requests } from "../api";
+import { useApp } from "../../providers/AppProvider";
+import { useRequest } from "../../hooks/useRequest";
+import { ActorCard } from "../../components/ActorCard";
+import { MovieSection } from "../../components/MovieSection";
+import { requests } from "../../api";
 import styles from "./MovieDetails.module.css";
 
-const MovieDetailsPage = () => {
+export function MovieDetailsPage() {
 	const { movie_id } = useParams();
+	const { setTopmovie } = useApp();
 
 	const [data] = useRequest(async () => {
-		if (!movie_id) throw new Error("Movie id is null");
+		if (!movie_id) return;
 
 		const [movie, similarMovie, credits] = await Promise.all([
 			requests.movie.getMovieDetail({ language: "fr-Fr", movie_id }),
@@ -24,11 +27,15 @@ const MovieDetailsPage = () => {
 		};
 	}, [movie_id]);
 
-	function hasInfo(value: string | number) {
-		if (value === 0 || value === "") return "Non renseigné";
-
-		return value;
+	function normalize(value: string | number) {
+		return (value || "Non renseigné");
 	}
+
+	useEffect(() => {
+		if (!data) return;
+
+		setTopmovie(data.movie);
+	}, [data, setTopmovie]);
 
 	if (!data) return null;
 
@@ -36,9 +43,9 @@ const MovieDetailsPage = () => {
 		<>
 			<MovieSection
 				title="Similaires"
-				maxCards={10}
 				inline={true}
 				movies={data.similarMovie}
+				endIndex={10}
 			/>
 			<div className={styles.detailsSection}>
 				<figure className={styles.detailsContainer}>
@@ -56,37 +63,37 @@ const MovieDetailsPage = () => {
 						</div>
 						<div className={`${styles.detailItem} ${styles.overview}`}>
 							<h3 className={styles.detailTitle}>Synopsis :</h3>
-							<p className={styles.detail}>{hasInfo(data.movie.overview)}</p>
+							<p className={styles.detail}>{normalize(data.movie.overview)}</p>
 						</div>
 						<ul className={styles.detailItemList}>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Durée :</h3>
-								<p className={styles.detail}>{hasInfo(data.movie.runtime)}</p>
+								<p className={styles.detail}>{normalize(data.movie.runtime)}</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Date de sortie :</h3>
 								<p className={styles.detail}>
-									{hasInfo(data.movie.release_date)}
+									{normalize(data.movie.release_date)}
 								</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Budgget :</h3>
-								<p className={styles.detail}>{hasInfo(data.movie.budget)}</p>
+								<p className={styles.detail}>{normalize(data.movie.budget)}</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Revenue :</h3>
-								<p className={styles.detail}>{hasInfo(data.movie.revenue)}</p>
+								<p className={styles.detail}>{normalize(data.movie.revenue)}</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Langue d'origine :</h3>
 								<p className={styles.detail}>
-									{hasInfo(data.movie.original_language)}
+									{normalize(data.movie.original_language)}
 								</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Pays d'origine :</h3>
 								<p className={styles.detail}>
-									{hasInfo(data.movie.origin_country[0])}
+									{normalize(data.movie.origin_country[0])}
 								</p>
 							</li>
 							<li className={styles.detailItem}>
@@ -142,5 +149,3 @@ const MovieDetailsPage = () => {
 		</>
 	);
 };
-
-export default MovieDetailsPage;

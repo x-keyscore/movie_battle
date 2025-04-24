@@ -23,11 +23,12 @@
 	position: relative;
 }
 
-.figure-image {
+.figure .image {
+	object-position: top;
+	object-fit: cover;
+	display: block;
 	height: 100%;
 	width: 100%;
-	display: block;
-	object-fit: cover;
 }
 
 .figcaption {
@@ -68,10 +69,17 @@
 	font-size: .8rem;
 }
 
+.figcaption-info > .genres > li:has(+ li):after {
+	color: var(--color-text);
+    content: " - ";
+}
+
 .figcaption-info > .genres .link {
 	color: var(--color-accent);
-	text-decoration: none;
 	pointer-events: auto;
+	text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color .10s ease-in-out;
 }
 
 .figcaption-info > .genres .link:hover,

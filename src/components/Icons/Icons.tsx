@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
-import LogoSvg from "./files/logo.svg?react";
-import TmdbLogoSquareSvg from "./files/tmdb-square.svg?react";
+import BrandLogoSvg from "./files/brand-logo.svg?react";
+import TmdbLogoSvg from "./files/tmdb-logo.svg?react";
 
 interface IconProps {
 	className?: string;
@@ -192,10 +192,10 @@ export function Cross({ className, style }: IconProps) {
 
 export function TmdbLogoSquare({ className, style }: IconProps) {
 	return (
-		<TmdbLogoSquareSvg aria-hidden="true" className={className} style={style} />
+		<TmdbLogoSvg aria-hidden="true" className={className} style={style} />
 	);
 }
 
 export function Logo({ className, style }: IconProps) {
-	return <LogoSvg aria-hidden="true" className={className} style={style} />;
+	return <BrandLogoSvg aria-hidden="true" className={className} style={style} />;
 }
