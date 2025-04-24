@@ -1,5 +1,5 @@
-import { tmdb } from "../instance";
 import type { Credits } from "../types/credits";
+import { tmdb } from "../instance";
 
 interface GetCreditsParams {
 	language?: string;

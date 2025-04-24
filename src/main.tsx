@@ -1,14 +1,12 @@
-import { createBrowserRouter, RouterProvider } from "react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router";
+import { HomePage } from "./pages/Home";
+import { SearchPage } from "./pages/Search";
+import { CategoryPage } from "./pages/Category";
+import { MovieDetailsPage } from "./pages/MovieDetails";
 import { App } from "./App";
 import "./main.css";
-
-import { HomePage } from "./pages/Home";
-import { CategoryPage } from "./pages/Category";
-
-import SearchPage from "./pages/Search";
-import MovieDetailsPage from "./pages/MovieDetails";
 
 const router = createBrowserRouter([
 	{
@@ -19,12 +17,12 @@ const router = createBrowserRouter([
 				Component: HomePage,
 			},
 			{
-				path: "/search",
-				Component: SearchPage,
-			},
-			{
 				path: "/movie/:movie_id",
 				Component: MovieDetailsPage,
+			},
+			{
+				path: "/search",
+				Component: SearchPage,
 			},
 			{
 				path: "/category",

@@ -1,24 +1,25 @@
 import { useEffect } from "react";
-import { MovieSection } from "../components/MovieSection";
-import { useHeader } from "../providers/HeaderProvider";
-import { useRequest } from "../hooks/useRequest";
-import { requests } from "../api";
+import { MovieSection } from "../../components/MovieSection";
+import { useApp } from "../../providers/AppProvider";
+import { useRequest } from "../../hooks/useRequest";
+import { requests } from "../../api";
 
 export function HomePage() {
+	const { setTopmovie } = useApp();
 	const [data] = useRequest(async () => {
+		console.log("fetch")
 		const [popular, topRated, nowPlaying] = await Promise.all([
-			requests.movie.getPopular(),
-			requests.movie.getTopRated(),
-			requests.movie.getNowPlaying(),
+			requests.movie.getPopular({ language: "fr-Fr" }),
+			requests.movie.getTopRated({ language: "fr-Fr" }),
+			requests.movie.getNowPlaying({ language: "fr-Fr" })
 		]);
 
 		return {
 			popularMovies: popular.data,
 			topRatedMovies: topRated.data,
-			nowPlayingMovies: nowPlaying.data,
+			nowPlayingMovies: nowPlaying.data
 		};
 	}, []);
-	const { setTopmovie } = useHeader();
 
 	useEffect(() => {
 		if (!data) return;
@@ -26,27 +27,28 @@ export function HomePage() {
 		setTopmovie(data.popularMovies.results[0]);
 	}, [data, setTopmovie]);
 
-	if (!data) return null;
+	if (!data) return (null);
 
 	return (
 		<>
 			<MovieSection
 				title="Populaires"
 				movies={data.popularMovies}
-				maxCards={20}
 				inline={true}
+				startIndex={1}
+				endIndex={20}
 			/>
 			<MovieSection
 				title="Mieux notés"
 				movies={data.topRatedMovies}
-				maxCards={20}
 				inline={true}
+				endIndex={20}
 			/>
 			<MovieSection
 				title="Recents"
 				movies={data.nowPlayingMovies}
-				maxCards={20}
 				inline={true}
+				endIndex={20}
 			/>
 		</>
 	);

@@ -1,19 +1,19 @@
 import { Link, Outlet } from "react-router";
 import { Header } from "./components/Header";
-import { HeaderProvider } from "./providers/HeaderProvider";
+import { AppProvider } from "./providers/AppProvider";
 import { Icons } from "./components/Icons";
 import styles from "./App.module.css";
 
 export function App() {
 	return (
-		<HeaderProvider>
+		<AppProvider>
 			<Header />
 			<div className={styles.body}>
 				<Outlet />
 			</div>
 			<footer className={styles.footer}>
 				<div className={styles.container}>
-					<Link to="/" className={styles.cineScopelogo} aria-label="Menu">
+					<Link to="/" className={styles.brandlogo} aria-label="Menu">
 						<Icons.Logo />
 					</Link>
 					<div className={styles.infos}>
@@ -37,6 +37,6 @@ export function App() {
 					</a>
 				</div>
 			</footer>
-		</HeaderProvider>
+		</AppProvider>
 	);
 }
