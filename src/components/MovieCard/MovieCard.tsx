@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { Button } from "../Button";
 import { Icons } from "../Icons";
-import { Movie, MovieWithDetails } from "../../api/types/movie";
+import type { Movie, MovieWithDetails } from "../../api/types/movie";
 import { useApp } from "../../providers/AppProvider";
 import styles from "./MovieCard.module.css";
 import genres from "../../data/genres.json";
@@ -15,14 +15,13 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 	const { watchListPush } = useApp();
 
 	const getMovieGenres = () => {
-        if ("genres" in movie) {
-            return (movie.genres);
-        } else {
-            return (movie?.genre_ids.map((genre_id) => ({
-                id: genre_id,
-                name: genres.find(({ id }) => id === genre_id)?.name
-            })));
-        }
+		if ("genres" in movie) {
+			return movie.genres;
+		}
+		return movie?.genre_ids.map((genre_id) => ({
+			id: genre_id,
+			name: genres.find(({ id }) => id === genre_id)?.name,
+		}));
 	};
 
 	const movieGenres = getMovieGenres();
