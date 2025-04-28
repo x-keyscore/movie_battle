@@ -4,7 +4,7 @@ import { MovieCard } from "./../MovieCard";
 import styles from "./MovieSection.module.css";
 import clsx from "clsx";
 import { useRequest } from "../../hooks/useRequest";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useApp } from "../../providers/AppProvider";
 
 interface MovieSectionProps {
@@ -36,10 +36,32 @@ export const MovieSectionPagination = ({
 		[pageIndex],
 	);
 
+	const loaderRef = useRef(null);
+
 	useEffect(() => {
 		if (!data[0]) return;
 		setTopmovie(data[0]);
 	}, [setTopmovie, data]);
+
+	useEffect(() => {
+		if (!loaderRef.current) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const firstEntry = entries[0];
+				if (firstEntry.isIntersecting) {
+					setPageIndex((prev) => prev + 1);
+				}
+			},
+			{
+				threshold: 1.0,
+			},
+		);
+
+		observer.observe(loaderRef.current);
+
+		return () => observer.disconnect();
+	}, []);
 
 	return (
 		<div className={styles.section}>
@@ -61,16 +83,13 @@ export const MovieSectionPagination = ({
 					inline ? styles.inline : styles.grid,
 				)}
 			>
-				{data.slice(startIndex, endIndex).map((movie) => (
-					<li key={movie.id} className={styles.item}>
+				{data.slice(startIndex, endIndex).map((movie, index) => (
+					<li key={`${movie.id}-${index}`} className={styles.item}>
 						<MovieCard movie={movie} />
 					</li>
 				))}
 			</ul>
-			<button type="button" onClick={() => setPageIndex((prev) => prev + 1)}>
-				TEST
-			</button>
-			<div className={styles.loadWhenDisplayed} />
+			<div className={styles.loadWhenDisplayed} ref={loaderRef} />
 		</div>
 	);
 };
