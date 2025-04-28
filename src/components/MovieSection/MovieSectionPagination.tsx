@@ -70,6 +70,7 @@ export const MovieSectionPagination = ({
 			<button type="button" onClick={() => setPageIndex((prev) => prev + 1)}>
 				TEST
 			</button>
+			<div className={styles.loadWhenDisplayed} />
 		</div>
 	);
 };
