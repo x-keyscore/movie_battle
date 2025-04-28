@@ -61,5 +61,5 @@ interface GetSelectedGenreParams {
 	with_genres: string;
 }
 
-export const getSelectedCategory = (params: GetSelectedGenreParams) =>
+export const getSelectedGenre = (params: GetSelectedGenreParams) =>
 	tmdb.get<MovieList>("/discover/movie", { params });
