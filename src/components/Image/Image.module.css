@@ -1,4 +1,4 @@
-.content {
+.placeholder {
     position: absolute;
     inset: 0;
     display: flex;
@@ -8,17 +8,23 @@
     height: auto;
 }
 
-.loader {
+.placeholder > .loading {
     width: 120px;
     height: 20px;
     border-radius: 4px;
     background: linear-gradient(var(--color-accent) 0 0) left -40px top 0/40px 100% no-repeat transparent;
     mask: conic-gradient(from 90deg at 5px 5px, #0000 25%, #000 0) 0 0/calc((100% - 5px)/5) calc(100% - 5px);
     -webkit-mask: conic-gradient(from 90deg at 5px 5px, #0000 25%, #000 0) 0 0/calc((100% - 5px)/5) calc(100% - 5px);
-    animation: image-loader-keyframe 1.50s infinite linear;
+    animation: image-placeholder-loading-keyframe 1.50s infinite linear .5s;
 }
 
-@keyframes image-loader-keyframe {
+.placeholder > .unavailable {
+    opacity: 0.4;
+    width: 46px;
+    filter: grayscale(1);
+}
+
+@keyframes image-placeholder-loading-keyframe {
     100% {
         background-position: right -40px top 0
     }

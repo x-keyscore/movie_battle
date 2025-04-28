@@ -39,13 +39,17 @@ interface CollapsibleProps {
     };
     without?: "bottom" | "right";
     duration?: number;
+    onClickOut?: (e: MouseEvent) => void;
+    onFocusOut?: (e: FocusEvent) => void;
+    /**
+     * Attribute of elements that should not
+     * trigger `OnClickOut` and `onFocusOut`
+    */
     onEventOff?: {
         name: string;
         value: string;
         split?: boolean;
     }[];
-    onClickOut?: (e: MouseEvent) => void;
-    onFocusOut?: (e: FocusEvent) => void;
 }
 
 export function Collapsible({
@@ -56,8 +60,8 @@ export function Collapsible({
     without = "bottom",
     duration = .20,
     onEventOff = [],
-    onFocusOut,
-    onClickOut
+    onClickOut,
+    onFocusOut
 }: CollapsibleProps) {
     const wrapperRef = useRef<ComponentRef<"div">>(null);
     const contentRef = useRef<ComponentRef<"div">>(null);

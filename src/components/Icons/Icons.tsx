@@ -190,12 +190,12 @@ export function Cross({ className, style }: IconProps) {
 	);
 }
 
-export function TmdbLogoSquare({ className, style }: IconProps) {
+export function TmdbLogo({ className, style }: IconProps) {
 	return (
 		<TmdbLogoSvg aria-hidden="true" className={className} style={style} />
 	);
 }
 
-export function Logo({ className, style }: IconProps) {
+export function BrandLogo({ className, style }: IconProps) {
 	return <BrandLogoSvg aria-hidden="true" className={className} style={style} />;
 }

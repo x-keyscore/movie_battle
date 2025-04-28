@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 
 const PREFIX = import.meta.env.VITE_APP_PREFIX;
 
-export function useLocalStorage<T>(key: string, initialValue: T | (() => T)) {
+export function useLocalStorage<T>(key: string, initial: T | (() => T)) {
 	const prefixedKey: string = PREFIX + "-" + key;
 	const [value, setValue] = useState<T>(() => {
 		const jsonValue = localStorage.getItem(prefixedKey);
 		if (jsonValue != null) return JSON.parse(jsonValue);
-		if (typeof initialValue === "function") {
-			return (initialValue as () => T)();
+		if (typeof initial === "function") {
+			return (initial as () => T)();
 		}
-		return initialValue;
+		return initial;
 	});
 
 	useEffect(() => {

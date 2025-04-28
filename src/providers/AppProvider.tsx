@@ -32,6 +32,8 @@ export function AppProvider({ children }: AppProviderProps) {
 	const [watchList, setWatchList] = useLocalStorage<MovieWithDetails[]>("WATCH-LIST", []);
 
 	const watchListPush = (movie: Movie | MovieWithDetails) => {
+		if (watchList.some((item) => item.id === movie.id)) return;
+
 		if ("genres" in movie) {
             setWatchList((prev) => {
 				return ([...prev, movie]);
@@ -50,6 +52,7 @@ export function AppProvider({ children }: AppProviderProps) {
 		setWatchList((prev) => {
 			const index = prev.findIndex((item) => item.id === id);
 			if (index < 0) return (prev);
+
 			return ([...prev.slice(0, index), ...prev.slice(index + 1)]);
 		});
 	};
