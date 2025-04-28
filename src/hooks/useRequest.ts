@@ -22,19 +22,21 @@ function isEqual(a: unknown[], b: unknown[]) {
  * @param dependencies - Optional array of dependencies to watch for automatic execution
  * @returns [data, status, fetcher] - The fetched data, current status, and manual trigger function
  */
-export function useRequest<T>(callback: () => Promise<T>, dependencies?: unknown[]) {
+export function useRequest<D>(callback: (getPrev?: () => D | null) => Promise<D>, dependencies?: unknown[]) {
 	const [status, setStatus] = useState<Status>("IDLE");
-	const [data, setData] = useState<T | null>(null);
+	const [data, setData] = useState<D | null>(null);
 	const prevDepsRef = useRef<unknown[]>(null);
 	const callbackRef = useRef(callback);
 	const launchIdRef = useRef(0);
+	const dataRef = useRef(data);
 
 	callbackRef.current = callback;
+	dataRef.current = data;
 
 	const launch = async (launchId: number) => {
 		setStatus("PENDING");
 		try {
-			const result = await callbackRef.current();
+			const result = await callbackRef.current(() => dataRef.current);
 			if (launchIdRef.current === launchId) {
 				setStatus("OK");
 				setData(result);
