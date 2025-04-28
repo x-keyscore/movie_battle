@@ -53,3 +53,13 @@ export const getSimilar = (params: GetSimilarParams) =>
 	tmdb.get<MovieList>(`/movie/${params.movie_id}/similar`, {
 		params: { language: params.language, page: params.page },
 	});
+
+interface GetSelectedGenreParams {
+	language?: string;
+	page?: number;
+	sort_by?: string;
+	with_genres: string;
+}
+
+export const getSelectedCategory = (params: GetSelectedGenreParams) =>
+	tmdb.get<MovieList>("/discover/movie", { params });
