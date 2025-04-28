@@ -1,8 +1,8 @@
 import type { ToggleAction, ToggleState } from "./types";
 import { useReducer } from "react";
 import { Link, useNavigate } from "react-router";
-import { Icons, Button, Collapsible } from "../";
 import { useApp } from "../../providers/AppProvider";
+import { Icons, Button, Collapsible, Image } from "../";
 import { CategoryList,  WatchList } from "./dropdown";
 import { normalize } from "../../utils/normalize";
 import styles from "./Header.module.css";
@@ -29,13 +29,14 @@ export function Header() {
     });
 
     const topmovieGenres = normalize.movieGenres(topmovie);
-
+    console.log(topmovie?.backdrop_path)
+    console.log(topmovie?.poster_path)
     return (
         <div className={styles.header}>
             <div className={styles.topbar}>
                 <div className={styles.topbarLeft}>
                     <Link to="/" className={styles.logo} aria-label="Menu">
-                        <Icons.Logo />
+                        <Icons.BrandLogo />
                     </Link>
                 </div>
                 <div className={styles.topbarCenter}>
@@ -85,9 +86,9 @@ export function Header() {
                                 content: styles.collapsibleContent
                             }}
                             without="bottom"
-                            onEventOff={[{ name: "data-event-off", value: "watch-list-collapse" }]}
                             onFocusOut={() => setToggle("WATCH_LIST")}
                             onClickOut={() => setToggle("WATCH_LIST")}
+                            onEventOff={[{ name: "data-event-off", value: "watch-list-collapse" }]}
                         >
                             <WatchList />
                         </Collapsible>
@@ -97,18 +98,18 @@ export function Header() {
             <div className={styles.topmovie}>
                 <div className={styles.topmovieUnderlay}>
                     {topmovie?.backdrop_path ? (
-                        <img
+                        <Image
                             className={styles.backdrop}
-                            draggable="false"
                             role="presentation"
                             src={`https://image.tmdb.org/t/p/original${topmovie?.backdrop_path}`}
+                            isAvailable={topmovie?.backdrop_path}
                         />
                     ) : (
-                        <img
+                        <Image
                             className={styles.poster}
-                            draggable="false"
                             role="presentation"
                             src={`https://image.tmdb.org/t/p/original${topmovie?.poster_path}`}
+                            isAvailable={topmovie?.poster_path}
                         />
                     )}
                 </div>
