@@ -6,7 +6,7 @@ import { requests } from "../../api";
 
 export function HomePage() {
 	const { setTopmovie } = useApp();
-	const [data] = useRequest(async () => {
+	const [data] = useRequest(null, async () => {
 		const [popular, topRated, nowPlaying] = await Promise.all([
 			requests.movie.getPopular({ language: "fr-Fr" }),
 			requests.movie.getTopRated({ language: "fr-Fr" }),

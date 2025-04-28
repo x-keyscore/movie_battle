@@ -22,9 +22,13 @@ function isEqual(a: unknown[], b: unknown[]) {
  * @param dependencies - Optional array of dependencies to watch for automatic execution
  * @returns [data, status, fetcher] - The fetched data, current status, and manual trigger function
  */
-export function useRequest<D>(callback: (getPrev?: () => D | null) => Promise<D>, dependencies?: unknown[]) {
+export function useRequest<I, D>(
+	initial: I,
+	callback: (getPrev?: () => D | I) => Promise<D>,
+	dependencies?: unknown[]
+) {
 	const [status, setStatus] = useState<Status>("IDLE");
-	const [data, setData] = useState<D | null>(null);
+	const [data, setData] = useState<I | D>(initial);
 	const prevDepsRef = useRef<unknown[]>(null);
 	const callbackRef = useRef(callback);
 	const launchIdRef = useRef(0);
