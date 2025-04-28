@@ -13,7 +13,7 @@ export function MovieDetailsPage() {
 	const { movie_id } = useParams();
 	const { setTopmovie } = useApp();
 
-	const [data] = useRequest(async () => {
+	const [data] = useRequest(null, async () => {
 		if (!movie_id) return;
 
 		const [movie, similarMovie, credits] = await Promise.all([
@@ -29,10 +29,6 @@ export function MovieDetailsPage() {
 		};
 	}, [movie_id]);
 
-	function fallback(value: string | number) {
-		return value || "Non renseigné";
-	}
-
 	useEffect(() => {
 		if (!data) return;
 
@@ -40,6 +36,10 @@ export function MovieDetailsPage() {
 	}, [data, setTopmovie]);
 
 	if (!data) return null;
+
+	function fallback(value: string | number) {
+		return value || "Non renseigné";
+	}
 
 	const directors = data.credits.crew
 		.filter((member) => member.known_for_department === "Directing")
