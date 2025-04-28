@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useParams } from "react-router";
 import { useApp } from "../../providers/AppProvider";
 import { useRequest } from "../../hooks/useRequest";
-import { ActorCard } from "../../components/ActorCard";
-import { MovieSection } from "../../components/MovieSection";
+import { ActorCard, MovieSection } from "../../components";
+import { normalize } from "../../utils/normalize";
 import { requests } from "../../api";
 import language from "../../data/iso3166-french.json";
 import country from "../../data/iso639-french.json";
@@ -17,7 +17,7 @@ export function MovieDetailsPage() {
 		if (!movie_id) return;
 
 		const [movie, similarMovie, credits] = await Promise.all([
-			requests.movie.getMovieDetail({ language: "fr-Fr", movie_id }),
+			requests.movie.getMovieDetails({ language: "fr-Fr", movie_id }),
 			requests.movie.getSimilar({ language: "fr-Fr", movie_id }),
 			requests.credits.getCredits({ language: "fr-Fr", movie_id }),
 		]);
@@ -29,15 +29,8 @@ export function MovieDetailsPage() {
 		};
 	}, [movie_id]);
 
-	function normalize(value: string | number) {
+	function fallback(value: string | number) {
 		return value || "Non renseigné";
-	}
-
-	function toHoursAndMinutes(totalMinutes: number) {
-		const hours = Math.floor(totalMinutes / 60);
-		const minutes = totalMinutes % 60;
-
-		return `${hours} h ${minutes} m`;
 	}
 
 	useEffect(() => {
@@ -79,27 +72,25 @@ export function MovieDetailsPage() {
 						</div>
 						<div className={`${styles.detailItem} ${styles.overview}`}>
 							<h3 className={styles.detailTitle}>Synopsis :</h3>
-							<p className={styles.detail}>{normalize(data.movie.overview)}</p>
+							<p className={styles.detail}>{fallback(data.movie.overview)}</p>
 						</div>
 						<ul className={styles.detailItemList}>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Durée :</h3>
 								<p className={styles.detail}>
-									{data.movie.runtime
-										? toHoursAndMinutes(data.movie.runtime)
-										: "Non renseigné"}
+									{fallback(normalize.movieRuntime(data.movie.runtime))}
 								</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Date de sortie :</h3>
 								<p className={styles.detail}>
-									{normalize(data.movie.release_date)}
+									{fallback(data.movie.release_date)}
 								</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Budgget :</h3>
 								<p className={styles.detail}>
-									{normalize(data.movie.budget).toLocaleString("en-US", {
+									{fallback(data.movie.budget).toLocaleString("en-US", {
 										style: "currency",
 										currency: "USD",
 									})}
@@ -108,7 +99,7 @@ export function MovieDetailsPage() {
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Revenue :</h3>
 								<p className={styles.detail}>
-									{normalize(data.movie.revenue).toLocaleString("en-US", {
+									{fallback(data.movie.revenue).toLocaleString("en-US", {
 										style: "currency",
 										currency: "USD",
 									})}
@@ -117,7 +108,7 @@ export function MovieDetailsPage() {
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Langue d'origine :</h3>
 								<p className={styles.detail}>
-									{normalize(
+									{fallback(
 										language[
 											data.movie.original_language as keyof typeof language
 										],
@@ -127,7 +118,7 @@ export function MovieDetailsPage() {
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Pays d'origine :</h3>
 								<p className={styles.detail}>
-									{normalize(
+									{fallback(
 										country[
 											data.movie.origin_country[0] as keyof typeof country
 										],

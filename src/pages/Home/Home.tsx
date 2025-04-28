@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { MovieSection } from "../../components/MovieSection";
+import { MovieSection } from "../../components";
 import { useApp } from "../../providers/AppProvider";
 import { useRequest } from "../../hooks/useRequest";
 import { requests } from "../../api";

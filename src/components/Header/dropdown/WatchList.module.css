@@ -41,6 +41,8 @@
 }
 
 .item-link > .image {
+    object-fit: cover;
+    width: 48px;
     height: 100%;
 }
 
@@ -69,7 +71,7 @@
     color: var(--color-accent);
 }
 
-.item-link > .info > .duration {
+.item-link > .info > .runtime {
     color: var(--color-text-placeholder);
     font-size: 0.8rem;
 }

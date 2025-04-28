@@ -1,7 +1,7 @@
 import { Link } from "react-router";
+import { Icons, Button } from "../../";
 import { useApp } from "../../../providers/AppProvider";
-import { Button } from "../../Button";
-import { Icons } from "../../Icons";
+import { normalize } from "../../../utils/normalize";
 import styles from "./WatchList.module.css";
 
 export function WatchList() {
@@ -29,7 +29,7 @@ export function WatchList() {
                             />
                             <div className={styles.info}>
                                 <div className={styles.title}>{movie.title}</div>
-                                <div className={styles.duration}>[duration]</div>
+                                <div className={styles.runtime}>{normalize.movieRuntime(movie.runtime)}</div>
                             </div>
                             <Button
                                 type="button"

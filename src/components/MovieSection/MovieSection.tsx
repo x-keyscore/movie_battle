@@ -1,6 +1,6 @@
+import type { MovieList } from "../../api";
 import { Link } from "react-router";
 import { MovieCard } from "./../MovieCard";
-import type { MovieList } from "../../api/types/movie";
 import styles from "./MovieSection.module.css";
 import clsx from "clsx";
 

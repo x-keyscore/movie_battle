@@ -1,7 +1,6 @@
 import { Link, Outlet } from "react-router";
-import { Header } from "./components/Header";
+import { Icons, Header } from "./components";
 import { AppProvider } from "./providers/AppProvider";
-import { Icons } from "./components/Icons";
 import styles from "./App.module.css";
 
 export function App() {

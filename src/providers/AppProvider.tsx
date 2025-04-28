@@ -1,24 +1,19 @@
-import {
-	createContext,
-	type Dispatch,
-	type ReactNode,
-	type SetStateAction,
-	useContext,
-	useState,
-} from "react";
-import type { Movie, MovieWithDetails } from "../api/types/movie";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type { Movie, MovieWithDetails } from "../api";
+import { createContext, useContext, useState } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { requests } from "../api";
 
 type TopmovieState = Movie | MovieWithDetails | null;
 type TopmovieSetState = Dispatch<SetStateAction<TopmovieState>>;
 
-type WatchListState = Movie[];
+type WatchListState = MovieWithDetails[];
 
 const AppContext = createContext<{
 	topmovie: TopmovieState;
 	setTopmovie: TopmovieSetState;
 	watchList: WatchListState;
-	watchListPush: (movie: Movie) => void;
+	watchListPush: (movie: Movie | MovieWithDetails) => void;
 	watchListRemove: (id: number) => void;
 } | null>(null);
 
@@ -34,14 +29,21 @@ interface AppProviderProps {
 
 export function AppProvider({ children }: AppProviderProps) {
 	const [topmovie, setTopmovie] = useState<TopmovieState>(null);
-	const [watchList, setWatchList] = useLocalStorage<Movie[]>("WATCH-LIST", []);
+	const [watchList, setWatchList] = useLocalStorage<MovieWithDetails[]>("WATCH-LIST", []);
 
-	const watchListPush = (movie: Movie) => {
-		setWatchList((prev) => {
-			const index = prev.findIndex((item) => item.id === movie.id);
-			if (index >= 0) return prev;
-			return [...prev, movie];
-		});
+	const watchListPush = (movie: Movie | MovieWithDetails) => {
+		if ("genres" in movie) {
+            setWatchList((prev) => {
+				return [...prev, movie];
+			});
+        } else {
+			requests.movie.getMovieDetails({ movie_id: movie.id })
+				.then((result) => {
+					setWatchList((prev) => { 
+						return [...prev, result.data];
+					});
+				});
+		}
 	};
 
 	const watchListRemove = (id: Movie["id"]) => {

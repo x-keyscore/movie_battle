@@ -1,14 +1,11 @@
 import type { ToggleAction, ToggleState } from "./types";
 import { useReducer } from "react";
 import { Link, useNavigate } from "react-router";
-import { Collapsible } from "../Collapsible";
-import { CategoryList } from "./dropdown";
-import { WatchList } from "./dropdown/WatchList";
-import { Button } from "../Button";
-import { Icons } from "../Icons";
-import styles from "./Header.module.css";
-import genres from "../../data/genres.json";
+import { Icons, Button, Collapsible } from "../";
 import { useApp } from "../../providers/AppProvider";
+import { CategoryList,  WatchList } from "./dropdown";
+import { normalize } from "../../utils/normalize";
+import styles from "./Header.module.css";
 
 const toggleReducer = (state: ToggleState, action: ToggleAction): ToggleState => {
     switch (action) {
@@ -31,20 +28,7 @@ export function Header() {
         watchList: false
     });
 
-    const getTopmovieGenres = () => {
-        if (!topmovie) return (null);
-
-        if ("genres" in topmovie) {
-            return (topmovie.genres);
-        } else {
-            return (topmovie?.genre_ids.map((genre_id) => ({
-                id: genre_id,
-                name: genres.find(({ id }) => id === genre_id)?.name
-            })));
-        }
-    }
-
-    const topmovieGenres = getTopmovieGenres();
+    const topmovieGenres = normalize.movieGenres(topmovie);
 
     return (
         <div className={styles.header}>
@@ -138,7 +122,7 @@ export function Header() {
                                 {topmovie.overview}
                             </div>
                         )}
-                        {topmovieGenres && (
+                        {topmovieGenres.length && (
                             <ul className={styles.genres}>
                                 {topmovieGenres.map((genre) => (
                                     <li key={genre.id}>

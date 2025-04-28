@@ -33,12 +33,12 @@ interface GetNowPlayingParams {
 export const getNowPlaying = (params?: GetNowPlayingParams) =>
 	tmdb.get<MovieListWithDate>("/movie/now_playing", { params });
 
-interface GetMovieDetailParams {
+interface GetMovieDetailsParams {
 	language?: string;
-	movie_id: string;
+	movie_id: number | string;
 }
 
-export const getMovieDetail = (params: GetMovieDetailParams) =>
+export const getMovieDetails = (params: GetMovieDetailsParams) =>
 	tmdb.get<MovieWithDetails>(`/movie/${params.movie_id}`, {
 		params: { language: params.language },
 	});
@@ -46,7 +46,7 @@ export const getMovieDetail = (params: GetMovieDetailParams) =>
 interface GetSimilarParams {
 	language?: string;
 	page?: number;
-	movie_id: string;
+	movie_id: number | string;
 }
 
 export const getSimilar = (params: GetSimilarParams) =>

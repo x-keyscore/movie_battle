@@ -1,11 +1,9 @@
+import type { Movie, MovieWithDetails } from "../../api";
 import { Link } from "react-router";
-import { Button } from "../Button";
-import { Icons } from "../Icons";
-import type { Movie, MovieWithDetails } from "../../api/types/movie";
+import { Icons, Image, Button } from "../";
 import { useApp } from "../../providers/AppProvider";
+import { normalize } from "../../utils/normalize";
 import styles from "./MovieCard.module.css";
-import genres from "../../data/genres.json";
-import { Image } from "../Image";
 
 interface MovieCardProps {
 	movie: Movie | MovieWithDetails;
@@ -14,17 +12,7 @@ interface MovieCardProps {
 export const MovieCard = ({ movie }: MovieCardProps) => {
 	const { watchListPush } = useApp();
 
-	const getMovieGenres = () => {
-		if ("genres" in movie) {
-			return movie.genres;
-		}
-		return movie?.genre_ids.map((genre_id) => ({
-			id: genre_id,
-			name: genres.find(({ id }) => id === genre_id)?.name,
-		}));
-	};
-
-	const movieGenres = getMovieGenres();
+	const movieGenres = normalize.movieGenres(movie);
 	const movieImagePath = movie.backdrop_path || movie.poster_path;
 
 	return (
