@@ -5,6 +5,8 @@ import { useRequest } from "../../hooks/useRequest";
 import { ActorCard } from "../../components/ActorCard";
 import { MovieSection } from "../../components/MovieSection";
 import { requests } from "../../api";
+import language from "../../data/iso3166-french.json";
+import country from "../../data/iso639-french.json";
 import styles from "./MovieDetails.module.css";
 
 export function MovieDetailsPage() {
@@ -28,7 +30,14 @@ export function MovieDetailsPage() {
 	}, [movie_id]);
 
 	function normalize(value: string | number) {
-		return (value || "Non renseigné");
+		return value || "Non renseigné";
+	}
+
+	function toHoursAndMinutes(totalMinutes: number) {
+		const hours = Math.floor(totalMinutes / 60);
+		const minutes = totalMinutes % 60;
+
+		return `${hours} h ${minutes} m`;
 	}
 
 	useEffect(() => {
@@ -38,6 +47,13 @@ export function MovieDetailsPage() {
 	}, [data, setTopmovie]);
 
 	if (!data) return null;
+
+	const directors = data.credits.crew
+		.filter((member) => member.known_for_department === "Directing")
+		.filter(
+			(director, index, self) =>
+				index === self.findIndex((d) => d.id === director.id),
+		);
 
 	return (
 		<>
@@ -68,7 +84,11 @@ export function MovieDetailsPage() {
 						<ul className={styles.detailItemList}>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Durée :</h3>
-								<p className={styles.detail}>{normalize(data.movie.runtime)}</p>
+								<p className={styles.detail}>
+									{data.movie.runtime
+										? toHoursAndMinutes(data.movie.runtime)
+										: "Non renseigné"}
+								</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Date de sortie :</h3>
@@ -78,44 +98,60 @@ export function MovieDetailsPage() {
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Budgget :</h3>
-								<p className={styles.detail}>{normalize(data.movie.budget)}</p>
+								<p className={styles.detail}>
+									{normalize(data.movie.budget).toLocaleString("en-US", {
+										style: "currency",
+										currency: "USD",
+									})}
+								</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Revenue :</h3>
-								<p className={styles.detail}>{normalize(data.movie.revenue)}</p>
+								<p className={styles.detail}>
+									{normalize(data.movie.revenue).toLocaleString("en-US", {
+										style: "currency",
+										currency: "USD",
+									})}
+								</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Langue d'origine :</h3>
 								<p className={styles.detail}>
-									{normalize(data.movie.original_language)}
+									{normalize(
+										language[
+											data.movie.original_language as keyof typeof language
+										],
+									)}
 								</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Pays d'origine :</h3>
 								<p className={styles.detail}>
-									{normalize(data.movie.origin_country[0])}
+									{normalize(
+										country[
+											data.movie.origin_country[0] as keyof typeof country
+										],
+									)}
 								</p>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Directeurs :</h3>
 								<ul>
-									{data.credits.cast
-										.filter(
-											(member) => member.known_for_department === "Directing",
-										)
-										.map((director) => {
-											return (
+									{directors.length
+										? directors.map((director) => (
 												<li key={director.id}>{director.original_name}</li>
-											);
-										})}
+											))
+										: "Non renseigné"}
 								</ul>
 							</li>
 							<li className={styles.detailItem}>
 								<h3 className={styles.detailTitle}>Maisons de production :</h3>
 								<ul>
-									{data.movie.production_companies.map((company) => {
-										return <li key={company.id}>{company.name}</li>;
-									})}
+									{data.movie.production_companies.length
+										? data.movie.production_companies.map((company) => (
+												<li key={company.id}>{company.name}</li>
+											))
+										: "Non renseigné"}
 								</ul>
 							</li>
 						</ul>
@@ -148,4 +184,4 @@ export function MovieDetailsPage() {
 			</div>
 		</>
 	);
-};
+}
