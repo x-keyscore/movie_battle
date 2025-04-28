@@ -1,3 +1,7 @@
+.no-similar {
+	padding: 3%;
+}
+
 .details-section {
 	color: var(--color-text);
 	margin: 32px 4%;

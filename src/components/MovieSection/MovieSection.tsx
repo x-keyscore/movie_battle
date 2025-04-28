@@ -1,6 +1,6 @@
-import type { MovieList } from "../../api";
 import { Link } from "react-router";
 import { MovieCard } from "./../MovieCard";
+import type { MovieList } from "../../api/types/movie";
 import styles from "./MovieSection.module.css";
 import clsx from "clsx";
 
@@ -10,7 +10,7 @@ interface MovieSectionProps {
 	movies: MovieList;
 	inline: boolean;
 	startIndex?: number;
-	endIndex?: number
+	endIndex?: number;
 }
 
 export const MovieSection = ({
@@ -19,7 +19,7 @@ export const MovieSection = ({
 	movies,
 	inline,
 	startIndex = 0,
-	endIndex = movies.results.length
+	endIndex = movies.results.length,
 }: MovieSectionProps) => {
 	return (
 		<div className={styles.section}>
@@ -36,14 +36,16 @@ export const MovieSection = ({
 			<ul
 				className={clsx(
 					styles.sectionMovies,
-					inline ? styles.inline : styles.grid
+					inline ? styles.inline : styles.grid,
 				)}
 			>
-				{movies.results.slice(startIndex, endIndex).map((movie) => (
-					<li key={movie.id} className={styles.item}>
-						<MovieCard movie={movie} />
-					</li>
-				))}
+				{movies.results.slice(startIndex, endIndex).map((movie) => {
+					return (
+						<li key={movie.id} className={styles.item}>
+							<MovieCard movie={movie} />
+						</li>
+					);
+				})}
 			</ul>
 		</div>
 	);

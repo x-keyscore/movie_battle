@@ -13,21 +13,25 @@ export function MovieDetailsPage() {
 	const { movie_id } = useParams();
 	const { setTopmovie } = useApp();
 
-	const [data] = useRequest(null, async () => {
-		if (!movie_id) return;
+	const [data] = useRequest(
+		null,
+		async () => {
+			if (!movie_id) return;
 
-		const [movie, similarMovie, credits] = await Promise.all([
-			requests.movie.getMovieDetails({ language: "fr-Fr", movie_id }),
-			requests.movie.getSimilar({ language: "fr-Fr", movie_id }),
-			requests.credits.getCredits({ language: "fr-Fr", movie_id }),
-		]);
+			const [movie, similarMovie, credits] = await Promise.all([
+				requests.movie.getMovieDetails({ language: "fr-Fr", movie_id }),
+				requests.movie.getSimilar({ language: "fr-Fr", movie_id }),
+				requests.credits.getCredits({ language: "fr-Fr", movie_id }),
+			]);
 
-		return {
-			movie: movie.data,
-			similarMovie: similarMovie.data,
-			credits: credits.data,
-		};
-	}, [movie_id]);
+			return {
+				movie: movie.data,
+				similarMovie: similarMovie.data,
+				credits: credits.data,
+			};
+		},
+		[movie_id],
+	);
 
 	useEffect(() => {
 		if (!data) return;
@@ -41,6 +45,10 @@ export function MovieDetailsPage() {
 		return value || "Non renseigné";
 	}
 
+	const actors = data.credits.cast.filter(
+		(member) => member.known_for_department === "Acting",
+	);
+
 	const directors = data.credits.crew
 		.filter((member) => member.known_for_department === "Directing")
 		.filter(
@@ -50,12 +58,17 @@ export function MovieDetailsPage() {
 
 	return (
 		<>
-			<MovieSection
-				title="Similaires"
-				inline={true}
-				movies={data.similarMovie}
-				endIndex={10}
-			/>
+			{data.similarMovie.total_results > 0 ? (
+				<MovieSection
+					title="Similaires"
+					inline={true}
+					movies={data.similarMovie}
+					endIndex={10}
+				/>
+			) : (
+				<div className={styles.noSimilar} />
+			)}
+
 			<div className={styles.detailsSection}>
 				<figure className={styles.detailsContainer}>
 					<div className={styles.imgContainer}>
@@ -157,19 +170,19 @@ export function MovieDetailsPage() {
 
 				<div className={styles.actorCardsContainer}>
 					<div className={styles.actorCards}>
-						{data.credits.cast
-							.filter((member) => member.known_for_department === "Acting")
-							.map((actor) => {
-								return (
-									<ActorCard
-										key={actor.id}
-										id={actor.id}
-										name={actor.original_name}
-										character={actor.character}
-										profile_path={actor.profile_path}
-									/>
-								);
-							})}
+						{actors.length > 0 ? (
+							actors.map((actor) => (
+								<ActorCard
+									key={actor.id}
+									id={actor.id}
+									name={actor.original_name}
+									character={actor.character}
+									profile_path={actor.profile_path}
+								/>
+							))
+						) : (
+							<p>Non renseigné</p>
+						)}
 					</div>
 				</div>
 			</div>

@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 type Status = "IDLE" | "PENDING" | "OK" | "ERROR";
 
 function isEqual(a: unknown[], b: unknown[]) {
-	return (a.length === b.length && a.every((val, i) => val === b[i]));
+	return a.length === b.length && a.every((val, i) => val === b[i]);
 }
 
 /**
@@ -22,10 +22,10 @@ function isEqual(a: unknown[], b: unknown[]) {
  * @param dependencies - Optional array of dependencies to watch for automatic execution
  * @returns [data, status, fetcher] - The fetched data, current status, and manual trigger function
  */
-export function useRequest<I, D>(
+export function useRequest<I, D = I>(
 	initial: I,
-	callback: (getPrev?: () => D | I) => Promise<D>,
-	dependencies?: unknown[]
+	callback: (getPrev: () => D | I) => Promise<D>,
+	dependencies?: unknown[],
 ) {
 	const [status, setStatus] = useState<Status>("IDLE");
 	const [data, setData] = useState<I | D>(initial);
@@ -51,7 +51,7 @@ export function useRequest<I, D>(
 				console.error(err);
 			}
 		}
-	}
+	};
 
 	useEffect(() => {
 		if (!dependencies) return;
@@ -64,7 +64,7 @@ export function useRequest<I, D>(
 
 	const fetcher = () => {
 		launch(++launchIdRef.current);
-	}
+	};
 
 	return [data, status, fetcher] as const;
 }

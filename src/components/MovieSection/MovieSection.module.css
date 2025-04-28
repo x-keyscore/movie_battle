@@ -1,5 +1,6 @@
 .section {
 	margin-bottom: 24px;
+	position: relative;
 }
 
 .section-title {
@@ -42,6 +43,11 @@
 
 .section-movies.inline > .item {
 	min-width: 300px;
+}
+
+.load-when-displayed {
+	position: absolute;
+	bottom: 500px;
 }
 
 @media (any-pointer: coarse) {
