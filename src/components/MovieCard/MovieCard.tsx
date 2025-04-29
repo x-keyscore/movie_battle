@@ -29,7 +29,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 						loading="lazy"
 						isLazy={true}
 						isAvailable={movieImagePath}
-						src={`https://image.tmdb.org/t/p/original${movieImagePath}`}
+						src={`https://image.tmdb.org/t/p/w780${movieImagePath}`}
 					/>
 				</Link>
 				<figcaption className={styles.figcaption}>

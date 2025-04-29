@@ -8,32 +8,31 @@ import { normalize } from "../../utils/normalize";
 import styles from "./Header.module.css";
 
 const toggleReducer = (
-	state: ToggleState,
-	action: ToggleAction,
+    state: ToggleState,
+    action: ToggleAction,
 ): ToggleState => {
-	switch (action) {
-		case "CATEGORY_LIST":
-			return { ...state, categoryList: !state.categoryList };
-		case "WATCH_LIST":
-			return { ...state, watchList: !state.watchList };
-		case "RESET":
-			return { categoryList: false, watchList: false };
-		default:
-			return state;
-	}
+    switch (action) {
+        case "CATEGORY_LIST":
+            return { ...state, categoryList: !state.categoryList };
+        case "WATCH_LIST":
+            return { ...state, watchList: !state.watchList };
+        case "RESET":
+            return { categoryList: false, watchList: false };
+        default:
+            return state;
+    }
 };
 
 export function Header() {
-	const navigate = useNavigate();
-	const { topmovie, watchListPush } = useApp();
-	const [toggle, setToggle] = useReducer(toggleReducer, {
-		categoryList: false,
-		watchList: false,
-	});
+    const navigate = useNavigate();
+    const { topmovie, watchListPush } = useApp();
+    const [toggle, setToggle] = useReducer(toggleReducer, {
+        categoryList: false,
+        watchList: false,
+    });
 
-  const topmovieGenres = normalize.movieGenres(topmovie);
-    console.log(topmovie?.backdrop_path)
-    console.log(topmovie?.poster_path)
+    const topmovieGenres = normalize.movieGenres(topmovie);
+
     return (
         <div className={styles.header}>
             <div className={styles.topbar}>

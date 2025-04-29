@@ -13,9 +13,7 @@ export function MovieDetailsPage() {
 	const { movie_id } = useParams();
 	const { setTopmovie } = useApp();
 
-	const [data] = useRequest(
-		null,
-		async () => {
+	const [data] = useRequest(null, async () => {
 			if (!movie_id) return;
 
 			const [movie, similarMovie, credits] = await Promise.all([
@@ -30,7 +28,7 @@ export function MovieDetailsPage() {
 				credits: credits.data,
 			};
 		},
-		[movie_id],
+		[movie_id]
 	);
 
 	useEffect(() => {
