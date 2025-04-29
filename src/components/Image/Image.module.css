@@ -1,3 +1,9 @@
+.wrapper {
+    position: relative;
+    width: auto;
+    height: 100%;
+}
+
 .placeholder {
     position: absolute;
     inset: 0;
@@ -9,18 +15,22 @@
 }
 
 .placeholder > .loading {
+    --stroke: 3px;
+    --segments: 5;
     width: 120px;
     height: 20px;
+    margin: 6px;
     border-radius: 4px;
     background: linear-gradient(var(--color-accent) 0 0) left -40px top 0/40px 100% no-repeat transparent;
-    mask: conic-gradient(from 90deg at 5px 5px, #0000 25%, #000 0) 0 0/calc((100% - 5px)/5) calc(100% - 5px);
-    -webkit-mask: conic-gradient(from 90deg at 5px 5px, #0000 25%, #000 0) 0 0/calc((100% - 5px)/5) calc(100% - 5px);
-    animation: image-placeholder-loading-keyframe 1.50s infinite linear .5s;
+    mask: conic-gradient(from 90deg at var(--stroke) var(--stroke), #0000 25%, #000 0) 0 0/calc((100% - var(--stroke))/var(--segments)) calc(100% - var(--stroke));
+    -webkit-mask: conic-gradient(from 90deg at var(--stroke) var(--stroke), #0000 25%, #000 0) 0 0/calc((100% - var(--stroke))/var(--segments)) calc(100% - var(--stroke));
+    animation: image-placeholder-loading-keyframe 1.5s infinite linear 1.5s;
 }
 
 .placeholder > .unavailable {
     opacity: 0.4;
-    width: 46px;
+    width: 50%;
+    max-width: 46px;
     filter: grayscale(1);
 }
 

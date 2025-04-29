@@ -27,6 +27,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 						className={styles.image}
 						role="presentation"
 						loading="lazy"
+						isLazy={true}
 						isAvailable={!!movieImagePath}
 						src={`https://image.tmdb.org/t/p/original${movieImagePath}`}
 					/>

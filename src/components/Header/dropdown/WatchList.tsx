@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Icons, Button } from "../../";
+import { Icons, Button, Image } from "../../";
 import { useApp } from "../../../providers/AppProvider";
 import { normalize } from "../../../utils/normalize";
 import styles from "./WatchList.module.css";
@@ -21,11 +21,11 @@ export function WatchList() {
                             to={`/movie/${movie.id}`}
                             aria-label="Aller au détail du film"
                         >
-                            <img
+                            <Image
                                 className={styles.image}
-                                src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
                                 alt=""
-                                draggable="false"
+                                src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
+                                isAvailable={true}
                             />
                             <div className={styles.info}>
                                 <div className={styles.title}>{movie.title}</div>
