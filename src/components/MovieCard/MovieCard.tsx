@@ -28,7 +28,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 						role="presentation"
 						loading="lazy"
 						isLazy={true}
-						isAvailable={!!movieImagePath}
+						isAvailable={movieImagePath}
 						src={`https://image.tmdb.org/t/p/original${movieImagePath}`}
 					/>
 				</Link>
