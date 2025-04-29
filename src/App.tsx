@@ -1,9 +1,31 @@
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, useLocation } from "react-router";
 import { Icons, Header } from "./components";
 import { AppProvider } from "./providers/AppProvider";
 import styles from "./App.module.css";
+import { useEffect } from "react";
 
 export function App() {
+	const { pathname } = useLocation();
+
+	useEffect(() => {
+		const rootElem = document.getElementById("root");
+		const exactPath = ["/"];
+		const startsWithPath = ["/category", "/movie"];
+
+		if (!rootElem) return;
+
+		if (
+			exactPath.includes(pathname) ||
+			startsWithPath.some((path) => pathname.startsWith(path))
+		) {
+			rootElem.scrollTo({
+				top: 0,
+				left: 0,
+				behavior: "smooth",
+			});
+		}
+	}, [pathname]);
+
 	return (
 		<AppProvider>
 			<Header />

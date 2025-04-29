@@ -4,7 +4,6 @@ import { MovieSectionPagination } from "../../components/MovieSection";
 
 export function CategoryPage() {
 	const { category, genre_id } = useParams();
-	console.log(category, genre_id);
 
 	async function fetchMovieTypeList(pageIndex: number) {
 		switch (category) {

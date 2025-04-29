@@ -29,20 +29,24 @@ interface AppProviderProps {
 
 export function AppProvider({ children }: AppProviderProps) {
 	const [topmovie, setTopmovie] = useState<TopmovieState>(null);
-	const [watchList, setWatchList] = useLocalStorage<MovieWithDetails[]>("WATCH-LIST", []);
+	const [watchList, setWatchList] = useLocalStorage<MovieWithDetails[]>(
+		"WATCH-LIST",
+		[],
+	);
 
 	const watchListPush = (movie: Movie | MovieWithDetails) => {
 		if (watchList.some((item) => item.id === movie.id)) return;
 
 		if ("genres" in movie) {
-            setWatchList((prev) => {
-				return ([...prev, movie]);
+			setWatchList((prev) => {
+				return [...prev, movie];
 			});
-        } else {
-			requests.movie.getMovieDetails({ movie_id: movie.id })
+		} else {
+			requests.movie
+				.getMovieDetails({ language: "fr-Fr", movie_id: movie.id })
 				.then((result) => {
-					setWatchList((prev) => { 
-						return ([...prev, result.data]);
+					setWatchList((prev) => {
+						return [...prev, result.data];
 					});
 				});
 		}
@@ -51,9 +55,9 @@ export function AppProvider({ children }: AppProviderProps) {
 	const watchListRemove = (id: Movie["id"]) => {
 		setWatchList((prev) => {
 			const index = prev.findIndex((item) => item.id === id);
-			if (index < 0) return (prev);
+			if (index < 0) return prev;
 
-			return ([...prev.slice(0, index), ...prev.slice(index + 1)]);
+			return [...prev.slice(0, index), ...prev.slice(index + 1)];
 		});
 	};
 
