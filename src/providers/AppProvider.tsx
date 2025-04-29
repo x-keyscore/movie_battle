@@ -4,14 +4,21 @@ import { createContext, useContext, useState } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { requests } from "../api";
 
+type SearchValueState = string;
+type SearchValueSetState = Dispatch<SetStateAction<SearchValueState>>;
+
 type TopmovieState = Movie | MovieWithDetails | null;
 type TopmovieSetState = Dispatch<SetStateAction<TopmovieState>>;
 
 type WatchListState = MovieWithDetails[];
 
 const AppContext = createContext<{
+	searchValue: SearchValueState;
+	setSearchValue: SearchValueSetState;
+
 	topmovie: TopmovieState;
 	setTopmovie: TopmovieSetState;
+
 	watchList: WatchListState;
 	watchListPush: (movie: Movie | MovieWithDetails) => void;
 	watchListRemove: (id: number) => void;
@@ -28,11 +35,9 @@ interface AppProviderProps {
 }
 
 export function AppProvider({ children }: AppProviderProps) {
+	const [watchList, setWatchList] = useLocalStorage<MovieWithDetails[]>("WATCH-LIST", []);
 	const [topmovie, setTopmovie] = useState<TopmovieState>(null);
-	const [watchList, setWatchList] = useLocalStorage<MovieWithDetails[]>(
-		"WATCH-LIST",
-		[],
-	);
+	const [searchValue, setSearchValue] = useState("");
 
 	const watchListPush = (movie: Movie | MovieWithDetails) => {
 		if (watchList.some((item) => item.id === movie.id)) return;
@@ -64,6 +69,8 @@ export function AppProvider({ children }: AppProviderProps) {
 	return (
 		<AppContext.Provider
 			value={{
+				searchValue,
+				setSearchValue,
 				topmovie,
 				setTopmovie,
 				watchList,

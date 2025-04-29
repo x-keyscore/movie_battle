@@ -37,7 +37,6 @@ interface CollapsibleProps {
         wrapper?: string;
         content?: string;
     };
-    without?: "bottom" | "right";
     duration?: number;
     onClickOut?: (e: MouseEvent) => void;
     onFocusOut?: (e: FocusEvent) => void;
@@ -57,7 +56,6 @@ export function Collapsible({
     id,
     isOpen,
     styles,
-    without = "bottom",
     duration = .20,
     onEventOff = [],
     onClickOut,
@@ -70,8 +68,7 @@ export function Collapsible({
         overflow: "hidden",
         visibility: "hidden",
         transition:
-            (without === "right" ? `max-width ${duration}s linear,` : "") +
-            (without === "bottom" ? `max-height ${duration}s linear,` : "") +
+            `max-height ${duration}s linear,` +
             `visibility ${duration}s linear`
     });
 
@@ -105,20 +102,12 @@ export function Collapsible({
             zIndex: Number.isNaN(zIndex) ? "auto" : isOpen ? zIndex + 1 : zIndex
         };
 
-        if (without === "right") {
-            setStyle((prev) => ({
-                ...prev,
-                ...global,
-                maxWidth: isOpen ? `${rect.width}px` : "0px"
-            }));
-        } else if (without === "bottom") {
-            setStyle((prev) => ({
-                ...prev,
-                ...global,
-                maxHeight: isOpen ? `${rect.height}px` : "0px"
-            }));
-        }
-    }, [isOpen, without, rect]);
+        setStyle((prev) => ({
+            ...prev,
+            ...global,
+            maxHeight: isOpen ? `${rect.height}px` : "0px"
+        }));
+    }, [rect, isOpen]);
 
     useEffect(() => {
         const wrapper = wrapperRef.current;

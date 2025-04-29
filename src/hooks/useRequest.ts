@@ -18,13 +18,14 @@ function isEqual(a: unknown[], b: unknown[]) {
  * ```
  *
  * @template T - The return type of the async `callback` function
+ * @param initial - Initial value set for the data
  * @param callback - An async function to be executed
  * @param dependencies - Optional array of dependencies to watch for automatic execution
- * @returns [data, status, fetcher] - The fetched data, current status, and manual trigger function
+ * @returns [data, status, execute] - The fetched data, current status, and manual trigger function
  */
 export function useRequest<I, D = I>(
 	initial: I,
-	callback: (getPrev: () => D | I) => Promise<D>,
+	callback: (getPrev: () =>  I | D) => Promise<D>,
 	dependencies?: unknown[],
 ) {
 	const [status, setStatus] = useState<Status>("IDLE");
@@ -62,9 +63,9 @@ export function useRequest<I, D = I>(
 		}
 	});
 
-	const fetcher = () => {
+	const execute = () => {
 		launch(++launchIdRef.current);
 	};
 
-	return [data, status, fetcher] as const;
+	return [data, status, execute] as const;
 }

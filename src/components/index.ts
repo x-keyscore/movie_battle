@@ -1,8 +1,8 @@
-export { Icons } from "./Icons";
-export { Image } from "./Image";
-export { Button } from "./Button";
-export { Header } from "./Header";
-export { ActorCard } from "./ActorCard";
-export { MovieCard } from "./MovieCard";
-export { MovieSection } from "./MovieSection";
-export { Collapsible } from "./Collapsible";
+export * from "./Icons";
+export * from "./Image";
+export * from "./Button";
+export * from "../app/Header";
+export * from "./ActorCard";
+export * from "./MovieCard";
+export * from "./Collapsible";
+export * from "./MovieSection";
