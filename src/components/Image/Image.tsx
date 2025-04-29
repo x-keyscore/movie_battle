@@ -3,18 +3,19 @@ import { useEffect, useState } from "react";
 import styles from "./Image.module.css";
 
 interface ImageProps extends ImgHTMLAttributes<HTMLImageElement> {
+	isLazy?: boolean;
 	/**
 	 * Depending on the value :
 	 * - `trusty`: display the image
 	 * - `falsy`: does not display the image
 	 * - `undefined`: waits until an image is loaded and ignores errors
 	 */
-	isAvailable?: undefined | null | number | string | boolean;
+	isAvailable: unknown;
 }
 
-const placeholder = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+const fallback = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 
-export function Image({ src, isAvailable, ...props }: ImageProps) {
+export function Image({ src, isLazy, isAvailable, ...props }: ImageProps) {
 	const [status, setStatus] = useState<"WAIT" | "DONE" | "VOID">(
 		isAvailable === undefined || isAvailable ? "WAIT" : "VOID"
 	);
@@ -29,7 +30,7 @@ export function Image({ src, isAvailable, ...props }: ImageProps) {
 
 	if (status === "VOID") {
 		return (
-			<>
+			<div className={styles.wrapper}>
 				<div className={styles.placeholder}>
 					<img
 						className={styles.unavailable}
@@ -37,32 +38,32 @@ export function Image({ src, isAvailable, ...props }: ImageProps) {
 					/>
 				</div>
 				<img
-					src={placeholder}
+					src={fallback}
 					draggable="false"
 					{...props}
 				/>	
-			</>
-		);
-	} else {
-		return (
-			<>
-				{status === "WAIT" && (
-					<div className={styles.placeholder}>
-						<div className={styles.loading} />
-					</div>
-				)}
-				<img
-					src={!isAvailable ? placeholder : src}
-					style={{
-						opacity: status === "DONE" ? 1 : 0,
-						transition: "opacity .3s ease-in",
-					}}
-					draggable="false"
-					onLoad={() => isAvailable && setStatus("DONE")}
-					onError={() => isAvailable && setStatus("VOID")}
-					{...props}
-				/>	
-			</>
+			</div>
 		);
 	}
+
+	return (
+		<div className={styles.wrapper}>
+			{(isLazy && status === "WAIT") && (
+				<div className={styles.placeholder}>
+					<div className={styles.loading} />
+				</div>
+			)}
+			<img
+				src={isAvailable ? src : fallback}
+				style={{
+					opacity: status === "DONE" ? 1 : 0,
+					transition: "opacity .10s ease-in"
+				}}
+				draggable="false"
+				onLoad={() => isAvailable && setStatus("DONE")}
+				onError={() => isAvailable && setStatus("VOID")}
+				{...props}
+			/>
+		</div>
+	);
 }

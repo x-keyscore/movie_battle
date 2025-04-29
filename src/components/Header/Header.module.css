@@ -144,7 +144,7 @@
     height: 100%;
 }
 
-.topmovie-underlay>.backdrop {
+.topmovie-underlay .backdrop {
     object-position: top;
     object-fit: cover;
     width: 100%;
@@ -152,7 +152,7 @@
     filter: brightness(0.8);
 }
 
-.topmovie-underlay>.poster {
+.topmovie-underlay .poster {
     object-position: center;
     object-fit: cover;
     width: 100%;

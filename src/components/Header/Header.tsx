@@ -102,6 +102,7 @@ export function Header() {
                             className={styles.backdrop}
                             role="presentation"
                             src={`https://image.tmdb.org/t/p/original${topmovie?.backdrop_path}`}
+                            isLazy={true}
                             isAvailable={topmovie?.backdrop_path}
                         />
                     ) : (
@@ -109,6 +110,7 @@ export function Header() {
                             className={styles.poster}
                             role="presentation"
                             src={`https://image.tmdb.org/t/p/original${topmovie?.poster_path}`}
+                            isLazy={true}
                             isAvailable={topmovie?.poster_path}
                         />
                     )}

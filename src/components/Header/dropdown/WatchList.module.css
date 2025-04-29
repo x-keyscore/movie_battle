@@ -40,7 +40,7 @@
     box-sizing: border-box;
 }
 
-.item-link > .image {
+.item-link .image {
     object-fit: cover;
     width: 48px;
     height: 100%;
