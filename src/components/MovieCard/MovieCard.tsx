@@ -70,11 +70,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 						data-event-off="collapse-watch-list"
 						onClick={handleWatchlist}
 					>
-						{isInWatchlist() ? (
-							<Icons.Cross className={styles.iconCross} />
-						) : (
-							<Icons.AddToList />
-						)}
+						{isInWatchlist() ? <Icons.Cross /> : <Icons.AddToList />}
 					</Button>
 				</figcaption>
 			</figure>
