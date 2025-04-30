@@ -12,12 +12,18 @@ function movieRuntime(runtime: number) {
 function movieGenres(movie: Movie | MovieWithDetails | null): MovieWithDetails['genres'] {
     if (!movie) return ([]);
 
-    if ("genres" in movie)  return (movie.genres);
+    if ("genres" in movie) {
+        return (movie.genres);
+    }
 
-    return (movie.genre_ids.map((genre_id) => ({
-        id: genre_id,
-        name: genres.find(({ id }) => id === genre_id)!.name
-    })));
+    if ("genre_ids" in movie) {
+        return (movie.genre_ids.map((genre_id) => ({
+            id: genre_id,
+            name: genres.find(({ id }) => id === genre_id)!.name
+        })));
+    }
+
+    return ([]);
 }
 
 export const normalize = {
