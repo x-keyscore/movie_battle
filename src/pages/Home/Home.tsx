@@ -14,16 +14,16 @@ export function HomePage() {
 		]);
 
 		return {
-			popularMovies: popular.data,
-			topRatedMovies: topRated.data,
-			nowPlayingMovies: nowPlaying.data,
+			popularMovies: popular.data.results,
+			topRatedMovies: topRated.data.results,
+			nowPlayingMovies: nowPlaying.data.results,
 		};
 	}, []);
 
 	useEffect(() => {
 		if (!data) return;
 
-		setTopmovie(data.popularMovies.results[0]);
+		setTopmovie(data.popularMovies[0]);
 	}, [data, setTopmovie]);
 
 	if (!data) return null;

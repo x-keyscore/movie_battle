@@ -2,7 +2,6 @@ import { Icons } from "../Icons";
 import styles from "./ActorCard.module.css";
 
 interface ActorCardProps {
-	id: number;
 	name: string;
 	character: string;
 	profile_path: string | null;

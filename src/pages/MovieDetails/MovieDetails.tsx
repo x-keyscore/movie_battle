@@ -24,8 +24,8 @@ export function MovieDetailsPage() {
 
 			return {
 				movie: movie.data,
-				similarMovie: similarMovie.data,
 				credits: credits.data,
+				similarMovies: similarMovie.data
 			};
 		},
 		[movie_id]
@@ -56,11 +56,11 @@ export function MovieDetailsPage() {
 
 	return (
 		<>
-			{data.similarMovie.total_results > 0 ? (
+			{data.similarMovies.total_results > 0 ? (
 				<MovieSection
 					title="Similaires"
 					inline={true}
-					movies={data.similarMovie}
+					movies={data.similarMovies.results}
 					endIndex={10}
 				/>
 			) : (
@@ -169,10 +169,9 @@ export function MovieDetailsPage() {
 				<div className={styles.actorCardsContainer}>
 					<div className={styles.actorCards}>
 						{actors.length > 0 ? (
-							actors.map((actor) => (
+							actors.map((actor, index) => (
 								<ActorCard
-									key={actor.id}
-									id={actor.id}
+									key={actor.id + "-" + index}
 									name={actor.original_name}
 									character={actor.character}
 									profile_path={actor.profile_path}

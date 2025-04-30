@@ -1,2 +1,2 @@
 export { MovieSection } from "./MovieSection";
-export { MovieSectionPagination } from "./MovieSectionPagination";
+export { MovieSectionReveal } from "./MovieSectionReveal";

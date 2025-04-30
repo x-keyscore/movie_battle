@@ -55,7 +55,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 						size="small"
 						variant="ghost"
 						aria-label="Ajouter aux films enregistrés"
-						data-event-off="watch-list-collapse"
+						data-event-off="collapse-watch-list"
 						onClick={() => watchListPush(movie)}
 					>
 						<Icons.AddToList />

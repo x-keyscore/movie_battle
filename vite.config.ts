@@ -9,5 +9,10 @@ export default defineConfig({
 			localsConvention: "camelCase",
 		},
 	},
+	server: {
+		watch: {
+			ignored: ["**/vendor/**", "**/node_modules/**"]
+		}
+	},
 	plugins: [react(), svgr()],
 });

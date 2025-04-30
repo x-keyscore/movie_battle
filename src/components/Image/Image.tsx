@@ -1,5 +1,5 @@
 import type { ImgHTMLAttributes } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Image.module.css";
 
 interface ImageProps extends ImgHTMLAttributes<HTMLImageElement> {
@@ -23,6 +23,10 @@ export function Image(props: ImageProps) {
 	const [isLoading, setIsLoading] = useState<null | boolean>(
 		(isAvailable !== undefined && !isAvailable) ? null : true
 	);
+
+	useEffect(() => {
+		setIsLoading(true);
+	}, [src]);
 
 	if ((isAvailable !== undefined && !isAvailable) || isLoading === null) {
 		return (
@@ -60,7 +64,7 @@ export function Image(props: ImageProps) {
 					src={src}
 					style={{
 						opacity: isLoading ? 0 : 1,
-						transition: "opacity .15s ease-in"
+						transition: "opacity .10s ease-in"
 					}}
 					draggable="false"
 					onLoad={() => setIsLoading(false)}

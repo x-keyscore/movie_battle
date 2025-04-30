@@ -1,11 +1,20 @@
+import type { MouseEventHandler } from "react";
 import { Link } from "react-router";
 import genres from "../../../data/genres.json";
 import styles from "./CategoryList.module.css";
 
-export function CategoryList() {
+interface CategoryListProps {
+    close: () => void;
+}
+
+export function CategoryList({ close }: CategoryListProps) {
+    const handleListClick: MouseEventHandler<HTMLUListElement> = (e) => {
+        if (e.target instanceof Element && e.target.tagName === "A") close();
+    }
+
     return (
         <>
-            <ul className={styles.list}>
+            <ul className={styles.list} onClick={handleListClick}>
                 <li className={styles.item}>
                     <Link
                         className={styles.itemLink}
@@ -35,7 +44,7 @@ export function CategoryList() {
                 </li>
             </ul>
             <div className={styles.spacer} />
-            <ul className={styles.list}>
+            <ul className={styles.list} onClick={handleListClick}>
                 {
                     genres.map((genre) => {
                         return (

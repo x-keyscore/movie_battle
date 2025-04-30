@@ -1,47 +1,44 @@
-import type { MovieList } from "../../api";
+import type { Movie } from "../../api";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router";
-import { MovieCard } from "./../MovieCard";
+import { MovieCard } from "../MovieCard";
+import { useRequest } from "../../hooks/useRequest";
+import { useApp } from "../../providers/AppProvider";
 import styles from "./MovieSection.module.css";
 import clsx from "clsx";
-import { useRequest } from "../../hooks/useRequest";
-import { useEffect, useRef, useState } from "react";
-import { useApp } from "../../providers/AppProvider";
 
-interface MovieSectionProps {
+interface MovieSectionRevealProps {
 	url?: string;
 	title?: string;
-	movies?: MovieList;
 	inline: boolean;
-	startIndex?: number;
-	endIndex?: number;
-	fetchMovieTypeList: (page: number) => Promise<MovieList["results"]>;
+	minMovies?: number;
+	maxMovies?: number,
+	pageIndex: number;
+	setPageIndex: (index: number) => void;
+	fetchMovies: (prevMovies: () => Movie[]) => Promise<Movie[]>;
+	fetchDependencies: unknown[];
 }
 
-export const MovieSectionPagination = ({
+export function MovieSectionReveal({
 	url,
 	title,
 	inline,
-	startIndex = 0,
-	endIndex = Number.POSITIVE_INFINITY,
-	fetchMovieTypeList,
-}: MovieSectionProps) => {
+	pageIndex,
+	setPageIndex,
+	fetchMovies,
+	fetchDependencies
+}: MovieSectionRevealProps) {
 	const { setTopmovie } = useApp();
-	const [pageIndex, setPageIndex] = useState(1);
-	const [data] = useRequest<MovieList["results"]>(
-		[],
-		async (getPrev) => {
-			const movieFetched = await fetchMovieTypeList(pageIndex);
-			return [...getPrev(), ...movieFetched];
+	const [movies] = useRequest<Movie[]>([], async (prevMovies) => {
+			return (fetchMovies(prevMovies));
 		},
-		[pageIndex],
+		[...fetchDependencies]
 	);
-
 	const loaderRef = useRef(null);
 
 	useEffect(() => {
-		if (!data[0]) return;
-		setTopmovie(data[0]);
-	}, [setTopmovie, data]);
+		if (movies[0]) setTopmovie(movies[0]);
+	}, [movies, setTopmovie]);
 
 	useEffect(() => {
 		if (!loaderRef.current) return;
@@ -50,18 +47,16 @@ export const MovieSectionPagination = ({
 			(entries) => {
 				const firstEntry = entries[0];
 				if (firstEntry.isIntersecting) {
-					setPageIndex((prev) => prev + 1);
+					setPageIndex(pageIndex++);
 				}
 			},
-			{
-				threshold: 1.0,
-			},
+			{ threshold: 1.0 }
 		);
 
 		observer.observe(loaderRef.current);
 
 		return () => observer.disconnect();
-	}, []);
+	}, [pageIndex, setPageIndex]);
 
 	return (
 		<div className={styles.section}>
@@ -77,13 +72,8 @@ export const MovieSectionPagination = ({
 					)}
 				</h2>
 			) : null}
-			<ul
-				className={clsx(
-					styles.sectionMovies,
-					inline ? styles.inline : styles.grid,
-				)}
-			>
-				{data.slice(startIndex, endIndex).map((movie, index) => (
+			<ul className={clsx(styles.sectionMovies, inline ? styles.inline : styles.grid)}>
+				{movies.map((movie, index) => (
 					<li key={`${movie.id}-${index}`} className={styles.item}>
 						<MovieCard movie={movie} />
 					</li>
