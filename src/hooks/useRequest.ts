@@ -10,22 +10,22 @@ function isEqual(a: unknown[], b: unknown[]) {
  * Custom React hook to manage async requests with status tracking and dependency-based triggering.
  *
  * This hook executes the provided async `callback` function whenever the `dependencies` array changes.
- * It also provides a manual `fetcher()` method to trigger the request on demand.
+ * It also provides a manual `execute()` method to trigger the request on demand.
  *
  * Usage:
  * ```tsx
- * const [data, status, fetcher] = useRequest(fetchUserData, [userId]);
+ * const [data, status, execute] = useRequest(fetchUserData, [userId]);
  * ```
  *
  * @template T - The return type of the async `callback` function
- * @param initial - Initial value set for the data
- * @param callback - An async function to be executed
- * @param dependencies - Optional array of dependencies to watch for automatic execution
- * @returns [data, status, execute] - The fetched data, current status, and manual trigger function
+ * @param initial - Initial value set for the data state
+ * @param callback - An async function
+ * @param dependencies - Optional array of dependencies to watch for automatic execution `callback`
+ * @returns [data, status, execute] - The fetched data, current status, and manual trigger `callback`
  */
 export function useRequest<I, D = I>(
 	initial: I,
-	callback: (getPrev: () =>  I | D) => Promise<D>,
+	callback: (prevData: () =>  I | D) => Promise<D>,
 	dependencies?: unknown[],
 ) {
 	const [status, setStatus] = useState<Status>("IDLE");

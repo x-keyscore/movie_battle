@@ -1,53 +1,42 @@
-import type { Movie } from "../../api";
+import type { Movie } from "../../api/types/movie";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router";
-import { MovieCard } from "../MovieCard";
-import { useRequest } from "../../hooks/useRequest";
-import { useApp } from "../../providers/AppProvider";
+import { MovieCard } from "./../MovieCard";
 import styles from "./MovieSection.module.css";
 import clsx from "clsx";
 
-interface MovieSectionRevealProps {
+interface MovieSectionProps {
 	url?: string;
 	title?: string;
+	movies: Movie[];
 	inline: boolean;
-	minMovies?: number;
-	maxMovies?: number,
-	pageIndex: number;
-	setPageIndex: (index: number) => void;
-	fetchMovies: (prevMovies: () => Movie[]) => Promise<Movie[]>;
-	fetchDependencies: unknown[];
+	startIndex?: number;
+	endIndex?: number;
+	onScrollEnd?: () => void;
 }
 
-export function MovieSectionReveal({
+export const MovieSectionReveal = ({
 	url,
 	title,
+	movies,
 	inline,
-	pageIndex,
-	setPageIndex,
-	fetchMovies,
-	fetchDependencies
-}: MovieSectionRevealProps) {
-	const { setTopmovie } = useApp();
-	const [movies] = useRequest<Movie[]>([], async (prevMovies) => {
-			return (fetchMovies(prevMovies));
-		},
-		[...fetchDependencies]
-	);
+	startIndex = 0,
+	endIndex = 0,
+	onScrollEnd
+}: MovieSectionProps) => {
+	const onScrollEndRef = useRef(onScrollEnd);
 	const loaderRef = useRef(null);
 
-	useEffect(() => {
-		if (movies[0]) setTopmovie(movies[0]);
-	}, [movies, setTopmovie]);
+	onScrollEndRef.current = onScrollEnd;
 
 	useEffect(() => {
-		if (!loaderRef.current) return;
+		if (!loaderRef.current || !onScrollEndRef.current) return;
 
 		const observer = new IntersectionObserver(
 			(entries) => {
 				const firstEntry = entries[0];
 				if (firstEntry.isIntersecting) {
-					setPageIndex(pageIndex++);
+					onScrollEndRef.current?.();
 				}
 			},
 			{ threshold: 1.0 }
@@ -56,7 +45,7 @@ export function MovieSectionReveal({
 		observer.observe(loaderRef.current);
 
 		return () => observer.disconnect();
-	}, [pageIndex, setPageIndex]);
+	}, []);
 
 	return (
 		<div className={styles.section}>
@@ -72,12 +61,19 @@ export function MovieSectionReveal({
 					)}
 				</h2>
 			) : null}
-			<ul className={clsx(styles.sectionMovies, inline ? styles.inline : styles.grid)}>
-				{movies.map((movie, index) => (
-					<li key={`${movie.id}-${index}`} className={styles.item}>
-						<MovieCard movie={movie} />
-					</li>
-				))}
+			<ul
+				className={clsx(
+					styles.sectionMovies,
+					inline ? styles.inline : styles.grid,
+				)}
+			>
+				{movies.slice(startIndex, endIndex || movies.length).map((movie, index) => {
+					return (
+						<li key={movie.id + "-" + index} className={styles.item}>
+							<MovieCard movie={movie} />
+						</li>
+					);
+				})}
 			</ul>
 			<div className={styles.loadWhenDisplayed} ref={loaderRef} />
 		</div>
