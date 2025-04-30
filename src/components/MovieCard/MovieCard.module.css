@@ -71,15 +71,15 @@
 
 .figcaption-info > .genres > li:has(+ li):after {
 	color: var(--color-text);
-    content: " - ";
+	content: " - ";
 }
 
 .figcaption-info > .genres .link {
 	color: var(--color-accent);
 	pointer-events: auto;
 	text-decoration: underline;
-    text-decoration-color: transparent;
-    transition: text-decoration-color .10s ease-in-out;
+	text-decoration-color: transparent;
+	transition: text-decoration-color .10s ease-in-out;
 }
 
 .figcaption-info > .genres .link:hover,

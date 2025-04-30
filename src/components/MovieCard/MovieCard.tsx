@@ -10,10 +10,22 @@ interface MovieCardProps {
 }
 
 export const MovieCard = ({ movie }: MovieCardProps) => {
-	const { watchListPush } = useApp();
+	const { watchList, watchListPush, watchListRemove } = useApp();
 
 	const movieGenres = normalize.movieGenres(movie);
 	const movieImagePath = movie.backdrop_path || movie.poster_path;
+
+	function isInWatchlist() {
+		return watchList.find((item) => item.id === movie.id);
+	}
+
+	function handleWatchlist() {
+		if (isInWatchlist()) {
+			watchListRemove(movie.id);
+		} else {
+			watchListPush(movie);
+		}
+	}
 
 	return (
 		<div className={styles.card}>
@@ -56,9 +68,13 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 						variant="ghost"
 						aria-label="Ajouter aux films enregistrés"
 						data-event-off="collapse-watch-list"
-						onClick={() => watchListPush(movie)}
+						onClick={handleWatchlist}
 					>
-						<Icons.AddToList />
+						{isInWatchlist() ? (
+							<Icons.Cross className={styles.iconCross} />
+						) : (
+							<Icons.AddToList />
+						)}
 					</Button>
 				</figcaption>
 			</figure>
