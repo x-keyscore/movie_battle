@@ -47,15 +47,15 @@ export interface MovieWithDetails extends Movie {
 }
 
 export interface MovieList {
-    page: number;
-    results: Movie[];
-    total_pages: number;
-    total_results: number;
+	page: number;
+	results: Movie[];
+	total_pages: number;
+	total_results: number;
 }
 
 export interface MovieListWithDate extends MovieList {
-    dates: {
-        maximum: string;
-        minimum: string;
-    };
+	dates: {
+		maximum: string;
+		minimum: string;
+	};
 }
