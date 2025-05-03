@@ -41,6 +41,10 @@
 	gap: 16px;
 }
 
+.section-movies.dragging * {
+	cursor: grabbing;
+}
+
 .section-movies.inline > .item {
 	min-width: 300px;
 }
