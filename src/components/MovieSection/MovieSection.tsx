@@ -23,6 +23,7 @@ export const MovieSection = ({
 	endIndex = 0,
 }: MovieSectionProps) => {
 	const containerRef = useRef<HTMLUListElement>(null);
+	const dragDistanceRef = useRef<number>(0);
 	const [isDragging, setIsDragging] = useState<boolean>(false);
 	const [startX, setStartX] = useState<number>(0);
 	const [scrollLeft, setScrollLeft] = useState<number>(0);
@@ -30,6 +31,7 @@ export const MovieSection = ({
 	function handleMouseDown(e: React.MouseEvent<HTMLUListElement>) {
 		if (!containerRef.current) return;
 		setIsDragging(true);
+		dragDistanceRef.current = 0;
 		setStartX(e.pageX);
 		setScrollLeft(containerRef.current.scrollLeft);
 	}
@@ -49,6 +51,8 @@ export const MovieSection = ({
 	function handleMouseMove(e: React.MouseEvent<HTMLUListElement>) {
 		if (!isDragging || !containerRef.current) return;
 		e.preventDefault();
+		const distance = Math.abs(e.pageX - startX);
+		dragDistanceRef.current = distance;
 		const walk = (e.pageX - startX) * 1;
 		containerRef.current.scrollLeft = scrollLeft - walk;
 	}
@@ -76,6 +80,7 @@ export const MovieSection = ({
 				className={clsx(
 					styles.sectionMovies,
 					inline ? styles.inline : styles.grid,
+					isDragging && styles.dragging,
 				)}
 			>
 				{movies
@@ -83,7 +88,7 @@ export const MovieSection = ({
 					.map((movie, index) => {
 						return (
 							<li key={`${movie.id}-${index}`} className={styles.item}>
-								<MovieCard movie={movie} />
+								<MovieCard movie={movie} dragDistanceRef={dragDistanceRef} />
 							</li>
 						);
 					})}

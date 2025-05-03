@@ -3,14 +3,17 @@ import { Link } from "react-router";
 import { Icons, Image, Button } from "../";
 import { useApp } from "../../providers/AppProvider";
 import { normalize } from "../../utils/normalize";
+import type { RefObject } from "react";
 import styles from "./MovieCard.module.css";
 
 interface MovieCardProps {
 	movie: Movie | MovieWithDetails;
+	dragDistanceRef: RefObject<number>;
 }
 
-export const MovieCard = ({ movie }: MovieCardProps) => {
+export const MovieCard = ({ movie, dragDistanceRef }: MovieCardProps) => {
 	const { watchList, watchListPush, watchListRemove } = useApp();
+	const DRAG_THRESHOLD = 10;
 
 	const movieGenres = normalize.movieGenres(movie);
 	const movieImagePath = movie.backdrop_path || movie.poster_path;
@@ -31,6 +34,10 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 		<div className={styles.card}>
 			<figure className={styles.figure}>
 				<Link
+					onClick={(e) => {
+						if ((dragDistanceRef.current ?? 0) > DRAG_THRESHOLD)
+							e.preventDefault();
+					}}
 					to={`/movie/${movie.id}`}
 					draggable="false"
 					aria-label={`Voir les détails du film ${movie.title}`}
