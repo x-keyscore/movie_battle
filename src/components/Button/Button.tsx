@@ -8,18 +8,16 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: Children | [Children, Children];
     size?: "mini" | "small" | "medium";
     variant?: "ghost" | "normal";
-    ariaLabel?: string;
     isActive?: boolean;
 }
 
 export function Button({
-    size = "medium",
-    variant = "normal",
     children,
     className,
-    ariaLabel,
     isActive,
-    ...props
+    size = "medium",
+    variant = "normal",
+    ...attributes
 }: ButtonProps) {
     const variants: Record<typeof variant, string> = {
         ghost: styles.ghost,
@@ -42,8 +40,7 @@ export function Button({
                 variants[variant],
                 isActive && styles.active
             )}
-            aria-label={ariaLabel}
-            {...props}
+            {...attributes}
         >
             {children}
         </button>

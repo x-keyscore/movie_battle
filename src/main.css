@@ -73,3 +73,23 @@ body {
 	height: 100%;
 	overflow-y: auto;
 }
+
+@supports selector(::-webkit-scrollbar) {
+	.scroll::-webkit-scrollbar {
+		width: 4px;
+	}
+	.scroll::-webkit-scrollbar-track {
+		background: var(--color-surface);
+	}
+	.scroll::-webkit-scrollbar-thumb {
+		border-radius: 2px;
+		background: var(--color-accent);
+	}
+}
+
+@supports not selector(::-webkit-scrollbar) {
+	.scroll {
+		scrollbar-width: thin;
+    	scrollbar-color: var(--color-accent) var(--color-surface);
+	}
+}

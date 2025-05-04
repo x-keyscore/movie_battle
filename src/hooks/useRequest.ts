@@ -1,70 +1,60 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect} from "react";
 
-type Status = "IDLE" | "PENDING" | "OK" | "ERROR";
+type Status = "IDLE" | "WAIT" | "DONE" | "FAIL";
+type Config<I> = { initial: I; subscribes?: unknown[]; };
+type Callback<D> = (data: D) => Promise<D>;
 
-function isEqual(a: unknown[], b: unknown[]) {
-	return a.length === b.length && a.every((val, i) => val === b[i]);
+function hasEqualItems(a: unknown[], b: unknown[]) {
+	return (a.length === b.length && a.every((val, i) => val === b[i]));
 }
 
-/**
- * Custom React hook to manage async requests with status tracking and dependency-based triggering.
- *
- * This hook executes the provided async `callback` function whenever the `dependencies` array changes.
- * It also provides a manual `execute()` method to trigger the request on demand.
- *
- * Usage:
- * ```tsx
- * const [data, status, execute] = useRequest(fetchUserData, [userId]);
- * ```
- *
- * @template T - The return type of the async `callback` function
- * @param initial - Initial value set for the data state
- * @param callback - An async function
- * @param dependencies - Optional array of dependencies to watch for automatic execution `callback`
- * @returns [data, status, execute] - The fetched data, current status, and manual trigger `callback`
- */
 export function useRequest<I, D = I>(
-	initial: I,
-	callback: (prevData: () =>  I | D) => Promise<D>,
-	dependencies?: unknown[],
+	{ initial, subscribes }: Config<I>,
+	callback: Callback<I | D>
 ) {
 	const [status, setStatus] = useState<Status>("IDLE");
 	const [data, setData] = useState<I | D>(initial);
-	const prevDepsRef = useRef<unknown[]>(null);
-	const callbackRef = useRef(callback);
-	const launchIdRef = useRef(0);
-	const dataRef = useRef(data);
+	const prevSubscribesRef = useRef<unknown[]>(null);
+	const idRef = useRef(0);
 
-	callbackRef.current = callback;
-	dataRef.current = data;
+	useEffect(() => {
+		return () => {
+			prevSubscribesRef.current = null;
+			idRef.current += 1;
+		}
+	}, []);
 
-	const launch = async (launchId: number) => {
-		setStatus("PENDING");
+	const process = async (callback: Callback<I | D>) => {
+		const id = idRef.current += 1;
+
+		setStatus("WAIT");
 		try {
-			const result = await callbackRef.current(() => dataRef.current);
-			if (launchIdRef.current === launchId) {
-				setStatus("OK");
+			const result = await callback(data);
+
+			if (id === idRef.current) {
 				setData(result);
+				setStatus("DONE");
 			}
 		} catch (err) {
-			if (launchIdRef.current === launchId) {
-				setStatus("ERROR");
+			if (id === idRef.current) {
 				console.error(err);
+				setStatus("WAIT");
 			}
 		}
 	};
 
 	useEffect(() => {
-		if (!dependencies) return;
+		if (!subscribes) return;
 
-		if (!prevDepsRef.current || !isEqual(prevDepsRef.current, dependencies)) {
-			prevDepsRef.current = dependencies;
-			launch(++launchIdRef.current);
+		if (!prevSubscribesRef.current 
+			|| !hasEqualItems(prevSubscribesRef.current, subscribes)) {
+			prevSubscribesRef.current = subscribes;
+			process(callback);
 		}
 	});
 
 	const execute = () => {
-		launch(++launchIdRef.current);
+		process(callback);
 	};
 
 	return [data, status, execute] as const;

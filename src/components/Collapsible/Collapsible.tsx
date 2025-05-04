@@ -40,10 +40,6 @@ interface CollapsibleProps {
     duration?: number;
     onClickOut?: (e: MouseEvent) => void;
     onFocusOut?: (e: FocusEvent) => void;
-    /**
-     * Attribute of elements that should not
-     * trigger `OnClickOut` and `onFocusOut`
-    */
     onEventOff?: {
         name: string;
         value: string;

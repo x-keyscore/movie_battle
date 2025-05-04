@@ -2,25 +2,22 @@ import type { Movie, MovieWithDetails } from "../../api";
 import { Link } from "react-router";
 import { Icons, Image, Button } from "../";
 import { useApp } from "../../providers/AppProvider";
-import { normalize } from "../../utils/normalize";
+import { formatters } from "../../utils/formatters";
 import styles from "./MovieCard.module.css";
 
 interface MovieCardProps {
 	movie: Movie | MovieWithDetails;
 }
 
-export const MovieCard = ({ movie }: MovieCardProps) => {
+export function MovieCard({ movie }: MovieCardProps) {
 	const { watchList, watchListPush, watchListRemove } = useApp();
 
-	const movieGenres = normalize.movieGenres(movie);
+	const movieGenres = formatters.movieGenres(movie);
 	const movieImagePath = movie.backdrop_path || movie.poster_path;
+	const isInWatchlist = watchList.find((item) => item.id === movie.id);
 
-	function isInWatchlist() {
-		return watchList.find((item) => item.id === movie.id);
-	}
-
-	function handleWatchlist() {
-		if (isInWatchlist()) {
+	const handleWatchlist = () => {
+		if (isInWatchlist) {
 			watchListRemove(movie.id);
 		} else {
 			watchListPush(movie);
@@ -36,11 +33,12 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 					aria-label={`Voir les détails du film ${movie.title}`}
 				>
 					<Image
-						className={styles.image}
+						styles={{
+							wrapper: styles.image,
+							content: styles.imageContent
+						}}
 						role="presentation"
-						loading="lazy"
-						isLazy={true}
-						isAvailable={movieImagePath}
+						isLoadable={movieImagePath}
 						src={`https://image.tmdb.org/t/p/w780${movieImagePath}`}
 					/>
 				</Link>
@@ -70,7 +68,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 						data-event-off="collapse-watch-list"
 						onClick={handleWatchlist}
 					>
-						{isInWatchlist() ? <Icons.Cross /> : <Icons.AddToList />}
+						{isInWatchlist ? <Icons.Cross /> : <Icons.AddToList />}
 					</Button>
 				</figcaption>
 			</figure>

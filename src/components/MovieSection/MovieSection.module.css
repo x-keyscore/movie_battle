@@ -1,6 +1,6 @@
 .section {
-	margin-bottom: 24px;
 	position: relative;
+	margin-bottom: 24px;
 }
 
 .section-title {
@@ -45,9 +45,9 @@
 	min-width: 300px;
 }
 
-.load-when-displayed {
+.sentinel {
 	position: absolute;
-	bottom: 500px;
+	bottom: 100vh;
 }
 
 @media (any-pointer: coarse) {

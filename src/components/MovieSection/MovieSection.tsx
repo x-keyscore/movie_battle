@@ -1,4 +1,5 @@
 import type { Movie } from "../../api/types/movie";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router";
 import { MovieCard } from "./../MovieCard";
 import styles from "./MovieSection.module.css";
@@ -7,20 +8,46 @@ import clsx from "clsx";
 interface MovieSectionProps {
 	url?: string;
 	title?: string;
+	movies: Movie[];
 	inline: boolean;
 	startIndex?: number;
 	endIndex?: number;
-	movies: Movie[];
+	onScrollEnd?: () => ((() => void) | void);
 }
 
-export const MovieSection = ({
+export function MovieSection({
 	url,
 	title,
 	movies,
 	inline,
 	startIndex = 0,
-	endIndex = 0
-}: MovieSectionProps) => {
+	endIndex = 0,
+	onScrollEnd
+}: MovieSectionProps) {
+	const onScrollEndRef = useRef(onScrollEnd);
+	const sentinelRef = useRef(null);
+
+	useEffect(() => {
+		if (onScrollEnd) onScrollEndRef.current = onScrollEnd;
+	}, [onScrollEnd]);
+
+	useEffect(() => {
+		if (!onScrollEnd || !sentinelRef.current) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting) {
+					onScrollEndRef.current?.();
+				}
+			},
+			{ threshold: 1.0 }
+		);
+
+		observer.observe(sentinelRef.current);
+
+		return () => observer.disconnect();
+	}, []);
+
 	return (
 		<div className={styles.section}>
 			{title ? (
@@ -49,6 +76,7 @@ export const MovieSection = ({
 					);
 				})}
 			</ul>
+			{onScrollEnd && <div className={styles.sentinel} ref={sentinelRef} />}
 		</div>
 	);
 };

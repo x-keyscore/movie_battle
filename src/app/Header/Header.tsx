@@ -5,8 +5,9 @@ import { Link, useNavigate } from "react-router";
 import { useApp } from "../../providers/AppProvider";
 import { Icons, Button, Collapsible, Image } from "../../components";
 import { CategoryList, WatchList } from "./dropdown";
-import { normalize } from "../../utils/normalize";
+import { formatters } from "../../utils/formatters";
 import styles from "./Header.module.css";
+import clsx from "clsx";
 
 const toggleReducer = (
     state: ToggleState,
@@ -36,7 +37,7 @@ export function Header() {
         if (!searchValue) return;
     
         const timeout = setTimeout(() => {
-            console.log("search : ", searchValue)
+            console.log("search : ", searchValue);
             navigate("/search/" + searchValue);
         }, 300);
     
@@ -44,10 +45,11 @@ export function Header() {
       }, [searchValue, navigate]);
 
     const handleChangeSearch: ChangeEventHandler<HTMLInputElement> = (e) => {
+        if (!e.currentTarget.value) navigate("");
         setSearchValue(e.currentTarget.value);
     }
 
-    const topmovieGenres = normalize.movieGenres(topmovie);
+    const topmovieGenres = formatters.movieGenres(topmovie);
 
     return (
         <header className={styles.header}>
@@ -80,8 +82,8 @@ export function Header() {
                         id="collapse-category-list"
                         isOpen={toggle.categoryList}
                         styles={{
-                            wrapper: styles.collapsibleWrapper,
-                            content: styles.collapsibleContent
+                            wrapper: styles.collapsible,
+                            content: clsx(styles.collapsibleContent, "scroll")
                         }}
                         onFocusOut={() => setToggle("CATEGORY_LIST")}
                         onClickOut={() => setToggle("CATEGORY_LIST")}
@@ -104,8 +106,8 @@ export function Header() {
                             id="collapse-watch-list"
                             isOpen={toggle.watchList}
                             styles={{
-                                wrapper: styles.collapsibleWrapper,
-                                content: styles.collapsibleContent
+                                wrapper: styles.collapsible,
+                                content: clsx(styles.collapsibleContent, "scroll")
                             }}
                             onFocusOut={() => setToggle("WATCH_LIST")}
                             onClickOut={() => setToggle("WATCH_LIST")}
@@ -121,19 +123,25 @@ export function Header() {
                     <div className={styles.topmovieUnderlay}>
                         {topmovie.backdrop_path ? (
                             <Image
-                                className={styles.backdrop}
+                                styles={{
+                                    wrapper: styles.backdrop,
+                                    content: styles.backdropContent
+                                }}
                                 role="presentation"
+                                isWaitable={true}
+                                isLoadable={topmovie.backdrop_path}
                                 src={`https://image.tmdb.org/t/p/original${topmovie.backdrop_path}`}
-                                isLazy={true}
-                                isAvailable={topmovie.backdrop_path}
                             />
                         ) : (
                             <Image
-                                className={styles.poster}
+                                styles={{
+                                    wrapper: styles.poster,
+                                    content: styles.posterContent
+                                }}
                                 role="presentation"
+                                isWaitable={true}
+                                isLoadable={topmovie.poster_path}
                                 src={`https://image.tmdb.org/t/p/original${topmovie.poster_path}`}
-                                isLazy={true}
-                                isAvailable={topmovie.poster_path}
                             />
                         )}
                     </div>

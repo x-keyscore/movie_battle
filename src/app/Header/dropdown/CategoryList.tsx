@@ -1,6 +1,6 @@
 import type { MouseEventHandler } from "react";
 import { Link } from "react-router";
-import genres from "../../../data/genres.json";
+import genres from "../../../assets/data/movie-genres.json";
 import styles from "./CategoryList.module.css";
 
 interface CategoryListProps {

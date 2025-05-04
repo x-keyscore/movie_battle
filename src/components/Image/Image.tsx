@@ -1,77 +1,67 @@
 import type { ImgHTMLAttributes } from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "./Image.module.css";
 
-interface ImageProps extends ImgHTMLAttributes<HTMLImageElement> {
+interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "className"> {
+	styles?: {
+        wrapper?: string;
+        content?: string;
+    };
+	/** **Default:** `false` */
+	draggable?: ImgHTMLAttributes<HTMLImageElement>['draggable'];
 	/** **Default:** `true` */
-	isLazy?: boolean;
+	isWaitable?: boolean;
 	/**
 	 * **Default:** `true`
 	 * 
-	 * - `trusty`: display the image
-	 * - `falsy`: does not display the image
-	 * - `undefined`: waits until an image is loaded and ignores errors
+	 * - `trusty`: Display the image
+	 * - `falsy`: Display the placeholder
+	 * - `undefined` or `null`: Display the loader
 	 */
-	isAvailable?: unknown;
+	isLoadable?: unknown;
 }
 
-const fallback = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+function prepareProps(props: ImageProps) {
+	props = { ...props };
+	if (!("draggable" in props)) props.draggable = false;
+	if (!("isWaitable" in props)) props.isWaitable = true;
+	if (!("isLoadable" in props)) props.isLoadable = true;
+	return (props);
+}
 
 export function Image(props: ImageProps) {
-	if (!("isAvailable" in props)) props.isAvailable = true;
-	const { src, isLazy, isAvailable, ...attributes } = props;
+	const { styles: propStyles, isWaitable, isLoadable, ...attributes } = prepareProps(props);
 	const [isLoading, setIsLoading] = useState<null | boolean>(
-		(isAvailable !== undefined && !isAvailable) ? null : true
+		(isLoadable != null && !isLoadable) ? null : true
 	);
 
-	useEffect(() => {
-		setIsLoading(true);
-	}, [src]);
-
-	if ((isAvailable !== undefined && !isAvailable) || isLoading === null) {
+	if ((isLoadable !== undefined && !isLoadable) || isLoading === null) {
 		return (
-			<div className={styles.wrapper}>
-				<div className={styles.placeholder}>
-					<img
-						className={styles.unavailable}
-						src="/icons/brand-logo.png"
-					/>
-				</div>
+			<div className={propStyles?.wrapper}>
 				<img
-					src={fallback}
+					className={styles.unavailable}
+					src="/images/brand-logo.png"
 					draggable="false"
-					{...attributes}
 				/>
 			</div>
 		);
 	}
 
 	return (
-		<div className={styles.wrapper}>
-			{(isLazy !== false && isLoading) && (
-				<div className={styles.placeholder}>
-					<div className={styles.loading} />
-				</div>
+		<div className={propStyles?.wrapper}>
+			{((isWaitable !== false && isLoading) || isLoadable === undefined) && (
+				<div className={styles.loading} />
 			)}
-			{isAvailable === undefined ? (
-				<img
-					src={fallback}
-					draggable="false"
-					{...attributes}
-				/>
-			) : (
-				<img
-					src={src}
-					style={{
-						opacity: isLoading ? 0 : 1,
-						transition: "opacity .10s ease-in"
-					}}
-					draggable="false"
-					onLoad={() => setIsLoading(false)}
-					onError={() => setIsLoading(null)}
-					{...attributes}
-				/>
-			)}
+			<img
+				className={propStyles?.content}
+				style={{
+					opacity: isLoading ? 0 : 1,
+					transition: "opacity .10s ease-in"
+				}}
+				onLoad={() => setIsLoading(false)}
+				onError={() => setIsLoading(null)}
+				{...attributes}
+			/>
 		</div>
 	);
 }

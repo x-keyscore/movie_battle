@@ -40,9 +40,14 @@
     box-sizing: border-box;
 }
 
-.item-link .image {
-    object-fit: cover;
+.item-link > .image {
     width: 48px;
+    height: 100%;
+}
+
+.item-link > .image > .image-content {
+    object-fit: cover;
+    width: 100%;
     height: 100%;
 }
 

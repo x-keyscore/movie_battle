@@ -1,78 +1,73 @@
 import type { Movie, MovieList } from "../../api";
+import type { AxiosResponse } from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { useApp } from "../../providers/AppProvider";
-import { useRequest } from "../../hooks/useRequest";
-import { MovieSectionReveal } from "../../components";
+import { useRequestQueue } from "../../hooks/useRequestQueue";
+import { MovieSection } from "../../components";
 import { requests } from "../../api";
 
 interface UseRequestData {
 	movies: Movie[];
-	maxPages: number;
+	totalPages: number;
 }
 
 export function CategoryPage() {
 	const { category, genre_id } = useParams();
 	const { setTopmovie } = useApp();
 	const [pageIndex, setPageIndex] = useState(1);
-	const [data] = useRequest<UseRequestData>(
-		{ movies: [], maxPages: 1 },
-		async (getPrevData) => {
-			const prevData = getPrevData();
-			let data: null | MovieList = null;
-
-			if (pageIndex > prevData.maxPages) return (prevData);
-
-			switch (category) {
-				case "popular":
-					data = (await requests.movie.getPopular({
-						page: pageIndex,
-						language: "fr-Fr",
-					})).data;
-					break;
-				case "top-rated":
-					data = (await requests.movie.getTopRated({
-						page: pageIndex,
-						language: "fr-Fr"
-					})).data;
-					break;
-				case "now-playing":
-					data = (await requests.movie.getNowPlaying({
-						page: pageIndex,
-						language: "fr-Fr",
-					})).data;
-					break;
-				case "genre":
-					if (genre_id) {
-						data = (await requests.movie.getMoviesByGenre({
-							with_genres: genre_id,
-							page: pageIndex
-						})).data;
-					}
-					break;
-			}
-
-			if (!data) {
-				return ({ 
-					maxPages: prevData.maxPages,
-					movies: [...prevData.movies]
+	const [data] = useRequestQueue<UseRequestData>({ 
+		initial: { movies: [], totalPages: 1 },
+		subscribes: [pageIndex, category, genre_id]
+	}, async (prevData) => {
+		let response: null | AxiosResponse<MovieList> = null;
+		console.log(pageIndex)
+		switch (category) {
+			case "popular":
+				response = await requests.movie.getPopular({
+					page: pageIndex,
+					language: "fr-FR"
 				});
-			}
-			else if (pageIndex === 1) {
-				return ({
-					maxPages: data.total_pages,
-					movies: data.results.slice(1)
+				break;
+			case "top-rated":
+				response = await requests.movie.getTopRated({
+					page: pageIndex,
+					language: "fr-FR"
 				});
-			}
-			else {
-				return ({
-					maxPages: prevData.maxPages,
-					movies: [...prevData.movies, ...data.results]
+				break;
+			case "now-playing":
+				response = await requests.movie.getNowPlaying({
+					page: pageIndex,
+					language: "fr-FR"
 				});
-			}
-		},
-		[pageIndex, category, genre_id]
-	);
+				break;
+			case "genre":
+				if (genre_id) {
+					response = await requests.movie.getMoviesByGenre({
+						with_genres: genre_id,
+						page: pageIndex,
+						language: "fr-FR"
+					});
+				}
+				break;
+		}
+
+		if (!response) return (prevData);
+		const { data } = response;
+
+		if (pageIndex === 1) {
+			return ({
+				movies: data.results,
+				totalPages: data.total_pages
+			});
+		}
+		else {
+			return ({
+				movies: [...prevData.movies, ...data.results],
+				totalPages: prevData.totalPages
+			});
+		}
+	});
 
 	useEffect(() => {
 		if (data.movies[0]) setTopmovie(data.movies[0]);
@@ -83,10 +78,16 @@ export function CategoryPage() {
 	}, [category, genre_id]);
 
 	return (
-		<MovieSectionReveal
-			inline={false}
+		<MovieSection
 			movies={data.movies}
-			onScrollEnd={() => setPageIndex(prev => prev + 1)}
+			inline={false}
+			startIndex={1}
+			onScrollEnd={() => {
+				setPageIndex(prev => {
+					if (prev > data.totalPages) return (prev);
+					return (prev + 1);
+				});
+			}}
 		/>
 	);
 }

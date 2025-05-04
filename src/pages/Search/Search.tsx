@@ -1,9 +1,9 @@
-import type { Movie, MovieList } from "../../api";
+import type { Movie } from "../../api";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { useApp } from "../../providers/AppProvider";
 import { useRequest } from "../../hooks/useRequest";
-import { MovieSectionReveal } from "../../components";
+import { MovieSection } from "../../components";
 import { requests } from "../../api";
 
 interface UseRequestData {
@@ -13,46 +13,41 @@ interface UseRequestData {
 
 export function SearchPage() {
 	const { movieTitle } = useParams();
-	const { setTopmovie } = useApp();
+	const { setSearchValue, setTopmovie } = useApp();
 	const [pageIndex, setPageIndex] = useState(1);
+	const [data] = useRequest<UseRequestData>({ 
+		initial: { movies: [], maxPages: 1 },
+		subscribes: [pageIndex, movieTitle]
+	}, async (prevData) => {
+		if (movieTitle) {
+			const { data } = await requests.movie.getMoviesByTitle({
+				page: pageIndex,
+				query: movieTitle,
+				language: "fr-FR"
+			});
 
-	const [data] = useRequest<UseRequestData>(
-		{ movies: [], maxPages: 1 },
-		async (getPrevData) => {
-			const prevData = getPrevData();
-			let data: null | MovieList = null;
-
-			if (pageIndex > prevData.maxPages) return (prevData);
-
-			if (movieTitle) {
-				data = (await requests.movie.getMoviesByTitle({
-					page: pageIndex,
-					query: movieTitle,
-					language: "fr-FR"
-				})).data;
-			}
-
-			if (!data) {
-				return ({ 
-					maxPages: prevData.maxPages,
-					movies: [...prevData.movies]
-				});
-			}
-			else if (pageIndex === 1) {
+			if (pageIndex === 1) {
 				return ({
 					maxPages: data.total_pages,
-					movies: data.results.slice(1)
+					movies: [...data.results]
 				});
-			}
-			else {
+			} else {
 				return ({
-					maxPages: prevData.maxPages,
+					maxPages: data.total_pages,
 					movies: [...prevData.movies, ...data.results]
 				});
 			}
-		},
-		[pageIndex, movieTitle]
-	);
+		}
+
+		return (prevData);
+	});
+
+	useEffect(() => {
+		if (movieTitle) setSearchValue(movieTitle);
+		return (() => {
+			setSearchValue("");
+		})
+	}, []);
 
 	useEffect(() => {
 		if (data.movies[0]) setTopmovie(data.movies[0]);
@@ -63,12 +58,16 @@ export function SearchPage() {
 	}, [movieTitle]);
 
 	return (
-		<>
-			<MovieSectionReveal
-				inline={false}
-				movies={data.movies}
-				onScrollEnd={() => setPageIndex(prev => prev + 1)}
-			/>
-		</>
+		<MovieSection
+			movies={data.movies}
+			inline={false}
+			startIndex={1}
+			onScrollEnd={() => {
+				setPageIndex(prev => {
+					if (prev > data.maxPages) return (prev);
+					return (prev + 1);
+				});
+			}}
+		/>
 	);
 }

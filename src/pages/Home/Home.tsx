@@ -6,19 +6,22 @@ import { requests } from "../../api";
 
 export function HomePage() {
 	const { setTopmovie } = useApp();
-	const [data] = useRequest(null, async () => {
+	const [data] = useRequest({
+		initial: null,
+		subscribes: []
+	}, async () => {
 		const [popular, topRated, nowPlaying] = await Promise.all([
 			requests.movie.getPopular({ language: "fr-Fr" }),
 			requests.movie.getTopRated({ language: "fr-Fr" }),
 			requests.movie.getNowPlaying({ language: "fr-Fr" }),
 		]);
 
-		return {
+		return ({
 			popularMovies: popular.data.results,
 			topRatedMovies: topRated.data.results,
 			nowPlayingMovies: nowPlaying.data.results,
-		};
-	}, []);
+		});
+	});
 
 	useEffect(() => {
 		if (!data) return;
@@ -26,7 +29,7 @@ export function HomePage() {
 		setTopmovie(data.popularMovies[0]);
 	}, [data, setTopmovie]);
 
-	if (!data) return null;
+	if (!data) return (null);
 
 	return (
 		<>

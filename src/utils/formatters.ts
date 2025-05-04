@@ -1,5 +1,5 @@
 import { Movie, MovieWithDetails } from "../api";
-import genres from "../data/genres.json";
+import genres from "../assets/data/movie-genres.json";
 
 function movieRuntime(runtime: number) {
     const h = Math.floor(runtime / 60), m = runtime % 60;
@@ -26,7 +26,7 @@ function movieGenres(movie: Movie | MovieWithDetails | null): MovieWithDetails['
     return ([]);
 }
 
-export const normalize = {
+export const formatters = {
     movieRuntime,
     movieGenres
 }
