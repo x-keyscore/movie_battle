@@ -8,6 +8,8 @@
 	--color-text: hsl(0, 0%, 100%);
 	--color-text-light: hsl(204, 11%, 82%);
 	--color-text-placeholder: hsl(204, 11%, 82%);
+	--color-correct: hsl(137, 29%, 38%);
+	--color-incorrect: hsl(0, 29%, 38%);
 }
 
 a,
@@ -90,6 +92,6 @@ body {
 @supports not selector(::-webkit-scrollbar) {
 	.scroll {
 		scrollbar-width: thin;
-    	scrollbar-color: var(--color-accent) var(--color-surface);
+		scrollbar-color: var(--color-accent) var(--color-surface);
 	}
 }
