@@ -236,3 +236,26 @@
     align-items: center;
     gap: 12px;
 }
+
+.topmovie-Error {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.topmovie-Error .title {
+    color: var(--color-text-light);
+    font-size: 8rem;
+}
+
+.topmovie-Error .message {
+    color: var(--color-text-light);
+    font-size: 2rem;
+}

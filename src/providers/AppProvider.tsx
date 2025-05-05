@@ -10,11 +10,14 @@ type SearchValueSetState = Dispatch<SetStateAction<SearchValueState>>;
 type TopmovieState = Movie | MovieWithDetails | null;
 type TopmovieSetState = Dispatch<SetStateAction<TopmovieState>>;
 
+type ErrorState = { title: string, message: string } | null;
+type ErrorSetState = Dispatch<SetStateAction<ErrorState>>;
+
 type WatchListState = MovieWithDetails[];
 
 const AppContext = createContext<{
-	searchValue: SearchValueState;
-	setSearchValue: SearchValueSetState;
+	error: ErrorState;
+	setError: ErrorSetState;
 
 	topmovie: TopmovieState;
 	setTopmovie: TopmovieSetState;
@@ -22,6 +25,9 @@ const AppContext = createContext<{
 	watchList: WatchListState;
 	watchListPush: (movie: Movie | MovieWithDetails) => void;
 	watchListRemove: (id: number) => void;
+
+	searchValue: SearchValueState;
+	setSearchValue: SearchValueSetState;
 } | null>(null);
 
 export function useApp() {
@@ -35,9 +41,10 @@ interface AppProviderProps {
 }
 
 export function AppProvider({ children }: AppProviderProps) {
+	const [searchValue, setSearchValue] = useState("");
 	const [watchList, setWatchList] = useLocalStorage<MovieWithDetails[]>("WATCH-LIST", []);
 	const [topmovie, setTopmovie] = useState<TopmovieState>(null);
-	const [searchValue, setSearchValue] = useState("");
+	const [error, setError] = useState<ErrorState>(null);
 
 	const watchListPush = (movie: Movie | MovieWithDetails) => {
 		if (watchList.some((item) => item.id === movie.id)) return;
@@ -48,7 +55,7 @@ export function AppProvider({ children }: AppProviderProps) {
 			});
 		} else {
 			requests.movie
-				.getMovieDetails({ language: "fr-Fr", movie_id: movie.id })
+				.getMovieDetails({ language: "fr-FR", movie_id: movie.id })
 				.then((result) => {
 					setWatchList((prev) => {
 						return [...prev, result.data];
@@ -69,13 +76,15 @@ export function AppProvider({ children }: AppProviderProps) {
 	return (
 		<AppContext.Provider
 			value={{
-				searchValue,
-				setSearchValue,
+				error,
+				setError,
 				topmovie,
 				setTopmovie,
 				watchList,
 				watchListPush,
 				watchListRemove,
+				searchValue,
+				setSearchValue
 			}}
 		>
 			{children}

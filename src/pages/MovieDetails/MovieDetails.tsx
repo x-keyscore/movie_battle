@@ -17,7 +17,7 @@ import clsx from "clsx";
 
 export function MovieDetailsPage() {
 	const { movie_id } = useParams();
-	const { setTopmovie } = useApp();
+	const { setTopmovie, setError } = useApp();
 	const [quizzVisible, setQuizzVisible] = useState<boolean>(false);
 
 	const [data] = useRequest(
@@ -43,10 +43,16 @@ export function MovieDetailsPage() {
 	);
 
 	useEffect(() => {
-		if (!data) return;
-
-		setTopmovie(data.movie);
-	}, [data, setTopmovie]);
+		if (data) {
+			setTopmovie(data.movie);
+		} else {
+			setTopmovie(null);
+			setError({
+				title: "404",
+				message: "Film introuvable",
+			});
+		}
+	}, [data, setTopmovie, setError]);
 
 	useEffect(() => {
 		console.log(quizzVisible);
@@ -61,6 +67,8 @@ export function MovieDetailsPage() {
 	function fallback(value: string | number) {
 		return value || "Non renseigné";
 	}
+
+	if (!data) return null;
 
 	const actors = data.credits.cast.filter(
 		(member) => member.known_for_department === "Acting",

@@ -13,7 +13,7 @@ interface UseRequestData {
 
 export function SearchPage() {
 	const { movieTitle } = useParams();
-	const { setSearchValue, setTopmovie } = useApp();
+	const { setSearchValue, setTopmovie, setError } = useApp();
 	const [pageIndex, setPageIndex] = useState(1);
 	const [data] = useRequest<UseRequestData>({ 
 		initial: { movies: [], maxPages: 1 },
@@ -50,7 +50,12 @@ export function SearchPage() {
 	}, []);
 
 	useEffect(() => {
-		if (data.movies[0]) setTopmovie(data.movies[0]);
+		if (data.movies[0]) {
+			setTopmovie(data.movies[0]);
+		} else {
+			setError({ title: "404", message: "Film introuvable" });
+			setTopmovie(null);
+		}
 	}, [data, setTopmovie]);
 
 	useEffect(() => {

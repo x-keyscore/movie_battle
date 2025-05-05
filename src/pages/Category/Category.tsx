@@ -14,7 +14,7 @@ interface UseRequestData {
 
 export function CategoryPage() {
 	const { category, genre_id } = useParams();
-	const { setTopmovie } = useApp();
+	const { setTopmovie, setError } = useApp();
 	const [pageIndex, setPageIndex] = useState(1);
 	const [data] = useRequestQueue<UseRequestData>({ 
 		initial: { movies: [], totalPages: 1 },
@@ -70,7 +70,15 @@ export function CategoryPage() {
 	});
 
 	useEffect(() => {
-		if (data.movies[0]) setTopmovie(data.movies[0]);
+		if (data.movies[0]) {
+			setTopmovie(data.movies[0]);
+		} else {
+			setTopmovie(null);
+			setError({
+				title: "404",
+				message: "Page introuvable"
+			});
+		}
 	}, [data, setTopmovie]);
 
 	useEffect(() => {
