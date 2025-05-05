@@ -27,7 +27,7 @@ const toggleReducer = (
 
 export function Header() {
     const navigate = useNavigate();
-    const { searchValue, setSearchValue, topmovie, watchListPush } = useApp();
+    const { searchValue, setSearchValue, topmovie, watchListPush, error } = useApp();
     const [toggle, setToggle] = useReducer(toggleReducer, {
         categoryList: false,
         watchList: false
@@ -118,73 +118,80 @@ export function Header() {
                 </div>
             </div>
             <div className={styles.topmovie}>
-                {topmovie && (<>
-                    <div className={styles.topmovieUnderlay}>
-                        {topmovie.backdrop_path ? (
-                            <Image
-                                styles={{
-                                    wrapper: styles.backdrop,
-                                    content: styles.backdropContent
-                                }}
-                                role="presentation"
-                                isWaitable={true}
-                                isLoadable={topmovie.backdrop_path}
-                                src={`https://image.tmdb.org/t/p/original${topmovie.backdrop_path}`}
-                            />
-                        ) : (
-                            <Image
-                                styles={{
-                                    wrapper: styles.poster,
-                                    content: styles.posterContent
-                                }}
-                                role="presentation"
-                                isWaitable={true}
-                                isLoadable={topmovie.poster_path}
-                                src={`https://image.tmdb.org/t/p/original${topmovie.poster_path}`}
-                            />
-                        )}
-                    </div>
-                    <div className={styles.topmovieContent}>
-                        <div className={styles.info}>
-                            <div className={styles.title}>
-                                {topmovie.title}
-                            </div>
-                            {topmovie?.overview && (
-                                <div className={styles.synopsis}>
-                                    {topmovie.overview}
-                                </div>
+                {topmovie ? (
+                    <>
+                        <div className={styles.topmovieUnderlay}>
+                            {topmovie.backdrop_path ? (
+                                <Image
+                                    styles={{
+                                        wrapper: styles.backdrop,
+                                        content: styles.backdropContent
+                                    }}
+                                    role="presentation"
+                                    isWaitable={true}
+                                    isLoadable={topmovie.backdrop_path}
+                                    src={`https://image.tmdb.org/t/p/original${topmovie.backdrop_path}`}
+                                />
+                            ) : (
+                                <Image
+                                    styles={{
+                                        wrapper: styles.poster,
+                                        content: styles.posterContent
+                                    }}
+                                    role="presentation"
+                                    isWaitable={true}
+                                    isLoadable={topmovie.poster_path}
+                                    src={`https://image.tmdb.org/t/p/original${topmovie.poster_path}`}
+                                />
                             )}
-                            {topmovieGenres.length ? (
-                                <ul className={styles.genres}>
-                                    {topmovieGenres.map((genre) => (
-                                        <li key={genre.id}>
-                                            <Link
-                                                draggable="false"
-                                                className={styles.link}
-                                                to={`/category/genre/${genre.id}`}
-                                            >
-                                                {genre.name}
-                                            </Link>
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : null}
                         </div>
-                        <div className={styles.action}>
-                            <Button size="small" onClick={() => navigate(`/movie/${topmovie?.id}`)}>
-                                <span>Voir plus</span>
-                            </Button>
-                            <Button
-                                size="small"
-                                aria-label="Ajouter aux films enregistrés"
-                                data-event-off="collapse-watch-list"
-                                onClick={() => topmovie && watchListPush(topmovie)}
-                            >
-                                <Icons.AddToList />
-                            </Button>
+                        <div className={styles.topmovieContent}>
+                            <div className={styles.info}>
+                                <div className={styles.title}>
+                                    {topmovie.title}
+                                </div>
+                                {topmovie?.overview && (
+                                    <div className={styles.synopsis}>
+                                        {topmovie.overview}
+                                    </div>
+                                )}
+                                {topmovieGenres.length ? (
+                                    <ul className={styles.genres}>
+                                        {topmovieGenres.map((genre) => (
+                                            <li key={genre.id}>
+                                                <Link
+                                                    draggable="false"
+                                                    className={styles.link}
+                                                    to={`/category/genre/${genre.id}`}
+                                                >
+                                                    {genre.name}
+                                                </Link>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : null}
+                            </div>
+                            <div className={styles.action}>
+                                <Button size="small" onClick={() => navigate(`/movie/${topmovie?.id}`)}>
+                                    <span>Voir plus</span>
+                                </Button>
+                                <Button
+                                    size="small"
+                                    aria-label="Ajouter aux films enregistrés"
+                                    data-event-off="collapse-watch-list"
+                                    onClick={() => topmovie && watchListPush(topmovie)}
+                                >
+                                    <Icons.AddToList />
+                                </Button>
+                            </div>
                         </div>
+                    </>
+                ) : (
+                    <div className={styles.topmovieError}>
+                        <div className={styles.title}>{error?.title}</div>
+                        <div className={styles.message}>{error?.message}</div>
                     </div>
-                </>)}
+                )}
             </div>
         </header>
     );

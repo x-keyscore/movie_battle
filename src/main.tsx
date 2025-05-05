@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { HomePage } from "./pages/Home";
 import { SearchPage } from "./pages/Search";
 import { CategoryPage } from "./pages/Category";
+import { NotFoundPage } from "./pages/NotFound";
 import { MovieDetailsPage } from "./pages/MovieDetails";
 import { App } from "./app/App";
 import "./main.css";
@@ -36,7 +37,11 @@ const router = createBrowserRouter([
 						Component: CategoryPage
 					}
 				]
-			}
+			},
+			{
+				path: "*",
+				Component: NotFoundPage
+			},
 		]
 	}
 ]);
