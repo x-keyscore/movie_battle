@@ -1,8 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useApp } from "../../providers/AppProvider";
 import { useRequest } from "../../hooks/useRequest";
-import { ActorCard, Image, MovieSection } from "../../components";
+import {
+	ActorCard,
+	Image,
+	MovieSection,
+	QuizzQuestion,
+} from "../../components";
 import { formatters } from "../../utils/formatters";
 import { requests } from "../../api";
 import language from "../../assets/data/iso3166-french.json";
@@ -13,25 +18,29 @@ import clsx from "clsx";
 export function MovieDetailsPage() {
 	const { movie_id } = useParams();
 	const { setTopmovie, setError } = useApp();
+	const [quizzVisible, setQuizzVisible] = useState<boolean>(false);
 
-	const [data] = useRequest({
-		initial: null,
-		subscribes: [movie_id]
-	}, async () => {
-		if (!movie_id) return;
+	const [data] = useRequest(
+		{
+			initial: null,
+			subscribes: [movie_id],
+		},
+		async () => {
+			if (!movie_id) return;
 
-		const [movie, credits, similarMovies] = await Promise.all([
-			requests.movie.getMovieDetails({ language: "fr-Fr", movie_id }),
-			requests.credits.getCredits({ language: "fr-Fr", movie_id }),
-			requests.movie.getSimilar({ language: "fr-Fr", movie_id })
-		]);
+			const [movie, credits, similarMovies] = await Promise.all([
+				requests.movie.getMovieDetails({ language: "fr-Fr", movie_id }),
+				requests.credits.getCredits({ language: "fr-Fr", movie_id }),
+				requests.movie.getSimilar({ language: "fr-Fr", movie_id }),
+			]);
 
-		return {
-			movie: movie.data,
-			credits: credits.data,
-			similarMovies: similarMovies.data
-		};
-	});
+			return {
+				movie: movie.data,
+				credits: credits.data,
+				similarMovies: similarMovies.data,
+			};
+		},
+	);
 
 	useEffect(() => {
 		if (data) {
@@ -40,16 +49,26 @@ export function MovieDetailsPage() {
 			setTopmovie(null);
 			setError({
 				title: "404",
-				message: "Film introuvable"
+				message: "Film introuvable",
 			});
 		}
-	}, [data, setTopmovie]);
+	}, [data, setTopmovie, setError]);
+
+	useEffect(() => {
+		console.log(quizzVisible);
+	}, [quizzVisible]);
+
+	if (!data) return null;
+
+	function handleQuizzClick() {
+		setQuizzVisible((prev) => !prev);
+	}
 
 	function fallback(value: string | number) {
 		return value || "Non renseigné";
 	}
 
-	if (!data) return (null);
+	if (!data) return null;
 
 	const actors = data.credits.cast.filter(
 		(member) => member.known_for_department === "Acting",
@@ -64,6 +83,48 @@ export function MovieDetailsPage() {
 
 	return (
 		<>
+			<button type="button" onClick={handleQuizzClick}>
+				JOUER
+			</button>
+			{quizzVisible && (
+				<div className={styles.quizzSection}>
+					<div className={styles.quizzContainer}>
+						<h3 className={styles.questionNumber}>QUESTION 3/4</h3>
+						<QuizzQuestion /* question={question} */ />
+						<ul className={styles.questionButtonList}>
+							<li>
+								<button
+									type="button"
+									className={`${styles.questionButton} ${styles.correct}`}
+								>
+									1
+								</button>
+							</li>
+							<li>
+								<button
+									type="button"
+									className={`${styles.questionButton} ${styles.correct}`}
+								>
+									2
+								</button>
+							</li>
+							<li>
+								<button
+									type="button"
+									className={`${styles.questionButton} ${styles.incorrect}`}
+								>
+									3
+								</button>
+							</li>
+							<li>
+								<button type="button" className={`${styles.questionButton}`}>
+									4
+								</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+			)}
 			<div className={clsx(styles.section, styles.similar)}>
 				{data.similarMovies.total_results > 0 ? (
 					<MovieSection
@@ -137,9 +198,7 @@ export function MovieDetailsPage() {
 							<h3 className={styles.title}>Pays d'origine :</h3>
 							<p className={styles.detail}>
 								{fallback(
-									country[
-										data.movie.origin_country[0] as keyof typeof country
-									],
+									country[data.movie.origin_country[0] as keyof typeof country],
 								)}
 							</p>
 						</li>
@@ -175,7 +234,7 @@ export function MovieDetailsPage() {
 					{actors.length > 0 ? (
 						actors.map((actor, index) => (
 							<ActorCard
-								key={actor.id + "-" + index}
+								key={`${actor.id}-${index}`}
 								name={actor.original_name}
 								character={actor.character}
 								profile_path={actor.profile_path}
