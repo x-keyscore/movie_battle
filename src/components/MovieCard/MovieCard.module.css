@@ -12,7 +12,7 @@
 	margin: 0 auto;
 }
 
-.card:focus-within {
+.card:has(:focus-visible) {
 	transform: scale(1.08);
 	z-index: 1;
 }

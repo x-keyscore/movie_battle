@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect} from "react";
+import { useState, useRef, useEffect } from "react";
 
 type Status = "IDLE" | "WAIT" | "DONE" | "FAIL";
 type Config<I> = { initial: I; subscribes?: unknown[]; };
@@ -16,13 +16,6 @@ export function useRequest<I, D = I>(
 	const [data, setData] = useState<I | D>(initial);
 	const prevSubscribesRef = useRef<unknown[]>(null);
 	const idRef = useRef(0);
-
-	useEffect(() => {
-		return () => {
-			prevSubscribesRef.current = null;
-			idRef.current += 1;
-		}
-	}, []);
 
 	const process = async (callback: Callback<I | D>) => {
 		const id = idRef.current += 1;
@@ -42,6 +35,13 @@ export function useRequest<I, D = I>(
 			}
 		}
 	};
+
+	useEffect(() => {
+		return () => {
+			prevSubscribesRef.current = null;
+			idRef.current += 1;
+		}
+	}, []);
 
 	useEffect(() => {
 		if (!subscribes) return;

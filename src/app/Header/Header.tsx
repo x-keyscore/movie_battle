@@ -37,7 +37,6 @@ export function Header() {
         if (!searchValue) return;
     
         const timeout = setTimeout(() => {
-            console.log("search : ", searchValue);
             navigate("/search/" + searchValue);
         }, 300);
     

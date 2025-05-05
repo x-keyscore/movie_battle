@@ -38,11 +38,13 @@ export function Image(props: ImageProps) {
 	if ((isLoadable !== undefined && !isLoadable) || isLoading === null) {
 		return (
 			<div className={propStyles?.wrapper}>
-				<img
-					className={styles.unavailable}
-					src="/images/brand-logo.png"
-					draggable="false"
-				/>
+				<div className={styles.placeholder}>
+					<img
+						className={styles.unavailable}
+						src="/images/brand-logo.png"
+						draggable="false"
+					/>
+				</div>
 			</div>
 		);
 	}
@@ -50,7 +52,9 @@ export function Image(props: ImageProps) {
 	return (
 		<div className={propStyles?.wrapper}>
 			{((isWaitable !== false && isLoading) || isLoadable === undefined) && (
-				<div className={styles.loading} />
+				<div className={styles.placeholder}>
+					<div className={styles.loading} />
+				</div>
 			)}
 			<img
 				className={propStyles?.content}

@@ -21,7 +21,7 @@ export function CategoryPage() {
 		subscribes: [pageIndex, category, genre_id]
 	}, async (prevData) => {
 		let response: null | AxiosResponse<MovieList> = null;
-		console.log(pageIndex)
+
 		switch (category) {
 			case "popular":
 				response = await requests.movie.getPopular({

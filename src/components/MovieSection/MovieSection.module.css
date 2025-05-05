@@ -51,7 +51,7 @@
 
 .sentinel {
 	position: absolute;
-	bottom: 100vh;
+	bottom: calc(100vh / 2);
 }
 
 @media (any-pointer: coarse) {

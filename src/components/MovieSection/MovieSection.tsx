@@ -1,5 +1,5 @@
 import type { Movie } from "../../api/types/movie";
-import { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { MovieCard } from "./../MovieCard";
 import styles from "./MovieSection.module.css";
@@ -24,42 +24,10 @@ export function MovieSection({
 	endIndex = 0,
 	onScrollEnd
 }: MovieSectionProps) {
-	const onScrollEndRef = useRef(onScrollEnd);
+	const listRef = useRef<HTMLUListElement>(null);
 	const sentinelRef = useRef(null);
-	const containerRef = useRef<HTMLUListElement>(null);
-	const dragDistanceRef = useRef<number>(0);
-	const [isDragging, setIsDragging] = useState<boolean>(false);
-	const [startX, setStartX] = useState<number>(0);
-	const [scrollLeft, setScrollLeft] = useState<number>(0);
-
-	function handleMouseDown(e: React.MouseEvent<HTMLUListElement>) {
-		if (!containerRef.current) return;
-		setIsDragging(true);
-		dragDistanceRef.current = 0;
-		setStartX(e.pageX);
-		setScrollLeft(containerRef.current.scrollLeft);
-	}
-
-	function handleMouseUp() {
-		if (isDragging) {
-			setIsDragging(false);
-		}
-	}
-
-	function handleMouseLeave() {
-		if (isDragging) {
-			setIsDragging(false);
-		}
-	}
-
-	function handleMouseMove(e: React.MouseEvent<HTMLUListElement>) {
-		if (!isDragging || !containerRef.current) return;
-		e.preventDefault();
-		const distance = Math.abs(e.pageX - startX);
-		dragDistanceRef.current = distance;
-		const walk = (e.pageX - startX) * 1;
-		containerRef.current.scrollLeft = scrollLeft - walk;
-	}
+	const onScrollEndRef = useRef(onScrollEnd);
+	const [isDragging, setIsDragging] = useState(false);
 
 	useEffect(() => {
 		if (onScrollEnd) onScrollEndRef.current = onScrollEnd;
@@ -82,6 +50,50 @@ export function MovieSection({
 		return () => observer.disconnect();
 	}, []);
 
+	useEffect(() => {
+		const container = listRef.current;
+		if (!container) return;
+
+		const onMouseDown = (e: MouseEvent) => {
+			
+			setIsDragging(false);
+			let startX = e.pageX - container.offsetLeft;
+			let  scrollLeft = container.scrollLeft;
+
+			const onMouseMove = (e: MouseEvent) => {
+				const x = e.pageX - container.offsetLeft;
+				const walk = x - startX;
+
+				if (Math.abs(walk) > 5) {
+					setIsDragging(true);
+					container.scrollLeft = scrollLeft - walk;
+				}
+			};
+
+			const onMouseUp = () => {
+				window.removeEventListener("mousemove", onMouseMove);
+				window.removeEventListener("mouseup", onMouseUp);
+			};
+
+			window.addEventListener("mousemove", onMouseMove);
+			window.addEventListener("mouseup", onMouseUp);
+		};
+
+		container.addEventListener("mousedown", onMouseDown);
+
+		return () => {
+			container.removeEventListener("mousedown", onMouseDown);
+		};
+	}, []);
+
+	const onClickCapture = (e: React.MouseEvent) => {
+		if (isDragging) {
+			e.preventDefault();
+			e.stopPropagation();
+			setIsDragging(false);
+		}
+	};
+
 	return (
 		<div className={styles.section}>
 			{title ? (
@@ -97,23 +109,20 @@ export function MovieSection({
 				</h2>
 			) : null}
 			<ul
-				ref={containerRef}
-				onMouseDown={handleMouseDown}
-				onMouseUp={handleMouseUp}
-				onMouseLeave={handleMouseLeave}
-				onMouseMove={handleMouseMove}
+				ref={listRef}
 				className={clsx(
 					styles.sectionMovies,
 					inline ? styles.inline : styles.grid,
 					isDragging && styles.dragging,
 				)}
+				onClickCapture={onClickCapture}
 			>
 				{movies
 					.slice(startIndex, endIndex || movies.length)
 					.map((movie, index) => {
 						return (
 							<li key={`${movie.id}-${index}`} className={styles.item}>
-								<MovieCard movie={movie} dragDistanceRef={dragDistanceRef} />
+								<MovieCard movie={movie} />
 							</li>
 						);
 					})}

@@ -26,7 +26,7 @@ export function WatchList({ close }: WatchListProps) {
                         aria-label="Aller au détail du film"
                         onClick={() => close()}
                     >
-                        <Image
+                        {movie.poster_path && <Image
                             styles={{
                                 wrapper: styles.image,
                                 content: styles.imageContent
@@ -35,7 +35,7 @@ export function WatchList({ close }: WatchListProps) {
                             isWaitable={false}
                             isLoadable={true}
                             src={`https://image.tmdb.org/t/p/w780${movie.poster_path}`}
-                        />
+                        />}
                         <div className={styles.info}>
                             <div className={styles.title}>{movie.title}</div>
                             <div className={styles.runtime}>{formatters.movieRuntime(movie.runtime)}</div>
