@@ -8,7 +8,8 @@ import { requests } from "../../api";
 
 interface UseRequestData {
 	movies: Movie[];
-	maxPages: number;
+	totalPages: number;
+	totalResults: number;
 }
 
 export function SearchPage() {
@@ -16,7 +17,7 @@ export function SearchPage() {
 	const { setSearchValue, setTopmovie, setError } = useApp();
 	const [pageIndex, setPageIndex] = useState(1);
 	const [data] = useRequest<UseRequestData>({ 
-		initial: { movies: [], maxPages: 1 },
+		initial: { movies: [], totalPages: 1, totalResults: 0 },
 		subscribes: [pageIndex, movieTitle]
 	}, async (prevData) => {
 		if (movieTitle) {
@@ -25,15 +26,17 @@ export function SearchPage() {
 				query: movieTitle,
 				language: "fr-FR"
 			});
-
+			console.log(data)
 			if (pageIndex === 1) {
 				return ({
-					maxPages: data.total_pages,
+					totalResults: data.total_results,
+					totalPages: data.total_pages,
 					movies: [...data.results]
 				});
 			} else {
 				return ({
-					maxPages: data.total_pages,
+					totalResults: data.total_results,
+					totalPages: data.total_pages,
 					movies: [...prevData.movies, ...data.results]
 				});
 			}
@@ -50,11 +53,15 @@ export function SearchPage() {
 	}, []);
 
 	useEffect(() => {
-		if (data.movies[0]) {
-			setTopmovie(data.movies[0]);
-		} else {
-			setError({ title: "404", message: "Film introuvable" });
+		if (!data.totalResults) {
 			setTopmovie(null);
+			setError({
+				title: "",
+				message: "Désolé film introuvable"
+			});
+		} else {
+			setTopmovie(data.movies[0]);
+			setError(null);
 		}
 	}, [data, setTopmovie]);
 
@@ -69,7 +76,7 @@ export function SearchPage() {
 			startIndex={1}
 			onScrollEnd={() => {
 				setPageIndex(prev => {
-					if (prev > data.maxPages) return (prev);
+					if (prev > data.totalPages) return (prev);
 					return (prev + 1);
 				});
 			}}

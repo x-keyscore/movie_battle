@@ -26,7 +26,7 @@ export function App() {
 	return (
 		<AppProvider>
 			<Header />
-			<main className={styles.body}>
+			<main className={styles.main}>
 				<Outlet />
 			</main>
 			<Footer />

@@ -1,8 +1,9 @@
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 import type { Movie, MovieWithDetails } from "../api";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { requests } from "../api";
+import { useLocation } from "react-router";
 
 type SearchValueState = string;
 type SearchValueSetState = Dispatch<SetStateAction<SearchValueState>>;
@@ -32,8 +33,10 @@ const AppContext = createContext<{
 
 export function useApp() {
 	const value = useContext(AppContext);
-	if (value === null) throw new Error("Value is null");
-	return value;
+	if (value === null) {
+		throw new Error("Value is null");
+	}
+	return (value);
 }
 
 interface AppProviderProps {
@@ -41,6 +44,7 @@ interface AppProviderProps {
 }
 
 export function AppProvider({ children }: AppProviderProps) {
+	const { pathname } = useLocation();
 	const [searchValue, setSearchValue] = useState("");
 	const [watchList, setWatchList] = useLocalStorage<MovieWithDetails[]>("WATCH-LIST", []);
 	const [topmovie, setTopmovie] = useState<TopmovieState>(null);
@@ -72,6 +76,10 @@ export function AppProvider({ children }: AppProviderProps) {
 			return [...prev.slice(0, index), ...prev.slice(index + 1)];
 		});
 	};
+
+	useEffect(() => {
+		return () => setError(null);
+	}, [pathname]);
 
 	return (
 		<AppContext.Provider

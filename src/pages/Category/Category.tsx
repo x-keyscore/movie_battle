@@ -70,15 +70,7 @@ export function CategoryPage() {
 	});
 
 	useEffect(() => {
-		if (data.movies[0]) {
-			setTopmovie(data.movies[0]);
-		} else {
-			setTopmovie(null);
-			setError({
-				title: "404",
-				message: "Page introuvable"
-			});
-		}
+		if (data.movies[0]) setTopmovie(data.movies[0]);
 	}, [data, setTopmovie]);
 
 	useEffect(() => {

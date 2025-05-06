@@ -118,7 +118,7 @@ export function Header() {
                 </div>
             </div>
             <div className={styles.topmovie}>
-                {topmovie ? (
+                {topmovie && (
                     <>
                         <div className={styles.topmovieUnderlay}>
                             {topmovie.backdrop_path ? (
@@ -186,10 +186,11 @@ export function Header() {
                             </div>
                         </div>
                     </>
-                ) : (
+                )}
+                {error && (
                     <div className={styles.topmovieError}>
-                        <div className={styles.title}>{error?.title}</div>
-                        <div className={styles.message}>{error?.message}</div>
+                        <div className={styles.title}>{error.title}</div>
+                        <div className={styles.message}>{error.message}</div>
                     </div>
                 )}
             </div>

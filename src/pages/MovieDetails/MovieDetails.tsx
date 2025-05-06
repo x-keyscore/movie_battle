@@ -20,45 +20,32 @@ export function MovieDetailsPage() {
 	const { setTopmovie, setError } = useApp();
 	const [quizzVisible, setQuizzVisible] = useState<boolean>(false);
 
-	const [data] = useRequest(
-		{
-			initial: null,
-			subscribes: [movie_id],
-		},
-		async () => {
-			if (!movie_id) return;
+	const [data] = useRequest({
+		initial: null,
+		subscribes: [movie_id]
+	}, async () => {
+		if (!movie_id) return;
 
-			const [movie, credits, similarMovies] = await Promise.all([
-				requests.movie.getMovieDetails({ language: "fr-Fr", movie_id }),
-				requests.credits.getCredits({ language: "fr-Fr", movie_id }),
-				requests.movie.getSimilar({ language: "fr-Fr", movie_id }),
-			]);
+		const [movie, credits, similarMovies] = await Promise.all([
+			requests.movie.getMovieDetails({ language: "fr-Fr", movie_id }),
+			requests.credits.getCredits({ language: "fr-Fr", movie_id }),
+			requests.movie.getSimilar({ language: "fr-Fr", movie_id }),
+		]);
 
-			return {
-				movie: movie.data,
-				credits: credits.data,
-				similarMovies: similarMovies.data,
-			};
-		},
-	);
+		return {
+			movie: movie.data,
+			credits: credits.data,
+			similarMovies: similarMovies.data,
+		};
+	});
 
 	useEffect(() => {
-		if (data) {
-			setTopmovie(data.movie);
-		} else {
-			setTopmovie(null);
-			setError({
-				title: "404",
-				message: "Film introuvable",
-			});
-		}
-	}, [data, setTopmovie, setError]);
+		if (data) setTopmovie(data.movie);
+	}, [data]);
 
 	useEffect(() => {
 		console.log(quizzVisible);
 	}, [quizzVisible]);
-
-	if (!data) return null;
 
 	function handleQuizzClick() {
 		setQuizzVisible((prev) => !prev);
@@ -68,7 +55,7 @@ export function MovieDetailsPage() {
 		return value || "Non renseigné";
 	}
 
-	if (!data) return null;
+	if (!data) return (null);
 
 	const actors = data.credits.cast.filter(
 		(member) => member.known_for_department === "Acting",
@@ -180,7 +167,7 @@ export function MovieDetailsPage() {
 							<p className={styles.detail}>
 								{fallback(data.movie.revenue).toLocaleString("en-US", {
 									style: "currency",
-									currency: "USD",
+									currency: "USD"
 								})}
 							</p>
 						</li>
