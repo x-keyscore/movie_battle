@@ -1,40 +1,13 @@
 import type { ReactNode, ComponentRef, CSSProperties } from "react";
 import { useRef, useState, useLayoutEffect, useEffect } from "react";
+import { closestAttributes } from "../../utils/commons";
 
-/**
- * Returns closest element matching one of the given attribute-value pairs
- */
-function closestAttributeMatch(
-    element: Element | null,
-    attributes: {
-        name: string;
-        value: string;
-        split?: boolean;
-    }[]
-): Element | null {
-    while (element) {
-        for (const { name, value, split } of attributes) {
-            const attr = element.getAttribute(name);
-
-            if (split && attr?.split(" ").includes(value)) {
-                return (element);
-            }
-            else if (attr === value) {
-                return (element);
-            }
-        }
-        element = element.parentElement;
-    }
-
-    return (null);
-}
-
-interface CollapsibleProps {
+interface SlidableProps {
     children: ReactNode;
     id: string;
     isOpen: boolean;
     styles?: {
-        wrapper?: string;
+        surface?: string;
         content?: string;
     };
     duration?: number;
@@ -47,7 +20,7 @@ interface CollapsibleProps {
     }[];
 }
 
-export function Collapsible({
+export function Slidable({
     children,
     id,
     isOpen,
@@ -56,26 +29,26 @@ export function Collapsible({
     onEventOff = [],
     onClickOut,
     onFocusOut
-}: CollapsibleProps) {
-    const wrapperRef = useRef<ComponentRef<"div">>(null);
+}: SlidableProps) {
+    const surfaceRef = useRef<ComponentRef<"div">>(null);
     const contentRef = useRef<ComponentRef<"div">>(null);
     const [rect, setRect] = useState<DOMRect | null>(null);
     const [style, setStyle] = useState<CSSProperties>({
         overflow: "hidden",
         visibility: "hidden",
         transition:
-            `max-height ${duration}s linear,` +
+            `transform ${duration}s linear,` +
             `visibility ${duration}s linear`
     });
 
     useEffect(() => {
-        if (!(wrapperRef.current instanceof Node)) return;
+        if (!(surfaceRef.current instanceof Node)) return;
         const observer = new MutationObserver(() => {
             if (!contentRef.current) return;
             setRect(contentRef.current.getBoundingClientRect());
         });
 
-        observer.observe(wrapperRef.current, {
+        observer.observe(surfaceRef.current, {
             childList: true,
             subtree: true
         });
@@ -92,7 +65,7 @@ export function Collapsible({
     useLayoutEffect(() => {
         if (!rect) return;
 
-        const zIndex = Number((contentRef || wrapperRef).current?.style.zIndex);
+        const zIndex = Number((surfaceRef || contentRef).current?.style.zIndex);
         const global: CSSProperties = {
             visibility: isOpen ? "visible" : "hidden",
             zIndex: Number.isNaN(zIndex) ? "auto" : isOpen ? zIndex + 1 : zIndex
@@ -106,52 +79,52 @@ export function Collapsible({
     }, [rect, isOpen]);
 
     useEffect(() => {
-        const wrapper = wrapperRef.current;
-        if (!wrapper || !isOpen) return;
+        const surface = surfaceRef.current;
+        if (!surface || !isOpen) return;
 
         const handleClick = (e: MouseEvent) => {
             const target = e.target;
-            if (!wrapper || !(target instanceof Node)) return;
+            if (!surface || !(target instanceof Node)) return;
 
             if (target instanceof Element
-                && closestAttributeMatch(target, [{
+                && closestAttributes(target, [{
                     name: "aria-controls",
                     value: id,
                     split: true
                 }, ...onEventOff])) return;
 
-            if (!wrapper.contains(target)) onClickOut?.(e);
+            if (!surface.contains(target)) onClickOut?.(e);
         }
 
         const handleFocusOut = (e: FocusEvent) => {
             const relatedTarget = e.relatedTarget;
-            if (!wrapper || !(relatedTarget instanceof Node)) return;
+            if (!surface || !(relatedTarget instanceof Node)) return;
 
             if (relatedTarget instanceof Element
-                && closestAttributeMatch(relatedTarget, [{
+                && closestAttributes(relatedTarget, [{
                     name: "aria-controls",
                     value: id,
                     split: true
                 }, ...onEventOff])) return;
 
-            if (!wrapper.contains(relatedTarget)) onFocusOut?.(e);
+            if (!surface.contains(relatedTarget)) onFocusOut?.(e);
         };
 
         document.addEventListener("click", handleClick);
-        wrapper.addEventListener("focusout", handleFocusOut);
+        surface.addEventListener("focusout", handleFocusOut);
 
         return () => {
             document.removeEventListener("click", handleClick);
-            wrapper.removeEventListener("focusout", handleFocusOut);
+            surface.removeEventListener("focusout", handleFocusOut);
         };
     }, [id, isOpen, onEventOff, onClickOut, onFocusOut]);
 
     return (
         <div
             id={id}
-            ref={wrapperRef}
+            ref={surfaceRef}
             style={style}
-            className={styles?.wrapper}
+            className={styles?.surface}
             aria-hidden={!isOpen}
         >
             <div

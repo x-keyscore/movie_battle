@@ -7,6 +7,7 @@ import {
 	Image,
 	MovieSection,
 	QuizzQuestion,
+	Slidable,
 } from "../../components";
 import { formatters } from "../../utils/formatters";
 import { requests } from "../../api";
@@ -74,7 +75,14 @@ export function MovieDetailsPage() {
 				JOUER
 			</button>
 			{quizzVisible && (
-				<div className={styles.quizzSection}>
+				<Slidable
+					id="modal-movie-game"
+					styles={{
+						surface: styles.quizzSection,
+						content: styles.quizzContainer
+					}}
+					isOpen
+				>
 					<div className={styles.quizzContainer}>
 						<h3 className={styles.questionNumber}>QUESTION 3/4</h3>
 						<QuizzQuestion /* question={question} */ />
@@ -110,7 +118,7 @@ export function MovieDetailsPage() {
 							</li>
 						</ul>
 					</div>
-				</div>
+				</Slidable>
 			)}
 			<div className={clsx(styles.section, styles.similar)}>
 				{data.similarMovies.total_results > 0 ? (
@@ -125,7 +133,7 @@ export function MovieDetailsPage() {
 			<div className={clsx(styles.section, styles.details)}>
 				<Image
 					styles={{
-						wrapper: styles.poster,
+						surface: styles.poster,
 						content: styles.posterContent,
 					}}
 					alt={`Poster du film ${data.movie.title}`}

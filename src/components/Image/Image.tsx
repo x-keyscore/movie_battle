@@ -4,7 +4,7 @@ import styles from "./Image.module.css";
 
 interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "className"> {
 	styles?: {
-        wrapper?: string;
+        surface?: string;
         content?: string;
     };
 	/** **Default:** `false` */
@@ -30,14 +30,14 @@ function prepareProps(props: ImageProps) {
 }
 
 export function Image(props: ImageProps) {
-	const { styles: propStyles, isWaitable, isLoadable, ...attributes } = prepareProps(props);
+	const { styles: customStyles, isWaitable, isLoadable, ...attributes } = prepareProps(props);
 	const [isLoading, setIsLoading] = useState<null | boolean>(
 		(isLoadable != null && !isLoadable) ? null : true
 	);
 
 	if ((isLoadable !== undefined && !isLoadable) || isLoading === null) {
 		return (
-			<div className={propStyles?.wrapper}>
+			<div className={customStyles?.surface}>
 				<div className={styles.placeholder}>
 					<img
 						className={styles.unavailable}
@@ -50,14 +50,14 @@ export function Image(props: ImageProps) {
 	}
 
 	return (
-		<div className={propStyles?.wrapper}>
+		<div className={customStyles?.surface}>
 			{((isWaitable !== false && isLoading) || isLoadable === undefined) && (
 				<div className={styles.placeholder}>
 					<div className={styles.loading} />
 				</div>
 			)}
 			<img
-				className={propStyles?.content}
+				className={customStyles?.content}
 				style={{
 					opacity: isLoading ? 0 : 1,
 					transition: "opacity .10s ease-in"
