@@ -4,8 +4,8 @@ import styles from "./Image.module.css";
 
 interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "className"> {
 	styles?: {
-        surface?: string;
-        content?: string;
+        box?: string;
+        img?: string;
     };
 	/** **Default:** `false` */
 	draggable?: ImgHTMLAttributes<HTMLImageElement>['draggable'];
@@ -37,7 +37,7 @@ export function Image(props: ImageProps) {
 
 	if ((isLoadable !== undefined && !isLoadable) || isLoading === null) {
 		return (
-			<div className={customStyles?.surface}>
+			<div className={customStyles?.box}>
 				<div className={styles.placeholder}>
 					<img
 						className={styles.unavailable}
@@ -50,14 +50,14 @@ export function Image(props: ImageProps) {
 	}
 
 	return (
-		<div className={customStyles?.surface}>
+		<div className={customStyles?.box}>
 			{((isWaitable !== false && isLoading) || isLoadable === undefined) && (
 				<div className={styles.placeholder}>
 					<div className={styles.loading} />
 				</div>
 			)}
 			<img
-				className={customStyles?.content}
+				className={customStyles?.img}
 				style={{
 					opacity: isLoading ? 0 : 1,
 					transition: "opacity .10s ease-in"

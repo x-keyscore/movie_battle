@@ -81,7 +81,7 @@ export function Header() {
                         id="foldable-category-list"
                         isOpen={toggle.categoryList}
                         styles={{
-                            surface: styles.foldable,
+                            section: styles.foldable,
                             content: clsx(styles.foldableContent, "scroll")
                         }}
                         onFocusOut={() => setToggle("CATEGORY_LIST")}
@@ -105,7 +105,7 @@ export function Header() {
                             id="foldable-watch-list"
                             isOpen={toggle.watchList}
                             styles={{
-                                surface: styles.foldable,
+                                section: styles.foldable,
                                 content: clsx(styles.foldableContent, "scroll")
                             }}
                             onFocusOut={() => setToggle("WATCH_LIST")}
@@ -124,8 +124,8 @@ export function Header() {
                             {topmovie.backdrop_path ? (
                                 <Image
                                     styles={{
-                                        surface: styles.backdrop,
-                                        content: styles.backdropContent
+                                        box: styles.backdrop,
+                                        img: styles.backdropContent
                                     }}
                                     role="presentation"
                                     isWaitable={true}
@@ -135,8 +135,8 @@ export function Header() {
                             ) : (
                                 <Image
                                     styles={{
-                                        surface: styles.poster,
-                                        content: styles.posterContent
+                                        box: styles.poster,
+                                        img: styles.posterContent
                                     }}
                                     role="presentation"
                                     isWaitable={true}

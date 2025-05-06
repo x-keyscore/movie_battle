@@ -1,138 +1,124 @@
-import type { ReactNode, ComponentRef, CSSProperties } from "react";
-import { useRef, useState, useLayoutEffect, useEffect } from "react";
+import type { Slide, SlidableContextValue, HandleSlideOpen } from "./types";
+import type { ReactNode, ComponentRef, HTMLAttributes } from "react";
+import { createContext, useContext, useRef, useEffect } from "react";
 import { closestAttributes } from "../../utils/commons";
 
-interface SlidableProps {
+const SlidableContext = createContext<SlidableContextValue | null>(null);
+
+export function useSlidable(): SlidableContextValue {
+    const value = useContext(SlidableContext);
+    if (value === null) {
+        throw new Error("Value is null");
+    }
+    return (value);
+}
+
+interface SlidableProps extends HTMLAttributes<HTMLDivElement>  {
     children: ReactNode;
-    id: string;
-    isOpen: boolean;
-    styles?: {
-        surface?: string;
-        content?: string;
-    };
     duration?: number;
-    onClickOut?: (e: MouseEvent) => void;
-    onFocusOut?: (e: FocusEvent) => void;
     onEventOff?: {
         name: string;
         value: string;
         split?: boolean;
     }[];
+    onClickOut?: (e: MouseEvent) => void;
+    onFocusOut?: (e: FocusEvent) => void;
 }
 
 export function Slidable({
     children,
-    id,
-    isOpen,
-    styles,
     duration = .20,
     onEventOff = [],
     onClickOut,
-    onFocusOut
+    onFocusOut,
+    ...attributes
 }: SlidableProps) {
-    const surfaceRef = useRef<ComponentRef<"div">>(null);
-    const contentRef = useRef<ComponentRef<"div">>(null);
-    const [rect, setRect] = useState<DOMRect | null>(null);
-    const [style, setStyle] = useState<CSSProperties>({
-        overflow: "hidden",
-        visibility: "hidden",
-        transition:
-            `transform ${duration}s linear,` +
-            `visibility ${duration}s linear`
-    });
-
+    const sectionRef = useRef<ComponentRef<"div">>(null);
+    const sequenceRef = useRef<Slide[]>([]);
+    console.log(sequenceRef.current)
     useEffect(() => {
-        if (!(surfaceRef.current instanceof Node)) return;
-        const observer = new MutationObserver(() => {
-            if (!contentRef.current) return;
-            setRect(contentRef.current.getBoundingClientRect());
-        });
-
-        observer.observe(surfaceRef.current, {
-            childList: true,
-            subtree: true
-        });
-
-        return (() => observer.disconnect());
+        return () => { sequenceRef.current = []; };
     }, []);
 
-    useLayoutEffect(() => {
-        if (!contentRef.current) return;
-
-        setRect(contentRef.current.getBoundingClientRect());
-    }, []);
-
-    useLayoutEffect(() => {
-        if (!rect) return;
-
-        const zIndex = Number((surfaceRef || contentRef).current?.style.zIndex);
-        const global: CSSProperties = {
-            visibility: isOpen ? "visible" : "hidden",
-            zIndex: Number.isNaN(zIndex) ? "auto" : isOpen ? zIndex + 1 : zIndex
-        };
-
-        setStyle((prev) => ({
-            ...prev,
-            ...global,
-            maxHeight: isOpen ? `${rect.height}px` : "0px"
-        }));
-    }, [rect, isOpen]);
-
     useEffect(() => {
-        const surface = surfaceRef.current;
-        if (!surface || !isOpen) return;
+        const section = sectionRef.current;
+        if (!section || !(onClickOut && onFocusOut)) return;
 
         const handleClick = (e: MouseEvent) => {
             const target = e.target;
-            if (!surface || !(target instanceof Node)) return;
+            if (!section || !(target instanceof Node)) return;
 
             if (target instanceof Element
-                && closestAttributes(target, [{
-                    name: "aria-controls",
-                    value: id,
-                    split: true
-                }, ...onEventOff])) return;
+                && closestAttributes(target, [...onEventOff])) return;
 
-            if (!surface.contains(target)) onClickOut?.(e);
+            if (!section.contains(target)) onClickOut(e);
         }
 
         const handleFocusOut = (e: FocusEvent) => {
             const relatedTarget = e.relatedTarget;
-            if (!surface || !(relatedTarget instanceof Node)) return;
+            if (!section || !(relatedTarget instanceof Node)) return;
 
             if (relatedTarget instanceof Element
-                && closestAttributes(relatedTarget, [{
-                    name: "aria-controls",
-                    value: id,
-                    split: true
-                }, ...onEventOff])) return;
+                && closestAttributes(relatedTarget, [...onEventOff])) return;
 
-            if (!surface.contains(relatedTarget)) onFocusOut?.(e);
+            if (!section.contains(relatedTarget)) onFocusOut(e);
         };
 
         document.addEventListener("click", handleClick);
-        surface.addEventListener("focusout", handleFocusOut);
+        section.addEventListener("focusout", handleFocusOut);
 
         return () => {
             document.removeEventListener("click", handleClick);
-            surface.removeEventListener("focusout", handleFocusOut);
+            section.removeEventListener("focusout", handleFocusOut);
         };
-    }, [id, isOpen, onEventOff, onClickOut, onFocusOut]);
+    }, [onEventOff, onClickOut, onFocusOut]);
+
+    const handleSlideOpen: HandleSlideOpen = (slide: Slide) => {
+        const sequence = sequenceRef.current;
+
+        const index = sequence.findIndex(item => item.id === slide.id);
+
+        if (index) {
+            sequence[index + 1]?.close();
+            sequenceRef.current.slice(0, index);
+            sequenceRef.current.push(slide);
+
+            return ({
+                isIgnore: false,
+                without: "LEFT"
+            });
+        }
+        else if (sequence[sequence.length - 1].isGroup) {
+            sequenceRef.current.push(slide);
+
+            return ({
+                isIgnore: true,
+                without: null
+            });
+        }
+        else {
+            sequenceRef.current.push(slide);
+
+            return ({
+                isIgnore: false,
+                without: "RIGHT"
+            });
+        }
+    };
 
     return (
-        <div
-            id={id}
-            ref={surfaceRef}
-            style={style}
-            className={styles?.surface}
-            aria-hidden={!isOpen}
-        >
+        <SlidableContext.Provider value={{
+            internal: {
+                config: { duration },
+                handleSlideOpen
+            }
+        }}>
             <div
-                ref={contentRef}
-                className={styles?.content}
+                ref={sectionRef}
+                {...attributes}
             >
                 {children}
             </div>
-        </div>
+        </SlidableContext.Provider>
     );
 }

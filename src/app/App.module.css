@@ -2,3 +2,19 @@
 	position: relative;
 	min-height: calc(100vh - 84vh - 42px);
 }
+
+
+.slidable {
+	position: relative;
+	width: 100px;
+	height: 100px;
+}
+
+.slide {
+	position: absolute;
+	top: 0;
+	right: 0;
+	color: black;
+	width: 100%;
+	height: 100%;
+}

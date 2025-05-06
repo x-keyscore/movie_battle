@@ -7,7 +7,7 @@ interface FoldableProps {
     id: string;
     isOpen: boolean;
     styles?: {
-        surface?: string;
+        section?: string;
         content?: string;
     };
     duration?: number;
@@ -30,7 +30,7 @@ export function Foldable({
     onClickOut,
     onFocusOut
 }: FoldableProps) {
-    const surfaceRef = useRef<ComponentRef<"div">>(null);
+    const sectionRef = useRef<ComponentRef<"div">>(null);
     const contentRef = useRef<ComponentRef<"div">>(null);
     const [rect, setRect] = useState<DOMRect | null>(null);
     const [style, setStyle] = useState<CSSProperties>({
@@ -42,13 +42,13 @@ export function Foldable({
     });
 
     useEffect(() => {
-        if (!(surfaceRef.current instanceof Node)) return;
+        if (!(sectionRef.current instanceof Node)) return;
         const observer = new MutationObserver(() => {
             if (!contentRef.current) return;
             setRect(contentRef.current.getBoundingClientRect());
         });
 
-        observer.observe(surfaceRef.current, {
+        observer.observe(sectionRef.current, {
             childList: true,
             subtree: true
         });
@@ -65,7 +65,7 @@ export function Foldable({
     useLayoutEffect(() => {
         if (!rect) return;
 
-        const zIndex = Number((surfaceRef || contentRef).current?.style.zIndex);
+        const zIndex = Number((sectionRef || contentRef).current?.style.zIndex);
         const global: CSSProperties = {
             visibility: isOpen ? "visible" : "hidden",
             zIndex: Number.isNaN(zIndex) ? "auto" : isOpen ? zIndex + 1 : zIndex
@@ -79,12 +79,12 @@ export function Foldable({
     }, [rect, isOpen]);
 
     useEffect(() => {
-        const surface = surfaceRef.current;
-        if (!surface || !isOpen) return;
+        const section = sectionRef.current;
+        if (!section || !isOpen) return;
 
         const handleClick = (e: MouseEvent) => {
             const target = e.target;
-            if (!surface || !(target instanceof Node)) return;
+            if (!section || !(target instanceof Node)) return;
 
             if (target instanceof Element
                 && closestAttributes(target, [{
@@ -93,12 +93,12 @@ export function Foldable({
                     split: true
                 }, ...onEventOff])) return;
 
-            if (!surface.contains(target)) onClickOut?.(e);
+            if (!section.contains(target)) onClickOut?.(e);
         }
 
         const handleFocusOut = (e: FocusEvent) => {
             const relatedTarget = e.relatedTarget;
-            if (!surface || !(relatedTarget instanceof Node)) return;
+            if (!section || !(relatedTarget instanceof Node)) return;
 
             if (relatedTarget instanceof Element
                 && closestAttributes(relatedTarget, [{
@@ -107,24 +107,24 @@ export function Foldable({
                     split: true
                 }, ...onEventOff])) return;
 
-            if (!surface.contains(relatedTarget)) onFocusOut?.(e);
+            if (!section.contains(relatedTarget)) onFocusOut?.(e);
         };
 
         document.addEventListener("click", handleClick);
-        surface.addEventListener("focusout", handleFocusOut);
+        section.addEventListener("focusout", handleFocusOut);
 
         return () => {
             document.removeEventListener("click", handleClick);
-            surface.removeEventListener("focusout", handleFocusOut);
+            section.removeEventListener("focusout", handleFocusOut);
         };
     }, [id, isOpen, onEventOff, onClickOut, onFocusOut]);
 
     return (
         <div
             id={id}
-            ref={surfaceRef}
+            ref={sectionRef}
             style={style}
-            className={styles?.surface}
+            className={styles?.section}
             aria-hidden={!isOpen}
         >
             <div
