@@ -1,19 +1,13 @@
 import { useState } from "react";
-import styles from "./MovieQuestion.module.css";
+import styles from "./Question.module.css";
 import clsx from "clsx";
-
-export interface Question {
-	imagePath: string;
-	query: string;
-	answers: string[];
-	correctAnswer: string;
-}
+import type { questionType } from "../types";
 
 interface MovieQuestionProps {
-	quizzQuestion: Question;
+	quizzQuestion: questionType;
 }
 
-export function MovieQuestion({ quizzQuestion }: MovieQuestionProps) {
+export function Question({ quizzQuestion }: MovieQuestionProps) {
 	const { imagePath, query, answers, correctAnswer } = quizzQuestion;
 	const [selectedAnswer, setSelectAnswer] = useState<string | null>(null);
 

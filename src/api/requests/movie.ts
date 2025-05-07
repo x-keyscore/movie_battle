@@ -112,7 +112,7 @@ interface GetDiscoverMovieParams {
 	without_genres?: string;
 	with_keywords?: string; // String of keywords IDs
 	with_origin_country?: string; // FR - Use iso3166 - LOM from origin country
-	with_origin_language?: string; // fr - Use iso639 - LOM with origin language
+	with_original_language?: string; // fr - Use iso639 - LOM with origin language
 }
 
 export const getDiscoverMovie = (params: GetDiscoverMovieParams) =>

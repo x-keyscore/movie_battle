@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useApp } from "../../providers/AppProvider";
 import { useRequest } from "../../hooks/useRequest";
@@ -9,31 +9,15 @@ import language from "../../assets/data/iso3166-french.json";
 import country from "../../assets/data/iso639-french.json";
 import styles from "./MovieDetails.module.css";
 import clsx from "clsx";
-import { MovieQuestion } from "./MovieQuestion";
-import type { Question } from "./MovieQuestion/MovieQuestion";
-import { questionTools } from "./questionTools";
+import type { dataMovieDetails } from "./types";
+import { Game } from "./Game";
 
 export function MovieDetailsPage() {
 	const { movie_id } = useParams();
 	const { setTopmovie } = useApp();
 	const [quizzVisible, setQuizzVisible] = useState<boolean>(false);
-	const [questions, setQuestions] = useState<Question[]>([]);
 
-	//TEMP
-	const didRun = useRef(false);
-	useEffect(() => {
-		if (didRun.current) return;
-		didRun.current = true;
-		const tempQuestion = {
-			imagePath: "CHEMIN IMAGE",
-			query: "Qu'elle est la bonne réponse a cette question?",
-			answers: questionTools.shuffleAnswers(["1", "2", "3", "4"]),
-			correctAnswer: "2",
-		};
-		setQuestions((prev) => [...prev, tempQuestion]);
-	}, []);
-
-	const [data] = useRequest(
+	const [data] = useRequest<dataMovieDetails | null | undefined>(
 		{
 			initial: null,
 			subscribes: [movie_id],
@@ -41,16 +25,18 @@ export function MovieDetailsPage() {
 		async () => {
 			if (!movie_id) return;
 
-			const [movie, credits, similarMovies] = await Promise.all([
+			const [movie, credits, similarMovies, movieImages] = await Promise.all([
 				requests.movie.getMovieDetails({ language: "fr-Fr", movie_id }),
 				requests.credits.getCredits({ language: "fr-Fr", movie_id }),
 				requests.movie.getSimilar({ language: "fr-Fr", movie_id }),
+				requests.images.getImages({ movie_id }),
 			]);
 
 			return {
 				movie: movie.data,
 				credits: credits.data,
 				similarMovies: similarMovies.data,
+				movieImages: movieImages.data,
 			};
 		},
 	);
@@ -58,10 +44,6 @@ export function MovieDetailsPage() {
 	useEffect(() => {
 		if (data) setTopmovie(data.movie);
 	}, [data, setTopmovie]);
-
-	useEffect(() => {
-		console.log(quizzVisible);
-	}, [quizzVisible]);
 
 	function handleQuizzClick() {
 		setQuizzVisible((prev) => !prev);
@@ -89,51 +71,7 @@ export function MovieDetailsPage() {
 			<button type="button" onClick={handleQuizzClick}>
 				JOUER
 			</button>
-			{quizzVisible && (
-				<div className={styles.quizzSection}>
-					<div className={styles.quizzContainer}>
-						<h3 className={styles.questionNumber}>QUESTION 3/4</h3>
-						{questions.map((question, index) => {
-							return (
-								<div key={`${movie_id}-${index}`} style={{ width: "100%" }}>
-									<MovieQuestion quizzQuestion={question} />
-								</div>
-							);
-						})}
-						{/* <ul className={styles.questionButtonList}>
-							<li>
-								<button
-									type="button"
-									className={`${styles.questionButton} ${styles.correct}`}
-								>
-									1
-								</button>
-							</li>
-							<li>
-								<button
-									type="button"
-									className={`${styles.questionButton} ${styles.correct}`}
-								>
-									2
-								</button>
-							</li>
-							<li>
-								<button
-									type="button"
-									className={`${styles.questionButton} ${styles.incorrect}`}
-								>
-									3
-								</button>
-							</li>
-							<li>
-								<button type="button" className={`${styles.questionButton}`}>
-									4
-								</button>
-							</li>
-						</ul> */}
-					</div>
-				</div>
-			)}
+			{quizzVisible && <Game data={data} />}
 			<div className={clsx(styles.section, styles.similar)}>
 				{data.similarMovies.total_results > 0 ? (
 					<MovieSection
