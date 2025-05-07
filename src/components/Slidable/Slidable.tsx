@@ -1,4 +1,4 @@
-import type { Slide, SlidableContextValue, HandleSlideOpen } from "./types";
+import type { Slide, SlidableContextValue, HandleOpen } from "./types";
 import type { ReactNode, ComponentRef, HTMLAttributes } from "react";
 import { createContext, useContext, useRef, useEffect } from "react";
 import { closestAttributes } from "../../utils/commons";
@@ -73,48 +73,56 @@ export function Slidable({
         };
     }, [onEventOff, onClickOut, onFocusOut]);
 
-    const handleSlideOpen: HandleSlideOpen = (slide: Slide) => {
+    const handleOpen: HandleOpen = (slide: Slide) => {
         const sequence = sequenceRef.current;
-
         const index = sequence.findIndex(item => item.id === slide.id);
+        const last = sequence[sequence.length - 1];
 
-        if (index) {
-            sequence[index + 1]?.close();
-            sequenceRef.current.slice(0, index);
+        // IF FIRST OF THE SEQUENCE OR LAST IS GROUP
+        if (!sequence.length || (last && last.isGroup)) {
             sequenceRef.current.push(slide);
+            return (null);
+        }
+
+        // IF ALREADY IN THE SEQUENCE
+        if (index !== -1) {
+            sequence.slice(0, index);
+            sequence.push(slide);
+            last.handleClose({
+                from: "CENTER",
+                to: "RIGHT"
+            });
 
             return ({
-                isIgnore: false,
-                without: "LEFT"
+                from: "LEFT",
+                to: "CENTER"
             });
         }
-        else if (sequence[sequence.length - 1].isGroup) {
-            sequenceRef.current.push(slide);
 
-            return ({
-                isIgnore: true,
-                without: null
-            });
-        }
-        else {
-            sequenceRef.current.push(slide);
+        sequence.push(slide);
+        last.handleClose({
+            from: "CENTER",
+            to: "LEFT"
+        });
 
-            return ({
-                isIgnore: false,
-                without: "RIGHT"
-            });
-        }
+        return ({
+            from: "RIGHT",
+            to: "CENTER"
+        });
     };
 
     return (
         <SlidableContext.Provider value={{
             internal: {
                 config: { duration },
-                handleSlideOpen
+                handleOpen
             }
         }}>
             <div
                 ref={sectionRef}
+                style={{
+                    position: "relative"
+                }}
                 {...attributes}
             >
                 {children}

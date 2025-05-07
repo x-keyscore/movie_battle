@@ -1,24 +1,27 @@
 export interface Slide {
     id: number;
+    isOpen: boolean;
     isGroup: boolean;
-    close: () => {};
+    handleOpen: HandleOpen;
+    handleClose: HandleClose;
 }
 
-type HandleSlideResult = {
-    isIgnore: true;
-    without: null;
-} | {
-    isIgnore: false;
-    without: "LEFT" | "RIGHT" | "TOP" | "BOTTOM";
-};
+type HandleClaim = {
+    from: "LEFT" | "RIGHT" | "CENTER";
+    to: "LEFT" | "RIGHT" | "CENTER";
+} | null;
 
-export type HandleSlideOpen = (slide: Slide) => HandleSlideResult;
+export type ListenSlide = (slide: Slide) => void;
+
+export type HandleOpen = (claim: HandleClaim) => void;
+
+export type HandleClose = (claim: HandleClaim) => void;
 
 export interface SlidableContextValue {
     internal: {
         config: {
             duration: number;
         },
-        handleSlideOpen: HandleSlideOpen;
+        listenSlide: ListenSlide;
     }
 }

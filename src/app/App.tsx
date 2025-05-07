@@ -44,8 +44,8 @@ export function App() {
 			<button onClick={() => setPage(prev => prev + 1)}>
 				change page
 			</button>
-			<Slidable className={styles.slidable} duration={5000}>
-				<Slide isOpen={page === 0} isFirst className={styles.slide} >
+			<Slidable className={styles.slidable} duration={2500}>
+				<Slide isOpen={page === 0} className={styles.slide} >
 					<div style={{ backgroundColor: "blue"}}>
 						0
 					</div>
