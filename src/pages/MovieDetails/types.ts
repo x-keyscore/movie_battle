@@ -1,6 +1,7 @@
 import type {
 	Credits,
 	ImageList,
+	Movie,
 	MovieList,
 	MovieWithDetails,
 } from "../../api";
@@ -13,8 +14,16 @@ export interface dataMovieDetails {
 }
 
 export interface questionType {
-	imagePath: string;
 	query: string;
-	answers: string[];
 	correctAnswer: string;
+	answers: string[];
+	imagePath: string;
+}
+
+export interface createQuestionType {
+	query: string;
+	correctAnswers: Movie[] | null;
+	wrongAnswers: Movie[] | null;
+	imagePath: string;
+	subject?: string;
 }

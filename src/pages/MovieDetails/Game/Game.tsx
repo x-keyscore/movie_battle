@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Question } from "../Question";
+import { Question } from "./Question";
 import type { dataMovieDetails, questionType } from "../types";
 import styles from "./Game.module.css";
 import { fetchUtils } from "../utils/fetchUtils";
@@ -13,7 +13,7 @@ interface GameProps {
 
 export function Game({ data }: GameProps) {
 	const { movie, credits, movieImages } = data;
-	const [questions, setQuestions] = useState<questionType[]>([]);
+	// const [questions, setQuestions] = useState<questionType[]>([]);
 
 	const [questionData] = useRequest(
 		{
@@ -51,39 +51,48 @@ export function Game({ data }: GameProps) {
 					with_original_language: movie.original_language,
 				}),
 			]);
-			console.log("with: ", movieWithCompany.data);
-			console.log("without: ", movieWithoutCompany.data);
-			console.log(
-				"Random movie without company: ",
-				questionUtils.pickRandomMovie(movieWithCompany.data, movie.id),
-			);
 
-			return {
-				movieWithCompany: movieWithCompany.data,
-				movieWithoutCompany: movieWithoutCompany.data,
-			};
+			const questionCompany = questionUtils.createQuestion({
+				query: "Parmi ces films, lequel a aussi été produit par",
+				correctAnswers: questionUtils.pickRandomMovies(
+					movieWithCompany.data,
+					movie.id,
+					1,
+				),
+				wrongAnswers: questionUtils.pickRandomMovies(
+					movieWithoutCompany.data,
+					movie.id,
+					3,
+				),
+				imagePath: "je suis un path d'image",
+				subject: movie.production_companies[0].name,
+			});
+
+			console.log(questionCompany);
+
+			return [questionCompany];
 		},
 	);
 
 	//TEMP
-	const didRun = useRef(false);
-	useEffect(() => {
-		if (didRun.current) return;
-		didRun.current = true;
-		const tempQuestion = {
-			imagePath: "CHEMIN IMAGE",
-			query: "Qu'elle est la bonne réponse a cette question?",
-			answers: questionUtils.shuffleAnswers(["1", "2", "3", "4"]),
-			correctAnswer: "2",
-		};
-		setQuestions((prev) => [...prev, tempQuestion]);
-	}, []);
+	// const didRun = useRef(false);
+	// useEffect(() => {
+	// 	if (didRun.current) return;
+	// 	didRun.current = true;
+	// 	const tempQuestion = {
+	// 		imagePath: "CHEMIN IMAGE",
+	// 		query: "Qu'elle est la bonne réponse a cette question?",
+	// 		answers: questionUtils.shuffleAnswers(["1", "2", "3", "4"]),
+	// 		correctAnswer: "2",
+	// 	};
+	// 	setQuestions((prev) => [...prev, tempQuestion]);
+	// }, []);
 
 	return (
 		<div className={styles.quizzSection}>
 			<div className={styles.quizzContainer}>
 				<h3 className={styles.questionNumber}>QUESTION 3/4</h3>
-				{questions.map((question, index) => {
+				{questionData?.map((question, index) => {
 					return (
 						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 						<div key={index} style={{ width: "100%" }}>

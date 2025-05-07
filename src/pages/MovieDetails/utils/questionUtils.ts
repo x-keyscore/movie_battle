@@ -1,12 +1,41 @@
 import type { MovieList } from "../../../api";
+import type { createQuestionType, questionType } from "../types";
 
-function pickRandomMovie(movies: MovieList, id: number) {
-	const randomIndex = Math.floor(Math.random() * movies.results.length);
-	const randomMovie = movies.results[randomIndex];
-	if (randomMovie.id === id) {
-		pickRandomMovie(movies, id);
+function pickRandomMovies(movies: MovieList, id: number, count = 1) {
+	const filteredMovies = movies.results.filter((movie) => movie.id !== id);
+
+	if (filteredMovies.length < count) return null;
+
+	const randomMovies = [];
+	const usedIndices = new Set<number>();
+
+	while (randomMovies.length < count) {
+		const randomIndex = Math.floor(Math.random() * filteredMovies.length);
+		if (!usedIndices.has(randomIndex)) {
+			usedIndices.add(randomIndex);
+			randomMovies.push(filteredMovies[randomIndex]);
+		}
 	}
-	return randomMovie;
+
+	return randomMovies;
+}
+
+function createQuestion({
+	query,
+	correctAnswers,
+	wrongAnswers,
+	imagePath,
+	subject,
+}: createQuestionType): questionType | null {
+	if (!correctAnswers || !wrongAnswers) return null;
+
+	const message = subject ? `${query} ${subject} ?` : query;
+	const correctAnswer = correctAnswers[0].title;
+	const answers = correctAnswers
+		.concat(wrongAnswers)
+		.map((movie) => movie.title);
+
+	return { query: message, correctAnswer, answers, imagePath };
 }
 
 function shuffleAnswers(array: string[]) {
@@ -20,5 +49,6 @@ function shuffleAnswers(array: string[]) {
 
 export const questionUtils = {
 	shuffleAnswers,
-	pickRandomMovie,
+	pickRandomMovies,
+	createQuestion,
 };

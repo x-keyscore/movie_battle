@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./Question.module.css";
 import clsx from "clsx";
-import type { questionType } from "../types";
+import type { questionType } from "../../types";
 
 interface MovieQuestionProps {
 	quizzQuestion: questionType;
