@@ -1,6 +1,6 @@
-import type { Slide, SlidableContextValue, HandleOpen } from "./types";
+import type { SlidableContextValue, Slide, ObserveSlide } from "./types";
 import type { ReactNode, ComponentRef, HTMLAttributes } from "react";
-import { createContext, useContext, useRef, useEffect } from "react";
+import { createContext, useContext, useRef, useEffect, useCallback } from "react";
 import { closestAttributes } from "../../utils/commons";
 
 const SlidableContext = createContext<SlidableContextValue | null>(null);
@@ -73,49 +73,43 @@ export function Slidable({
         };
     }, [onEventOff, onClickOut, onFocusOut]);
 
-    const handleOpen: HandleOpen = (slide: Slide) => {
-        const sequence = sequenceRef.current;
-        const index = sequence.findIndex(item => item.id === slide.id);
-        const last = sequence[sequence.length - 1];
+    const observeSlide: ObserveSlide = useCallback((slide: Slide) => {
+        if (!slide.isOpen) return;
+        const slideIndex = sequenceRef.current.findIndex(item => item.id === slide.id);
+        const prevSlide = sequenceRef.current[sequenceRef.current.length - 1];
 
         // IF FIRST OF THE SEQUENCE OR LAST IS GROUP
-        if (!sequence.length || (last && last.isGroup)) {
+        if (!sequenceRef.current.length || (prevSlide && prevSlide.isGroup)) {
             sequenceRef.current.push(slide);
             return (null);
         }
 
         // IF ALREADY IN THE SEQUENCE
-        if (index !== -1) {
-            sequence.slice(0, index);
-            sequence.push(slide);
-            last.handleClose({
-                from: "CENTER",
+        if (slideIndex !== -1) {
+            sequenceRef.current = sequenceRef.current.slice(0, slideIndex);
+            sequenceRef.current.push(slide);
+            prevSlide.handleClose({
                 to: "RIGHT"
             });
-
-            return ({
-                from: "LEFT",
-                to: "CENTER"
+            slide.handleOpen({
+                from: "LEFT"
+            });
+        } else {
+            sequenceRef.current.push(slide);
+            prevSlide.handleClose({
+                to: "LEFT"
+            });
+            slide.handleOpen({
+                from: "RIGHT"
             });
         }
-
-        sequence.push(slide);
-        last.handleClose({
-            from: "CENTER",
-            to: "LEFT"
-        });
-
-        return ({
-            from: "RIGHT",
-            to: "CENTER"
-        });
-    };
+    }, []);
 
     return (
         <SlidableContext.Provider value={{
             internal: {
                 config: { duration },
-                handleOpen
+                observeSlide
             }
         }}>
             <div

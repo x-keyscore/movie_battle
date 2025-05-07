@@ -1,3 +1,12 @@
+export type HandleAnimation = {
+    from?: "LEFT" | "RIGHT";
+    to?: "LEFT" | "RIGHT";
+} | null;
+
+export type HandleOpen = (animation: HandleAnimation) => void;
+
+export type HandleClose = (animation: HandleAnimation) => void;
+
 export interface Slide {
     id: number;
     isOpen: boolean;
@@ -6,22 +15,13 @@ export interface Slide {
     handleClose: HandleClose;
 }
 
-type HandleClaim = {
-    from: "LEFT" | "RIGHT" | "CENTER";
-    to: "LEFT" | "RIGHT" | "CENTER";
-} | null;
-
-export type ListenSlide = (slide: Slide) => void;
-
-export type HandleOpen = (claim: HandleClaim) => void;
-
-export type HandleClose = (claim: HandleClaim) => void;
+export type ObserveSlide = (slide: Slide) => void;
 
 export interface SlidableContextValue {
     internal: {
         config: {
             duration: number;
         },
-        listenSlide: ListenSlide;
+        observeSlide: ObserveSlide;
     }
 }
