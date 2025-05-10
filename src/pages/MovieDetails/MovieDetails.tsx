@@ -1,48 +1,63 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { useApp } from "../../providers/AppProvider";
 import { useRequest } from "../../hooks/useRequest";
-import {
-	ActorCard,
-	Image,
-	MovieSection,
-	QuizzQuestion,
-	Slidable,
-} from "../../components";
+import { ActorCard, Image, MovieSection } from "../../components";
 import { formatters } from "../../utils/formatters";
 import { requests } from "../../api";
 import language from "../../assets/data/iso3166-french.json";
 import country from "../../assets/data/iso639-french.json";
 import styles from "./MovieDetails.module.css";
 import clsx from "clsx";
+import { MovieQuestion } from "./MovieQuestion";
+import type { Question } from "./MovieQuestion/MovieQuestion";
+import { questionTools } from "./questionTools";
 
 export function MovieDetailsPage() {
 	const { movie_id } = useParams();
-	const { setTopmovie, setError } = useApp();
+	const { setTopmovie } = useApp();
 	const [quizzVisible, setQuizzVisible] = useState<boolean>(false);
+	const [questions, setQuestions] = useState<Question[]>([]);
 
-	const [data] = useRequest({
-		initial: null,
-		subscribes: [movie_id]
-	}, async () => {
-		if (!movie_id) return;
-
-		const [movie, credits, similarMovies] = await Promise.all([
-			requests.movie.getMovieDetails({ language: "fr-Fr", movie_id }),
-			requests.credits.getCredits({ language: "fr-Fr", movie_id }),
-			requests.movie.getSimilar({ language: "fr-Fr", movie_id }),
-		]);
-
-		return {
-			movie: movie.data,
-			credits: credits.data,
-			similarMovies: similarMovies.data,
+	//TEMP
+	const didRun = useRef(false);
+	useEffect(() => {
+		if (didRun.current) return;
+		didRun.current = true;
+		const tempQuestion = {
+			imagePath: "CHEMIN IMAGE",
+			query: "Qu'elle est la bonne réponse a cette question?",
+			answers: questionTools.shuffleAnswers(["1", "2", "3", "4"]),
+			correctAnswer: "2",
 		};
-	});
+		setQuestions((prev) => [...prev, tempQuestion]);
+	}, []);
+
+	const [data] = useRequest(
+		{
+			initial: null,
+			subscribes: [movie_id],
+		},
+		async () => {
+			if (!movie_id) return;
+
+			const [movie, credits, similarMovies] = await Promise.all([
+				requests.movie.getMovieDetails({ language: "fr-Fr", movie_id }),
+				requests.credits.getCredits({ language: "fr-Fr", movie_id }),
+				requests.movie.getSimilar({ language: "fr-Fr", movie_id }),
+			]);
+
+			return {
+				movie: movie.data,
+				credits: credits.data,
+				similarMovies: similarMovies.data,
+			};
+		},
+	);
 
 	useEffect(() => {
 		if (data) setTopmovie(data.movie);
-	}, [data]);
+	}, [data, setTopmovie]);
 
 	useEffect(() => {
 		console.log(quizzVisible);
@@ -56,7 +71,7 @@ export function MovieDetailsPage() {
 		return value || "Non renseigné";
 	}
 
-	if (!data) return (null);
+	if (!data) return null;
 
 	const actors = data.credits.cast.filter(
 		(member) => member.known_for_department === "Acting",
@@ -85,8 +100,14 @@ export function MovieDetailsPage() {
 				>
 					<div className={styles.quizzContainer}>
 						<h3 className={styles.questionNumber}>QUESTION 3/4</h3>
-						<QuizzQuestion /* question={question} */ />
-						<ul className={styles.questionButtonList}>
+						{questions.map((question, index) => {
+							return (
+								<div key={`${movie_id}-${index}`} style={{ width: "100%" }}>
+									<MovieQuestion quizzQuestion={question} />
+								</div>
+							);
+						})}
+						{/* <ul className={styles.questionButtonList}>
 							<li>
 								<button
 									type="button"
@@ -116,7 +137,7 @@ export function MovieDetailsPage() {
 									4
 								</button>
 							</li>
-						</ul>
+						</ul> */}
 					</div>
 				</Slidable>
 			)}
@@ -175,7 +196,7 @@ export function MovieDetailsPage() {
 							<p className={styles.detail}>
 								{fallback(data.movie.revenue).toLocaleString("en-US", {
 									style: "currency",
-									currency: "USD"
+									currency: "USD",
 								})}
 							</p>
 						</li>

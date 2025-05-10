@@ -6,4 +6,3 @@ export * from "./Slidable";
 export * from "./ActorCard";
 export * from "./MovieCard";
 export * from "./MovieSection";
-export * from "./QuizzQuestion";
