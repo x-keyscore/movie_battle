@@ -49,6 +49,15 @@ input {
 	cursor: text;
 }
 
+body, button {
+	font-family: "Albert Sans", sans-serif;
+	font-optical-sizing: auto;
+	font-size: 1rem;
+	font-weight: 500;
+	font-style: normal;
+	text-rendering: optimizeLegibility;
+}
+
 html,
 body {
 	background-color: var(--color-background);
@@ -58,15 +67,6 @@ body {
 	height: 100%;
 	overflow: hidden;
 	user-select: none;
-}
-
-body {
-	font-family: "Albert Sans", sans-serif;
-	font-optical-sizing: auto;
-	font-size: 1rem;
-	font-weight: 500;
-	font-style: normal;
-	text-rendering: optimizeLegibility;
 }
 
 #root {

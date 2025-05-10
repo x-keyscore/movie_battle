@@ -3,7 +3,7 @@ import type { ToggleAction, ToggleState } from "./types";
 import { useReducer, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { useApp } from "../../providers/AppProvider";
-import { Icons, Button, Collapsible, Image } from "../../components";
+import { Icons, Button, Foldable, Image } from "../../components";
 import { CategoryList, WatchList } from "./dropdown";
 import { formatters } from "../../utils/formatters";
 import styles from "./Header.module.css";
@@ -72,23 +72,23 @@ export function Header() {
                         isActive={toggle.categoryList}
                         aria-label="Catégories"
                         aria-expanded={toggle.categoryList}
-                        aria-controls="collapse-category-list"
+                        aria-controls="foldable-category-list"
                         onClick={() => setToggle("CATEGORY_LIST")}
                     >
                         <Icons.Category />
                     </Button>
-                    <Collapsible
-                        id="collapse-category-list"
+                    <Foldable
+                        id="foldable-category-list"
                         isOpen={toggle.categoryList}
                         styles={{
-                            wrapper: styles.collapsible,
-                            content: clsx(styles.collapsibleContent, "scroll")
+                            section: styles.foldable,
+                            content: clsx(styles.foldableContent, "scroll")
                         }}
                         onFocusOut={() => setToggle("CATEGORY_LIST")}
                         onClickOut={() => setToggle("CATEGORY_LIST")}
                     >
                         <CategoryList close={() => setToggle("CATEGORY_LIST")} />
-                    </Collapsible>
+                    </Foldable>
                 </div>
                 <div className={styles.topbarRight}>
                     <div className={styles.context}>
@@ -96,24 +96,24 @@ export function Header() {
                             isActive={toggle.watchList}
                             aria-label="Vos films enregistrés"
                             aria-expanded={toggle.watchList}
-                            aria-controls="collapse-watch-list"
+                            aria-controls="foldable-watch-list"
                             onClick={() => setToggle("WATCH_LIST")}
                         >
                             <Icons.Reel />
                         </Button>
-                        <Collapsible
-                            id="collapse-watch-list"
+                        <Foldable
+                            id="foldable-watch-list"
                             isOpen={toggle.watchList}
                             styles={{
-                                wrapper: styles.collapsible,
-                                content: clsx(styles.collapsibleContent, "scroll")
+                                section: styles.foldable,
+                                content: clsx(styles.foldableContent, "scroll")
                             }}
                             onFocusOut={() => setToggle("WATCH_LIST")}
                             onClickOut={() => setToggle("WATCH_LIST")}
-                            onEventOff={[{ name: "data-event-off", value: "collapse-watch-list" }]}
+                            onEventOff={[{ name: "data-event-off", value: "foldable-watch-list" }]}
                         >
                             <WatchList close={() => setToggle("WATCH_LIST")} />
-                        </Collapsible>
+                        </Foldable>
                     </div>
                 </div>
             </div>
@@ -124,8 +124,8 @@ export function Header() {
                             {topmovie.backdrop_path ? (
                                 <Image
                                     styles={{
-                                        wrapper: styles.backdrop,
-                                        content: styles.backdropContent
+                                        box: styles.backdrop,
+                                        img: styles.backdropContent
                                     }}
                                     role="presentation"
                                     isWaitable={true}
@@ -135,8 +135,8 @@ export function Header() {
                             ) : (
                                 <Image
                                     styles={{
-                                        wrapper: styles.poster,
-                                        content: styles.posterContent
+                                        box: styles.poster,
+                                        img: styles.posterContent
                                     }}
                                     role="presentation"
                                     isWaitable={true}
@@ -178,7 +178,7 @@ export function Header() {
                                 <Button
                                     size="small"
                                     aria-label="Ajouter aux films enregistrés"
-                                    data-event-off="collapse-watch-list"
+                                    data-event-off="foldable-watch-list"
                                     onClick={() => topmovie && watchListPush(topmovie)}
                                 >
                                     <Icons.AddToList />
