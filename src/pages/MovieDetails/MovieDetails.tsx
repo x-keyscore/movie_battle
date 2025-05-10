@@ -86,61 +86,6 @@ export function MovieDetailsPage() {
 
 	return (
 		<>
-			<button type="button" onClick={handleQuizzClick}>
-				JOUER
-			</button>
-			{quizzVisible && (
-				<Slidable
-					id="modal-movie-game"
-					styles={{
-						surface: styles.quizzSection,
-						content: styles.quizzContainer
-					}}
-					isOpen
-				>
-					<div className={styles.quizzContainer}>
-						<h3 className={styles.questionNumber}>QUESTION 3/4</h3>
-						{questions.map((question, index) => {
-							return (
-								<div key={`${movie_id}-${index}`} style={{ width: "100%" }}>
-									<MovieQuestion quizzQuestion={question} />
-								</div>
-							);
-						})}
-						{/* <ul className={styles.questionButtonList}>
-							<li>
-								<button
-									type="button"
-									className={`${styles.questionButton} ${styles.correct}`}
-								>
-									1
-								</button>
-							</li>
-							<li>
-								<button
-									type="button"
-									className={`${styles.questionButton} ${styles.correct}`}
-								>
-									2
-								</button>
-							</li>
-							<li>
-								<button
-									type="button"
-									className={`${styles.questionButton} ${styles.incorrect}`}
-								>
-									3
-								</button>
-							</li>
-							<li>
-								<button type="button" className={`${styles.questionButton}`}>
-									4
-								</button>
-							</li>
-						</ul> */}
-					</div>
-				</Slidable>
-			)}
 			<div className={clsx(styles.section, styles.similar)}>
 				{data.similarMovies.total_results > 0 ? (
 					<MovieSection
@@ -154,8 +99,8 @@ export function MovieDetailsPage() {
 			<div className={clsx(styles.section, styles.details)}>
 				<Image
 					styles={{
-						surface: styles.poster,
-						content: styles.posterContent,
+						box: styles.poster,
+						img: styles.posterContent,
 					}}
 					alt={`Poster du film ${data.movie.title}`}
 					src={`https://image.tmdb.org/t/p/w780${data.movie.poster_path}`}

@@ -14,7 +14,7 @@ interface UseRequestData {
 
 export function SearchPage() {
 	const { movieTitle } = useParams();
-	const { setSearchValue, setTopmovie, setError } = useApp();
+	const { searchValue, setSearchValue, setTopmovie, setError } = useApp();
 	const [pageIndex, setPageIndex] = useState(1);
 	const [data] = useRequest<UseRequestData>({ 
 		initial: { movies: [], totalPages: 1, totalResults: 0 },
@@ -26,7 +26,7 @@ export function SearchPage() {
 				query: movieTitle,
 				language: "fr-FR"
 			});
-			console.log(data)
+
 			if (pageIndex === 1) {
 				return ({
 					totalResults: data.total_results,
@@ -57,7 +57,7 @@ export function SearchPage() {
 			setTopmovie(null);
 			setError({
 				title: "",
-				message: "Désolé film introuvable"
+				message: `Nous n'avons pas trouvé de film du nom de "${searchValue}"`
 			});
 		} else {
 			setTopmovie(data.movies[0]);

@@ -237,7 +237,7 @@
     gap: 12px;
 }
 
-.topmovie-Error {
+.topmovie-error {
     z-index: 0;
     position: absolute;
     top: 0;
@@ -250,12 +250,12 @@
     height: 100vh;
 }
 
-.topmovie-Error .title {
+.topmovie-error .title {
     color: var(--color-text-light);
     font-size: 8rem;
 }
 
-.topmovie-Error .message {
+.topmovie-error .message {
     color: var(--color-text-light);
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
