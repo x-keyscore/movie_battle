@@ -1,27 +1,43 @@
-export type HandleAnimation = {
+import { internalSymbol } from "./Slidable";
+
+export interface DirectiveTransition {
     from?: "LEFT" | "RIGHT";
     to?: "LEFT" | "RIGHT";
-} | null;
+};
 
-export type HandleOpen = (animation: HandleAnimation) => void;
+export interface Directive {
+    transition?: DirectiveTransition;
+    render: boolean;
+};
 
-export type HandleClose = (animation: HandleAnimation) => void;
+export type DirectiveEvent = (directive: Directive) => void;
 
-export interface Slide {
-    id: number;
+export interface SlideState {
+    index: number | null;
     isOpen: boolean;
     isGroup: boolean;
-    handleOpen: HandleOpen;
-    handleClose: HandleClose;
+    isRender: boolean;
+    applyDirective: DirectiveEvent;
 }
 
-export type ObserveSlide = (slide: Slide) => void;
+export type SyncSlide = (id: number, state: SlideState) => void;
+export type KillSlide = (id: number) => void;
 
 export interface SlidableContextValue {
-    internal: {
+    [internalSymbol]: {
         config: {
             duration: number;
         },
-        observeSlide: ObserveSlide;
+        syncSlide: SyncSlide;
+        killSlide: KillSlide;
     }
+}
+
+export type SlideRegistry = Map<number, SlideState>;
+
+export type SlideSequence = number[];
+
+export interface SlideExchange {
+    fromId: number | null;
+    toId: number | null;
 }

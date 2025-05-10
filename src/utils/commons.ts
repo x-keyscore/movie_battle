@@ -26,12 +26,3 @@ export function closestAttributes(
 
     return (null);
 }
-
-export function interpolateNumber(from: number, to: number, progress: number, precision = 0): number {
-    if (precision) {
-        const factor = 10 ** precision;
-        return (Math.round((from + (to - from) * progress) * factor) / factor);
-    }
-
-    return (Math.round((from + (to - from) * progress)));
-}

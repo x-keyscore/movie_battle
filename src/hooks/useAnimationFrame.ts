@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useRef, useEffect } from 'react';
 
 export function useAnimationFrame() {
-	const frameId = useRef<number | null>(null);
+	const frame = useRef<number | null>(null);
 	const start = useRef<number | null>(null);
 
 	const animate = (
@@ -9,31 +9,36 @@ export function useAnimationFrame() {
 		duration: number,
 		callback: (progress: number) => void
 	) => {
-		if (start.current === null) start.current = time;
-		const elapsed = time - start.current;
-		const progress = Math.min(elapsed / duration, 1);
+		const delta = time - start.current!;
+		const progress = Math.min(delta / duration, 1);
 
 		callback(progress);
 
 		if (progress < 1) {
-			frameId.current = requestAnimationFrame((t) => animate(t, duration, callback));
+			frame.current = requestAnimationFrame((t) => animate(t, duration, callback));
 		} else {
 			start.current = null;
-			frameId.current = null;
+			frame.current = null;
 		}
 	};
 
 	const startAnimation = (duration: number, callback: (progress: number) => void) => {
-		if (frameId.current) cancelAnimationFrame(frameId.current);
-		start.current = null;
-		frameId.current = requestAnimationFrame((t) => animate(t, duration, callback));
+		if (frame.current) cancelAnimationFrame(frame.current);
+		frame.current = requestAnimationFrame((time) => {
+			start.current = time;
+			animate(time, duration, callback);
+		});
 	};
 
-	useEffect(() => {
-		return () => {
-			if (frameId.current) cancelAnimationFrame(frameId.current);
-		};
+	const cancelAnimation = () => {
+		if (frame.current) cancelAnimationFrame(frame.current);
+		frame.current = null;
+		start.current = null;
+	};
+
+	useEffect(() => () => {
+		cancelAnimation();
 	}, []);
 
-	return startAnimation;
+	return [startAnimation, cancelAnimation] as const;
 }

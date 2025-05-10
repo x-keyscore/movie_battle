@@ -1,7 +1,9 @@
-import type { SlidableContextValue, Slide, ObserveSlide } from "./types";
+import type { SlidableContextValue, SyncSlide, KillSlide, SlideRegistry, SlideSequence, SlideExchange } from "./types";
 import type { ReactNode, ComponentRef, HTMLAttributes } from "react";
 import { createContext, useContext, useRef, useEffect, useCallback } from "react";
-import { closestAttributes } from "../../utils/commons";
+import { exchangeByIndex, exchangeBySequence } from "./utils";
+
+export const internalSymbol = Symbol("internal");
 
 const SlidableContext = createContext<SlidableContextValue | null>(null);
 
@@ -15,107 +17,109 @@ export function useSlidable(): SlidableContextValue {
 
 interface SlidableProps extends HTMLAttributes<HTMLDivElement>  {
     children: ReactNode;
+    /**
+     * Slide transition duration in milliseconds
+     * 
+     * **Default:** `500`
+     */
     duration?: number;
-    onEventOff?: {
-        name: string;
-        value: string;
-        split?: boolean;
-    }[];
-    onClickOut?: (e: MouseEvent) => void;
-    onFocusOut?: (e: FocusEvent) => void;
 }
 
 export function Slidable({
     children,
-    duration = .20,
-    onEventOff = [],
-    onClickOut,
-    onFocusOut,
+    duration = 500,
     ...attributes
 }: SlidableProps) {
     const sectionRef = useRef<ComponentRef<"div">>(null);
-    const sequenceRef = useRef<Slide[]>([]);
-    console.log(sequenceRef.current)
-    useEffect(() => {
-        return () => { sequenceRef.current = []; };
+    const registryRef = useRef<SlideRegistry>(new Map());
+    const sequenceRef = useRef<SlideSequence>([]);
+    const exchangeRef = useRef<SlideExchange>({ 
+        fromId: null, 
+        toId: null
+    });
+
+    const syncSlide: SyncSlide = useCallback((id, newState) => {
+        const registry = registryRef.current;
+        const sequence = sequenceRef.current;
+        const exchange = exchangeRef.current;
+        const oldState = registry.get(id);
+
+        // FIRST OPEN
+        if (!oldState && newState.isOpen) {
+            sequence.push(id);
+        }
+        // UPDATE EXCHANGE
+        else if (oldState && oldState.isOpen !== newState.isOpen) {
+            if (newState.isOpen) exchange.toId = id;
+            else exchange.fromId = id;
+        }
+
+        // UPDATE REGISTRY
+        registry.set(id, newState);
+
+        if (exchange.fromId && exchange.toId) {
+            const { fromId, toId } = exchange;
+            const fromSlide = registry.get(fromId)!;
+            const toSlide = registry.get(toId)!;
+
+            // PROCESS EXCHANGE
+            if (fromSlide.index === null || toSlide.index === null) {
+                exchangeBySequence(sequence, exchange, fromSlide, toSlide);
+            } else {
+                exchangeByIndex(fromSlide, toSlide);
+            }
+
+            // UPDATE SEQUENCE
+            if (sequence.includes(toId)) {
+                sequence.length = sequence.indexOf(toId) + 1;
+            } else {
+                sequence.push(toId);
+            }
+
+            // CLEAN EXCHANGE
+            exchange.fromId = null;
+            exchange.toId = null;
+        }
+        console.log(sequence);
+    }, []);
+
+    const killSlide: KillSlide = useCallback((id) => {
+        const registry = registryRef.current;
+        registry.delete(id);
+
+        const sequence = sequenceRef.current;
+        const idxInSeq = sequence.indexOf(id);
+        if (idxInSeq !== -1) sequence.splice(idxInSeq, 1);
+
+        const exchange = exchangeRef.current;
+        if (exchange.fromId === id) exchange.fromId = null;
+        if (exchange.toId === id) exchange.toId = null;
     }, []);
 
     useEffect(() => {
-        const section = sectionRef.current;
-        if (!section || !(onClickOut && onFocusOut)) return;
-
-        const handleClick = (e: MouseEvent) => {
-            const target = e.target;
-            if (!section || !(target instanceof Node)) return;
-
-            if (target instanceof Element
-                && closestAttributes(target, [...onEventOff])) return;
-
-            if (!section.contains(target)) onClickOut(e);
-        }
-
-        const handleFocusOut = (e: FocusEvent) => {
-            const relatedTarget = e.relatedTarget;
-            if (!section || !(relatedTarget instanceof Node)) return;
-
-            if (relatedTarget instanceof Element
-                && closestAttributes(relatedTarget, [...onEventOff])) return;
-
-            if (!section.contains(relatedTarget)) onFocusOut(e);
-        };
-
-        document.addEventListener("click", handleClick);
-        section.addEventListener("focusout", handleFocusOut);
-
         return () => {
-            document.removeEventListener("click", handleClick);
-            section.removeEventListener("focusout", handleFocusOut);
+            registryRef.current.clear();
+            sequenceRef.current = [];
+            exchangeRef.current = { 
+                fromId: null, 
+                toId: null
+            };
         };
-    }, [onEventOff, onClickOut, onFocusOut]);
-
-    const observeSlide: ObserveSlide = useCallback((slide: Slide) => {
-        if (!slide.isOpen) return;
-        const slideIndex = sequenceRef.current.findIndex(item => item.id === slide.id);
-        const prevSlide = sequenceRef.current[sequenceRef.current.length - 1];
-
-        // IF FIRST OF THE SEQUENCE OR LAST IS GROUP
-        if (!sequenceRef.current.length || (prevSlide && prevSlide.isGroup)) {
-            sequenceRef.current.push(slide);
-            return (null);
-        }
-
-        // IF ALREADY IN THE SEQUENCE
-        if (slideIndex !== -1) {
-            sequenceRef.current = sequenceRef.current.slice(0, slideIndex);
-            sequenceRef.current.push(slide);
-            prevSlide.handleClose({
-                to: "RIGHT"
-            });
-            slide.handleOpen({
-                from: "LEFT"
-            });
-        } else {
-            sequenceRef.current.push(slide);
-            prevSlide.handleClose({
-                to: "LEFT"
-            });
-            slide.handleOpen({
-                from: "RIGHT"
-            });
-        }
     }, []);
 
     return (
         <SlidableContext.Provider value={{
-            internal: {
+            [internalSymbol]: {
                 config: { duration },
-                observeSlide
+                syncSlide,
+                killSlide
             }
         }}>
             <div
                 ref={sectionRef}
                 style={{
-                    position: "relative"
+                    position: "relative",
+                    marginLeft: "500px"
                 }}
                 {...attributes}
             >
