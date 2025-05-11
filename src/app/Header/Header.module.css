@@ -82,7 +82,7 @@
     color: var(--color-text-placeholder);
 }
 
-.topbar-center .collapsible {
+.topbar-center .foldable {
     position: absolute;
     top: 64px;
     left: 0;
@@ -95,11 +95,11 @@
     justify-content: flex-end;
 }
 
-.topbar-right>.context {
+.topbar-right > .context {
     position: relative;
 }
 
-.topbar-right>.context .collapsible {
+.topbar-right > .context .foldable {
     position: absolute;
     top: 64px;
     right: 0;
@@ -107,8 +107,8 @@
     border-radius: 12px;
     background: var(--color-surface);
 }
-.topbar-right .collapsible-content,
-.topbar-center .collapsible-content {
+.topbar-right .foldable-content,
+.topbar-center .foldable-content {
     background: var(--color-surface);
     max-height: calc(100vh - (2 * 80px));
     overflow-y: auto;
@@ -237,7 +237,7 @@
     gap: 12px;
 }
 
-.topmovie-Error {
+.topmovie-error {
     z-index: 0;
     position: absolute;
     top: 0;
@@ -250,12 +250,12 @@
     height: 100vh;
 }
 
-.topmovie-Error .title {
+.topmovie-error .title {
     color: var(--color-text-light);
     font-size: 8rem;
 }
 
-.topmovie-Error .message {
+.topmovie-error .message {
     color: var(--color-text-light);
-    font-size: 2rem;
+    font-size: 1.5rem;
 }

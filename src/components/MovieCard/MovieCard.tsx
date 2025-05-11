@@ -33,8 +33,8 @@ export function MovieCard({ movie }: MovieCardProps) {
 				>
 					<Image
 						styles={{
-							wrapper: styles.image,
-							content: styles.imageContent
+							box: styles.image,
+							img: styles.imageContent
 						}}
 						role="presentation"
 						isLoadable={movieImagePath}
@@ -64,7 +64,7 @@ export function MovieCard({ movie }: MovieCardProps) {
 						size="small"
 						variant="ghost"
 						aria-label="Ajouter aux films enregistrés"
-						data-event-off="collapse-watch-list"
+						data-event-off="foldable-watch-list"
 						onClick={handleWatchlist}
 					>
 						{isInWatchlist ? <Icons.Cross /> : <Icons.AddToList />}

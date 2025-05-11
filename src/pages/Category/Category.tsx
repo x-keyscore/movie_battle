@@ -14,7 +14,7 @@ interface UseRequestData {
 
 export function CategoryPage() {
 	const { category, genre_id } = useParams();
-	const { setTopmovie, setError } = useApp();
+	const { setTopmovie } = useApp();
 	const [pageIndex, setPageIndex] = useState(1);
 	const [data] = useRequestQueue<UseRequestData>({ 
 		initial: { movies: [], totalPages: 1 },

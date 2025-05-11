@@ -85,8 +85,8 @@ export function MovieDetailsPage() {
 			<div className={clsx(styles.section, styles.details)}>
 				<Image
 					styles={{
-						wrapper: styles.poster,
-						content: styles.posterContent,
+						box: styles.poster,
+						img: styles.posterContent,
 					}}
 					alt={`Poster du film ${data.movie.title}`}
 					src={`https://image.tmdb.org/t/p/w780${data.movie.poster_path}`}

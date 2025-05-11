@@ -28,8 +28,8 @@ export function WatchList({ close }: WatchListProps) {
                     >
                         {movie.poster_path && <Image
                             styles={{
-                                wrapper: styles.image,
-                                content: styles.imageContent
+                                box: styles.image,
+                                img: styles.imageContent
                             }}
                             role="presentation"
                             isWaitable={false}
