@@ -42,10 +42,11 @@
 	width: 100%;
 	min-height: 42px;
 	border-radius: 8px;
-	font-size: 1rem;
+	font-size: 0.9rem;
 	background-color: var(--color-surface-light);
 	color: var(--color-text);
 	border: 2px solid var(--color-surface-light);
+	padding: 0 1rem;
 	cursor: pointer;
 	transition: color .10s ease-in-out, border .10s ease-in-out, background .10s
 		ease-in-out;
@@ -67,6 +68,15 @@
 	background-color: var(--color-background);
 	border: 2px solid var(--color-background);
 	cursor: default;
+}
+
+.truncate-text {
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-clamp: 1;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
 }
 
 @media (max-width: 920px) {

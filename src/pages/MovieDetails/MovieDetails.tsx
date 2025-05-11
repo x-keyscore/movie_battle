@@ -1,39 +1,23 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import clsx from "clsx";
 import { useApp } from "../../providers/AppProvider";
 import { useRequest } from "../../hooks/useRequest";
-import { ActorCard, Image, MovieSection } from "../../components";
-import { formatters } from "../../utils/formatters";
 import { requests } from "../../api";
+import { formatters } from "../../utils/formatters";
 import language from "../../assets/data/iso3166-french.json";
 import country from "../../assets/data/iso639-french.json";
+import { ActorCard, Image, MovieSection } from "../../components";
+import { Game } from "./Game";
+import type { dataMovieDetails } from "./types";
 import styles from "./MovieDetails.module.css";
-import clsx from "clsx";
-import { MovieQuestion } from "./MovieQuestion";
-import type { Question } from "./MovieQuestion/MovieQuestion";
-import { questionTools } from "./questionTools";
 
 export function MovieDetailsPage() {
 	const { movie_id } = useParams();
 	const { setTopmovie } = useApp();
 	const [quizzVisible, setQuizzVisible] = useState<boolean>(false);
-	const [questions, setQuestions] = useState<Question[]>([]);
 
-	//TEMP
-	const didRun = useRef(false);
-	useEffect(() => {
-		if (didRun.current) return;
-		didRun.current = true;
-		const tempQuestion = {
-			imagePath: "CHEMIN IMAGE",
-			query: "Qu'elle est la bonne réponse a cette question?",
-			answers: questionTools.shuffleAnswers(["1", "2", "3", "4"]),
-			correctAnswer: "2",
-		};
-		setQuestions((prev) => [...prev, tempQuestion]);
-	}, []);
-
-	const [data] = useRequest(
+	const [data] = useRequest<dataMovieDetails | null | undefined>(
 		{
 			initial: null,
 			subscribes: [movie_id],
@@ -41,16 +25,18 @@ export function MovieDetailsPage() {
 		async () => {
 			if (!movie_id) return;
 
-			const [movie, credits, similarMovies] = await Promise.all([
+			const [movie, credits, similarMovies, movieImages] = await Promise.all([
 				requests.movie.getMovieDetails({ language: "fr-Fr", movie_id }),
 				requests.credits.getCredits({ language: "fr-Fr", movie_id }),
 				requests.movie.getSimilar({ language: "fr-Fr", movie_id }),
+				requests.images.getImages({ movie_id }),
 			]);
 
 			return {
 				movie: movie.data,
 				credits: credits.data,
 				similarMovies: similarMovies.data,
+				movieImages: movieImages.data,
 			};
 		},
 	);
@@ -58,10 +44,6 @@ export function MovieDetailsPage() {
 	useEffect(() => {
 		if (data) setTopmovie(data.movie);
 	}, [data, setTopmovie]);
-
-	useEffect(() => {
-		console.log(quizzVisible);
-	}, [quizzVisible]);
 
 	function handleQuizzClick() {
 		setQuizzVisible((prev) => !prev);
@@ -86,6 +68,10 @@ export function MovieDetailsPage() {
 
 	return (
 		<>
+			<button type="button" onClick={handleQuizzClick}>
+				JOUER
+			</button>
+			{quizzVisible && <Game data={data} />}
 			<div className={clsx(styles.section, styles.similar)}>
 				{data.similarMovies.total_results > 0 ? (
 					<MovieSection
