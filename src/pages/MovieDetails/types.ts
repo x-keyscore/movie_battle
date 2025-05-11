@@ -22,8 +22,22 @@ export interface questionType {
 
 export interface createQuestionType {
 	query: string;
+	correctAnswer: string | null;
+	wrongAnswers: string[] | null;
+	imagePath: string;
+	subject?: string;
+}
+
+export interface createQuestionMovieType {
+	query: string;
 	correctAnswers: Movie[] | null;
 	wrongAnswers: Movie[] | null;
 	imagePath: string;
 	subject?: string;
+}
+
+export interface modifyDateType {
+	years?: number;
+	months?: number;
+	days?: number;
 }

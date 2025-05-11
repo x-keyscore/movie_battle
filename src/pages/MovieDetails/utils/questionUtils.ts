@@ -1,5 +1,9 @@
 import type { MovieList } from "../../../api";
-import type { createQuestionType, questionType } from "../types";
+import type {
+	createQuestionMovieType,
+	createQuestionType,
+	questionType,
+} from "../types";
 
 function pickRandomMovies(movies: MovieList, id: number, count = 1) {
 	const filteredMovies = movies.results.filter((movie) => movie.id !== id);
@@ -23,11 +27,26 @@ function pickRandomMovies(movies: MovieList, id: number, count = 1) {
 
 function createQuestion({
 	query,
-	correctAnswers,
+	correctAnswer,
 	wrongAnswers,
 	imagePath,
 	subject,
 }: createQuestionType): questionType | null {
+	if (!correctAnswer || !wrongAnswers) return null;
+
+	const message = subject ? `${query} ${subject} ?` : query;
+	const answers = shuffleAnswers([...wrongAnswers, correctAnswer]);
+
+	return { query: message, correctAnswer, answers, imagePath };
+}
+
+function createQuestionMovie({
+	query,
+	correctAnswers,
+	wrongAnswers,
+	imagePath,
+	subject,
+}: createQuestionMovieType): questionType | null {
 	if (!correctAnswers || !wrongAnswers) return null;
 
 	const message = subject ? `${query} ${subject} ?` : query;
@@ -48,8 +67,40 @@ function shuffleAnswers(array: string[]) {
 	return shuffledArray;
 }
 
+function returnOnInvestment(budget: number, revenue: number): number | null {
+	if (budget <= 0 || revenue <= 0) {
+		return null;
+	}
+	const percentage = (revenue / budget) * 100;
+	return Math.round(percentage);
+}
+
+function getBase(percentage: number) {
+	return Math.round(percentage / 5);
+}
+
+function generateWrongPercentages(correctPercentage: number): number[] {
+	const wrongAnswers = [];
+	const base = getBase(correctPercentage);
+	const positions = [0, 1, 2, 3];
+	const randomPosition = Math.floor(Math.random() * positions.length);
+	let start = correctPercentage - randomPosition * base;
+
+	while (wrongAnswers.length < 3) {
+		if (start !== correctPercentage) {
+			wrongAnswers.push(start);
+		}
+		start += base;
+	}
+
+	return wrongAnswers;
+}
+
 export const questionUtils = {
 	shuffleAnswers,
 	pickRandomMovies,
 	createQuestion,
+	createQuestionMovie,
+	returnOnInvestment,
+	generateWrongPercentages,
 };

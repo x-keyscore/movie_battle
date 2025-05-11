@@ -22,37 +22,70 @@ export function Game({ data }: GameProps) {
 		async () => {
 			if (!data) return;
 
-			const [movieWithCompany, movieWithoutCompany] = await Promise.all([
+			const [
+				movieWithCompany,
+				movieWithoutCompany,
+				movieBeforeDate,
+				movieAfterDate,
+			] = await Promise.all([
+				// Whit Company
 				requests.movie.getDiscoverMovie({
 					language: "fr-Fr",
-					"primary_release_date.gte": fetchUtils.modifyYears(
+					"primary_release_date.gte": fetchUtils.modifyDate(
 						movie.release_date,
-						-2,
+						{ years: -2 },
 					),
-					"primary_release_date.lte": fetchUtils.modifyYears(
+					"primary_release_date.lte": fetchUtils.modifyDate(
 						movie.release_date,
-						2,
+						{ years: 2 },
 					),
 					with_companies: movie.production_companies[0].id.toString(),
 				}),
+				// Whithout Company
 				requests.movie.getDiscoverMovie({
 					language: "fr-Fr",
 					"vote_count.gte": 5,
-					"primary_release_date.gte": fetchUtils.modifyYears(
+					"primary_release_date.gte": fetchUtils.modifyDate(
 						movie.release_date,
-						-2,
+						{ years: -2 },
 					),
-					"primary_release_date.lte": fetchUtils.modifyYears(
+					"primary_release_date.lte": fetchUtils.modifyDate(
 						movie.release_date,
-						2,
+						{ years: 2 },
 					),
 					without_companies: movie.production_companies[0].id.toString(),
 					with_genres: fetchUtils.idsToString(movie.genres),
 					with_original_language: movie.original_language,
 				}),
+				// Before Date
+				requests.movie.getDiscoverMovie({
+					language: "fr-Fr",
+					"vote_count.gte": 5,
+					"primary_release_date.gte": fetchUtils.modifyDate(
+						movie.release_date,
+						{ years: -1 },
+					),
+					"primary_release_date.lte": fetchUtils.modifyDate(
+						movie.release_date,
+						{ days: -1 },
+					),
+					with_genres: fetchUtils.idsToString(movie.genres),
+					with_original_language: movie.original_language,
+				}),
+				// After Date
+				requests.movie.getDiscoverMovie({
+					language: "fr-Fr",
+					"vote_count.gte": 5,
+					"primary_release_date.gte": fetchUtils.modifyDate(
+						movie.release_date,
+						{ days: 1 },
+					),
+					with_genres: fetchUtils.idsToString(movie.genres),
+					with_original_language: movie.original_language,
+				}),
 			]);
 
-			const questionCompany = questionUtils.createQuestion({
+			const questionCompany = questionUtils.createQuestionMovie({
 				query: "Parmi ces films, lequel a aussi été produit par",
 				correctAnswers: questionUtils.pickRandomMovies(
 					movieWithCompany.data,
@@ -68,13 +101,46 @@ export function Game({ data }: GameProps) {
 				subject: movie.production_companies[0].name,
 			});
 
-			console.log(questionCompany);
+			const questionReleasedAfter = questionUtils.createQuestionMovie({
+				query: "Parmi ces films, lequel a été sorti apres",
+				correctAnswers: questionUtils.pickRandomMovies(
+					movieAfterDate.data,
+					movie.id,
+					1,
+				),
+				wrongAnswers: questionUtils.pickRandomMovies(
+					movieBeforeDate.data,
+					movie.id,
+					3,
+				),
+				imagePath: "je suis un path d'image",
+				subject: movie.title,
+			});
 
-			return [questionCompany];
+			const correctROI = questionUtils.returnOnInvestment(
+				movie.budget,
+				movie.revenue,
+			);
+			const questionReturnOnInvestment = correctROI
+				? questionUtils.createQuestion({
+						query: "Par rapport à ce qu’il a coûté, combien a rapporté le film",
+						correctAnswer: `${correctROI}%`,
+						wrongAnswers: questionUtils
+							.generateWrongPercentages(correctROI)
+							.map((wrongAnswer) => `${wrongAnswer}%`),
+						imagePath: "je suis un path d'image",
+						subject: movie.title,
+					})
+				: null;
+			console.log(questionReturnOnInvestment);
+
+			return [
+				questionCompany,
+				questionReleasedAfter,
+				questionReturnOnInvestment,
+			];
 		},
 	);
-
-	console.log("question data: ", questionData);
 
 	//TEMP
 	// const didRun = useRef(false);
@@ -94,14 +160,16 @@ export function Game({ data }: GameProps) {
 		<div className={styles.quizzSection}>
 			<div className={styles.quizzContainer}>
 				<h3 className={styles.questionNumber}>QUESTION 3/4</h3>
-				{questionData?.map((question, index) =>
-					question ? (
-						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-						<div key={index} style={{ width: "100%" }}>
-							<Question quizzQuestion={question} />
-						</div>
-					) : null,
-				)}
+				{questionData
+					? questionData?.map((question, index) =>
+							question ? (
+								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+								<div key={index} style={{ width: "100%" }}>
+									<Question quizzQuestion={question} />
+								</div>
+							) : null,
+						)
+					: "Pas de question disponible"}
 				{/* <ul className={styles.questionButtonList}>
                 <li>
                     <button
