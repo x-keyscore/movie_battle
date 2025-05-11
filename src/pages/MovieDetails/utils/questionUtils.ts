@@ -17,6 +17,7 @@ function pickRandomMovies(movies: MovieList, id: number, count = 1) {
 		}
 	}
 
+	console.log(randomMovies);
 	return randomMovies;
 }
 
@@ -31,9 +32,9 @@ function createQuestion({
 
 	const message = subject ? `${query} ${subject} ?` : query;
 	const correctAnswer = correctAnswers[0].title;
-	const answers = correctAnswers
-		.concat(wrongAnswers)
-		.map((movie) => movie.title);
+	const answers = shuffleAnswers(
+		correctAnswers.concat(wrongAnswers).map((movie) => movie.title),
+	);
 
 	return { query: message, correctAnswer, answers, imagePath };
 }

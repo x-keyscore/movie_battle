@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import { Question } from "./Question";
-import type { dataMovieDetails, questionType } from "../types";
-import styles from "./Game.module.css";
-import { fetchUtils } from "../utils/fetchUtils";
-import { useRequest } from "../../../hooks/useRequest";
 import { requests } from "../../../api";
+import { useRequest } from "../../../hooks/useRequest";
+import { fetchUtils } from "../utils/fetchUtils";
 import { questionUtils } from "../utils/questionUtils";
+import { Question } from "./Question";
+import type { dataMovieDetails } from "../types";
+import styles from "./Game.module.css";
 
 interface GameProps {
 	data: dataMovieDetails;
@@ -38,6 +37,7 @@ export function Game({ data }: GameProps) {
 				}),
 				requests.movie.getDiscoverMovie({
 					language: "fr-Fr",
+					"vote_count.gte": 5,
 					"primary_release_date.gte": fetchUtils.modifyYears(
 						movie.release_date,
 						-2,
@@ -74,6 +74,8 @@ export function Game({ data }: GameProps) {
 		},
 	);
 
+	console.log("question data: ", questionData);
+
 	//TEMP
 	// const didRun = useRef(false);
 	// useEffect(() => {
@@ -92,14 +94,14 @@ export function Game({ data }: GameProps) {
 		<div className={styles.quizzSection}>
 			<div className={styles.quizzContainer}>
 				<h3 className={styles.questionNumber}>QUESTION 3/4</h3>
-				{questionData?.map((question, index) => {
-					return (
+				{questionData?.map((question, index) =>
+					question ? (
 						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 						<div key={index} style={{ width: "100%" }}>
 							<Question quizzQuestion={question} />
 						</div>
-					);
-				})}
+					) : null,
+				)}
 				{/* <ul className={styles.questionButtonList}>
                 <li>
                     <button

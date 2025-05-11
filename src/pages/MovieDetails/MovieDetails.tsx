@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import clsx from "clsx";
 import { useApp } from "../../providers/AppProvider";
 import { useRequest } from "../../hooks/useRequest";
-import { ActorCard, Image, MovieSection } from "../../components";
-import { formatters } from "../../utils/formatters";
 import { requests } from "../../api";
+import { formatters } from "../../utils/formatters";
 import language from "../../assets/data/iso3166-french.json";
 import country from "../../assets/data/iso639-french.json";
-import styles from "./MovieDetails.module.css";
-import clsx from "clsx";
-import type { dataMovieDetails } from "./types";
+import { ActorCard, Image, MovieSection } from "../../components";
 import { Game } from "./Game";
+import type { dataMovieDetails } from "./types";
+import styles from "./MovieDetails.module.css";
 
 export function MovieDetailsPage() {
 	const { movie_id } = useParams();

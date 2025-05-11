@@ -1,7 +1,7 @@
 import { useState } from "react";
-import styles from "./Question.module.css";
 import clsx from "clsx";
 import type { questionType } from "../../types";
+import styles from "./Question.module.css";
 
 interface MovieQuestionProps {
 	quizzQuestion: questionType;
@@ -41,7 +41,7 @@ export function Question({ quizzQuestion }: MovieQuestionProps) {
 												: styles.incorrect,
 									)}
 								>
-									{answer}
+									<span className={styles.truncateText}>{answer}</span>
 								</button>
 							</li>
 						);
