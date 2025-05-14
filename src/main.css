@@ -1,0 +1,95 @@
+@import url("https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+:root {
+	--color-accent: hsl(33, 81%, 62%);
+	--color-background: hsl(206, 11%, 12%);
+	--color-surface: hsl(206, 11%, 16%);
+	--color-surface-light: hsl(206, 11%, 19%);
+	--color-text: hsl(0, 0%, 100%);
+	--color-text-light: hsl(204, 11%, 82%);
+	--color-text-placeholder: hsl(204, 11%, 82%);
+}
+
+a,
+button,
+input,
+label,
+select,
+span,
+strong {
+	outline: none;
+}
+
+h1,
+h2,
+p {
+	margin: 0;
+}
+
+ul {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+img {
+	font-size: 0;
+}
+
+input {
+	color: var(--color-text);
+	font: inherit;
+	text-rendering: inherit;
+	appearance: none;
+	background: none;
+	width: 100%;
+	min-width: 0;
+	padding-block: 0;
+	padding-inline: 0;
+	border: none;
+	cursor: text;
+}
+
+body, button {
+	font-family: "Albert Sans", sans-serif;
+	font-optical-sizing: auto;
+	font-size: 1rem;
+	font-weight: 500;
+	font-style: normal;
+	text-rendering: optimizeLegibility;
+}
+
+html,
+body {
+	background-color: var(--color-background);
+	color: var(--text);
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	overflow: hidden;
+	user-select: none;
+}
+
+#root {
+	height: 100%;
+	overflow-y: auto;
+}
+
+@supports selector(::-webkit-scrollbar) {
+	.scroll::-webkit-scrollbar {
+		width: 4px;
+	}
+	.scroll::-webkit-scrollbar-track {
+		background: var(--color-surface);
+	}
+	.scroll::-webkit-scrollbar-thumb {
+		border-radius: 2px;
+		background: var(--color-accent);
+	}
+}
+
+@supports not selector(::-webkit-scrollbar) {
+	.scroll {
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-accent) var(--color-surface);
+	}
+}

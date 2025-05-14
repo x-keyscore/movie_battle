@@ -1,0 +1,53 @@
+.footer {
+	color: var(--color-text);
+	background-color: var(--color-surface);
+	padding: 12px clamp(12px, 1.5%, 1.5%);
+}
+
+.footer .container {
+	width: 100%;
+	height: fit-content;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.footer .container .brandlogo {
+	display: block;
+	min-height: 37px;
+	min-width: 32px;
+	pointer-events: auto;
+	display: flex;
+	align-items: center;
+}
+
+.footer .container .infos {
+	display: flex;
+	gap: 8px;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.footer .copyright,
+.link {
+	font-size: .8rem;
+	font-weight: 300;
+}
+
+.footer .link {
+	text-decoration: none;
+	color: var(--color-accent);
+}
+
+.footer .link:hover {
+	text-decoration: underline;
+}
+
+.footer .container .tmdbLogo {
+	display: block;
+	height: 37px;
+	aspect-ratio: 40 / 28;
+	pointer-events: auto;
+}

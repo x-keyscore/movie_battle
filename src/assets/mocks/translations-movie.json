@@ -1,0 +1,564 @@
+{
+	"id": 950387,
+	"translations": [
+		{
+			"iso_3166_1": "US",
+			"iso_639_1": "en",
+			"name": "English",
+			"english_name": "English",
+			"data": {
+				"homepage": "https://www.minecraft-movie.com",
+				"overview": "Four misfits find themselves struggling with ordinary problems when they are suddenly pulled through a mysterious portal into the Overworld: a bizarre, cubic wonderland that thrives on imagination. To get back home, they'll have to master this world while embarking on a magical quest with an unexpected, expert crafter, Steve.",
+				"runtime": 101,
+				"tagline": "Be there and be square.",
+				"title": ""
+			}
+		},
+		{
+			"iso_3166_1": "KR",
+			"iso_639_1": "ko",
+			"name": "한국어/조선말",
+			"english_name": "Korean",
+			"data": {
+				"homepage": "https://www.minecraft.net/ko-kr/minecraft-movie",
+				"overview": "왕년의 게임 챔피언이었지만 지금은 폐업 직전의 게임샵 주인이 된 '개릿'과 엄마를 잃고 낯선 동네로 이사 온 남매 '헨리'와 '나탈리' 그리고 그들을 돕는 부동산 중개업자 '던'. 이들은 ‘개릿’이 수집한 ‘큐브’가 내뿜는 신비한 빛을 따라가다 어느 폐광 속에 열린 포털을 통해 미지의 공간으로 빨려들어간다. 산과 나무, 구름과 달, 심지어 꿀벌까지 상상하는 모든 것이 네모난 현실이 되는 이곳은 바로 ‘오버월드’. 일찍이 이 세계로 넘어와 완벽하게 적응한 ‘스티브’를 만난 네 사람은 지하세계 ‘네더’를 다스리는 마법사 ‘말고샤’의 침공으로 ‘오버월드’가 위험에 빠졌다는 사실을 알게 된다. 현실 세계로 돌아가기 위해서는 일단 살아남아야 하는 법! 다섯 명의 ‘동글이’들은 ‘오버월드’를 구하기 위해 힘을 합치게 되는데…",
+				"runtime": 101,
+				"tagline": "",
+				"title": "A MINECRAFT MOVIE 마인크래프트 무비"
+			}
+		},
+		{
+			"iso_3166_1": "FR",
+			"iso_639_1": "fr",
+			"name": "Français",
+			"english_name": "French",
+			"data": {
+				"homepage": "",
+				"overview": "Bienvenue dans l’univers de Minecraft où la créativité est essentielle à la survie ! Quatre outsiders – Garrett, Henry, Natalie et Dawn – sont soudainement projetés à travers un mystérieux portail menant à L'Overworld – un incroyable monde cubique qui prospère grâce à l’imagination. Pour rentrer chez eux, il leur faudra maîtriser ce monde (et le protéger de créatures maléfiques comme les Piglins et les Zombies), tout en s’engageant dans une quête fantastique aux côtés de Steve, expert fabricateur. Cette aventure les invitera à faire preuve d’audace et à développer leurs qualités singulières de créativité. Autant de facultés dont ils auront besoin pour s’épanouir dans le monde réel.",
+				"runtime": 101,
+				"tagline": "",
+				"title": "Minecraft, le film"
+			}
+		},
+		{
+			"iso_3166_1": "VN",
+			"iso_639_1": "vi",
+			"name": "Tiếng Việt",
+			"english_name": "Vietnamese",
+			"data": {
+				"homepage": "",
+				"overview": "",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Một bộ phim Minecraft"
+			}
+		},
+		{
+			"iso_3166_1": "MX",
+			"iso_639_1": "es",
+			"name": "Español",
+			"english_name": "Spanish",
+			"data": {
+				"homepage": "",
+				"overview": "Henry, Natalie, Dawn y Garrett, cuatro inadaptados, son arrastrados a un misterioso portal hacia el extraño y cúbico mundo principal. Para volver a casa, tendrán que dominar este mundo con la ayuda de un artesano inesperado y experto llamado, Steve, mientras se embarcan en una búsqueda mágica.",
+				"runtime": 101,
+				"tagline": "Estar allí y ser cuadrado.",
+				"title": "Una película de Minecraft"
+			}
+		},
+		{
+			"iso_3166_1": "CZ",
+			"iso_639_1": "cs",
+			"name": "Český",
+			"english_name": "Czech",
+			"data": {
+				"homepage": "",
+				"overview": "Vítejte ve světě zvaném Minecraft, kde je vaše schopnost tvořit a vyrábět klíčem k přežití! Nesourodá banda čtyř přátel, mezi které patří Popelář, Henry, Natalie a Dawn, se potýká s všednodenními problémy, když tu je to zčistajasna protáhne záhadným portálem do Nadsvěta: bizarní, krychloidní a zázračné říše, která žije z ryzí představivosti. Aby se parta dostala domů, bude muset pochopit pravidla nového světa (a uchránit ho před rušivými elementy, mezi které patří Vepříci a Zombíci) a podniknout magickou pouť ve společnosti nečekaného experta na craftování, Steva. Hravé dobrodružství přinutí všech pět přátel projevit kuráž a předvést jedinečné tvůrčí schopnosti… což je i to, co by jim mělo pomoci uspět i ve skutečném světě.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Minecraft film"
+			}
+		},
+		{
+			"iso_3166_1": "SK",
+			"iso_639_1": "sk",
+			"name": "Slovenčina",
+			"english_name": "Slovak",
+			"data": {
+				"homepage": "",
+				"overview": "Vitajte vo svete Minecraftu, kde vám kreativita nielen pomáha tvoriť, ale je nevyhnutná pre prežitie! Garrett „Smetiar“ Garrison, Henry, Natalie a Dawn sú vtiahnutí cez tajomný portál do Sveta: bizarnej a kockatej krajiny zázrakov, ktorá prekvitá fantáziou. Aby sa dostali späť domov, budú musieť ovládnuť tento svet (a ochrániť ho aj pred zlými vecami, ako sú prasiatka a zombíci), a zároveň sa pustiť do magického hľadania s nekonvenčným, ale skúseným remeselníkom Steveom.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Minecraft vo Filme"
+			}
+		},
+		{
+			"iso_3166_1": "UA",
+			"iso_639_1": "uk",
+			"name": "Український",
+			"english_name": "Ukrainian",
+			"data": {
+				"homepage": "",
+				"overview": "Ласкаво просимо до світу Minecraft! Творчість тут допомагає не лише майструвати, а й необхідна для існування! Ґаррет «Сміттяр» Ґаррісон, Генрі, Наталі та Дон – це четверо невдах, які вирішують свої буденні проблеми. Та одного дня, пройшовши таємничий портал, вони потрапляють у Верхній світ – химерну кубічну країну чудес, яка процвітає завдяки уяві. Щоб повернутися додому, їм доведеться пізнати цей світ (і захистити його від злих істот, таких як Піґліни та Зомбі). Для цього герої вирушать у магічний квест з новим знайомим, досвідченим майстром Стівом. Спільна пригода випробує усіх п'ятьох на сміливість та подарує можливість віднайти унікальні навички, які роблять кожного з них неповторним творцем... саме ті навички, які їм потрібні для успіху в реальному світі.",
+				"runtime": 0,
+				"tagline": "У цьому світі творчість є ключем до виживання.",
+				"title": "Minecraft: Фільм"
+			}
+		},
+		{
+			"iso_3166_1": "BG",
+			"iso_639_1": "bg",
+			"name": "български език",
+			"english_name": "Bulgarian",
+			"data": {
+				"homepage": "",
+				"overview": "Четирима неудачници – Гарет „Боклукчията“ Гарисън, Хенри, Натали и Доун, се опитват да се справят с обичайните си проблеми, докато един ден не преминават през мистериозен портал към Горния свят: странна кубична вселена отвъд въображението. За да се върнат вкъщи, те ще трябва да усвоят тънкостите на този свят (и да го защитят от зли същества), впускайки се в магическа мисия, заедно с експертния изобретател Стив. Това приключение ще предизвика и петимата да бъдат смели и ще им помогне да преоткрият уникалните си творчески способности, които ги отличават от останалите – най-важното качество, което им е необходимо, за да успеят и в истинския свят.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Minecraft: Филмът"
+			}
+		},
+		{
+			"iso_3166_1": "BR",
+			"iso_639_1": "pt",
+			"name": "Português",
+			"english_name": "Portuguese",
+			"data": {
+				"homepage": "https://www.umfilmeminecraft.com.br/",
+				"overview": "Quatro desajustados enfrentam problemas comuns do dia a dia quando, de repente, são sugados por um portal misterioso para o Overworld: uma terra fascinante e cúbica, movida pela imaginação. Para voltarem para casa, eles precisarão dominar esse novo mundo enquanto embarcam em uma jornada mágica ao lado de um crafter experiente e inesperado: Steve.",
+				"runtime": 101,
+				"tagline": "Prepare-se para a maior aventura já construída.",
+				"title": "Um Filme Minecraft"
+			}
+		},
+		{
+			"iso_3166_1": "ES",
+			"iso_639_1": "es",
+			"name": "Español",
+			"english_name": "Spanish",
+			"data": {
+				"homepage": "https://www.warnerbros.es/peliculas/una-pelicula-de-minecraft",
+				"overview": "Cuatro inadaptados se encuentran luchando con problemas ordinarios cuando de repente se ven arrastrados a través de un misterioso portal al Mundo Exterior: un extraño país de las maravillas cúbico que se nutre de la imaginación. Para volver a casa, tendrán que dominar este mundo mientras se embarcan en una búsqueda mágica con un inesperado experto artesano, Steve.",
+				"runtime": 0,
+				"tagline": "Estar allí y ser cuadrado.",
+				"title": "Una película de Minecraft"
+			}
+		},
+		{
+			"iso_3166_1": "TR",
+			"iso_639_1": "tr",
+			"name": "Türkçe",
+			"english_name": "Turkish",
+			"data": {
+				"homepage": "",
+				"overview": "Dört uyumsuz, gizemli bir portaldan aniden Üst Dünya'ya çekildiklerinde kendilerini sıradan sorunlarla boğuşurken bulurlar: hayal gücüyle beslenen tuhaf, kübik bir harikalar diyarı. Eve geri dönmek için, beklenmedik, uzman bir zanaatkar olan Steve ile büyülü bir göreve çıkarken bu dünyada ustalaşmaları gerekecektir.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Bir Minecraft Filmi"
+			}
+		},
+		{
+			"iso_3166_1": "IT",
+			"iso_639_1": "it",
+			"name": "Italiano",
+			"english_name": "Italian",
+			"data": {
+				"homepage": "",
+				"overview": "Benvenuti nel mondo di Minecraft, dove la creatività non serve solo a costruire, ma è essenziale per la sopravvivenza! Quattro improvvisati avventurieri – Garrett “The Garbage Man” Garrison (Momoa), Henry (Hansen), Natalie (Myers) e Dawn (Brooks) – sono alle prese con problemi quotidiani quando vengono improvvisamente trascinati, attraverso un misterioso portale, nell’Overworld: un bizzarro paese delle meraviglie cubico dove regna l’immaginazione. Per far ritorno a casa, dovranno imparare a padroneggiare questo mondo (e proteggerlo dalla minaccia di Piglins e Zombie) mentre intraprendono una magica missione affiancati da un esperto e inaspettato ‘costruttore’ del posto, Steve (Black). L’avventura metterà alla prova tutti e cinque, sfidandoli a essere coraggiosi e a ritrovare le qualità che rendono ciascuno di loro unico e creativo… le stesse abilità di cui hanno bisogno per tornare a vivere nel mondo reale.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Un film Minecraft"
+			}
+		},
+		{
+			"iso_3166_1": "IL",
+			"iso_639_1": "he",
+			"name": "עִבְרִית",
+			"english_name": "Hebrew",
+			"data": {
+				"homepage": "",
+				"overview": "ארבעה מוזרים - גרט \"איש הזבל\", הנרי, נטלי ודון - מוצאים את עצמם נאבקים עם בעיות יומיומיות כשהם נשאבים לפתע דרך שער מסתורי אל עולם פלאי קובייתי שפועל דרך דמיון.  כדי לחזור הביתה, הם יצטרכו ללמוד על העולם הזה, ולהגן עליו גם מדברים רעים. תוך כדי יציאה למסע קסום עם אומן מיומן ומפתיע, סטיב.  יחד, ההרפתקה שלהם תדרוש מכולם להיות נועזים ולהתחבר שוב לתכונות שהופכות כל אחד מהם למיוחד, היכולות שהם זקוקים להן כדי לחזור אל העולם האמיתי.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "מיינקראפט: הסרט"
+			}
+		},
+		{
+			"iso_3166_1": "PL",
+			"iso_639_1": "pl",
+			"name": "Polski",
+			"english_name": "Polish",
+			"data": {
+				"homepage": "",
+				"overview": "Czwórka outsiderów zmaga się ze zwykłymi problemami, gdy nagle zostają wciągnięci przez tajemniczy portal do Overworld: dziwacznej, sześciennej krainy czarów, która rozkwita dzięki wyobraźni. Aby wrócić do domu, będą musieli opanować ten świat, wyruszając na magiczną wyprawę z niespodziewanym, doświadczonym rzemieślnikiem, Stevem.",
+				"runtime": 105,
+				"tagline": "Wpadnij i stwórz co chcesz.",
+				"title": "Minecraft: Film"
+			}
+		},
+		{
+			"iso_3166_1": "CN",
+			"iso_639_1": "zh",
+			"name": "普通话",
+			"english_name": "Mandarin",
+			"data": {
+				"homepage": "",
+				"overview": "　　影片讲述四个“异类”——盖瑞特·“拾荒人”·加里森（杰森·莫玛 饰）、亨利（塞巴斯蒂安·尤金·汉森 饰）、娜塔莉（艾玛·迈尔斯 饰）和道恩（丹妮尔·布鲁克斯 饰）——正为生活中的琐事苦恼时，突然被拉入一个神秘的传送门，进入了“主世界”：一个依赖想象力的奇异方块乐园。为了回到现实世界，他们不仅要掌握这个世界的规则，还要在不速之客——资深工匠史蒂夫（杰克·布莱克 饰）的帮助下，迈上一场魔幻探险之旅。\r 　　探险之旅充满挑战，五人必须要勇敢面对，发掘各自独特的创造力。创造力，正是他们重返现实世界的关键技能。",
+				"runtime": 0,
+				"tagline": "创造无界 快乐有方",
+				"title": "我的世界大电影"
+			}
+		},
+		{
+			"iso_3166_1": "JP",
+			"iso_639_1": "ja",
+			"name": "日本語",
+			"english_name": "Japanese",
+			"data": {
+				"homepage": "https://wwws.warnerbros.co.jp/minecraft-movie/",
+				"overview": "",
+				"runtime": 0,
+				"tagline": "",
+				"title": "マインクラフト／ザ・ムービー"
+			}
+		},
+		{
+			"iso_3166_1": "HK",
+			"iso_639_1": "zh",
+			"name": "普通话",
+			"english_name": "Mandarin",
+			"data": {
+				"homepage": "",
+				"overview": "歡迎來到 MINECRAFT 的世界。  “垃圾佬” 加里森、亨利、妮坦莉、黛恩，四個小人物突然被拉到神秘入口，闖進一個充滿奇想的古怪立方體奇境之中。他們必須掌控這個世界，讓它遠離邪惡事物；同時與專業工匠史提夫聯盟，展開神奇探索冒險之旅！五人面對各種挑戰，各自獨特的創造力重新被激發，目的只有一個：重返現實世界⋯⋯",
+				"runtime": 0,
+				"tagline": "",
+				"title": "MINECRAFT：我的世界大電影"
+			}
+		},
+		{
+			"iso_3166_1": "TH",
+			"iso_639_1": "th",
+			"name": "ภาษาไทย",
+			"english_name": "Thai",
+			"data": {
+				"homepage": "",
+				"overview": "มังกรเอนเดอร์ผู้ชั่วร้ายกำลังนำมาซึ่งความหายนะ ทำให้สาวน้อยคนหนึ่งกับกลุ่มนักผจญภัยต้องออกเดินทางเพื่อช่วยเหลือ โอเวอร์เวิลด์ เอาไว้ให้ได้",
+				"runtime": 0,
+				"tagline": "",
+				"title": "ไมน์คราฟต์ มูฟวี่"
+			}
+		},
+		{
+			"iso_3166_1": "HR",
+			"iso_639_1": "hr",
+			"name": "Hrvatski",
+			"english_name": "Croatian",
+			"data": {
+				"homepage": "",
+				"overview": "Četvero autsajdera - Garrett The Garbage Man Garrison, Henry, Natalie i Dawn; dok se suočavaju s običnim problemima, bivaju uvučeni kroz tajanstveni portal u čudesan Overworld. Ovaj neobični, kubični svijet prepun mašte, donosi im neočekivane izazove, od učenja kako ovladati novim okruženjem do obrane od neprijatelja poput Piglina i Zombija. Na svom putu susreću rudara i graditelja Stevea, i zajedno kreću na epsku avanturu koja će ih naučiti kako iskoristiti vlastitu kreativnost za prevladavanje svih prepreka, kako u svijetu Minecrafta, tako i u stvarnom životu.",
+				"runtime": 0,
+				"tagline": "Blokiramo sve i svašta. To je ono što radimo.",
+				"title": "Minecraft film"
+			}
+		},
+		{
+			"iso_3166_1": "FI",
+			"iso_639_1": "fi",
+			"name": "suomi",
+			"english_name": "Finnish",
+			"data": {
+				"homepage": "",
+				"overview": "Neljä ulkopuoliseksi itsensä tuntevaa tyyppiä—Garrett The Garbage Man Garrison, Henry, Natalie ja Dawn — painiskelevat arkisten pulmien parissa, kun heidät yhtäkkiä tempaistaan mystisen portaalin kautta Ylämaailmaan: omituiseen kuutiomaahan, jossa mielikuvitus pääsee valloilleen. Selviytyäkseen takaisin kotiin heidän tulee oppia hallitsemaan tätä maailmaa (ja lisäksi suojeltava sitä sellaisilta pahiksilta kuin possut ja zombit) heidän suunnatessaan maagiselle seikkailulle yllättävän mestarirakentajan Steven kanssa. Matkan varrella viisikon on yhdessä löydettävä itsestään rohkeutta ja otettava käyttöön omat ainutlaatuiset luovat kykynsä... siis juuri ne taidot, joita he tarvitsevat menestyäkseen oikeassakin maailmassa.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Minecraft-elokuva"
+			}
+		},
+		{
+			"iso_3166_1": "HU",
+			"iso_639_1": "hu",
+			"name": "Magyar",
+			"english_name": "Hungarian",
+			"data": {
+				"homepage": "",
+				"overview": "Négy kívülálló – Garrett Garrison (Jason Momoa), Henry (Sebastian Eugene Hansen), Natalie (Emma Myers) és Dawn (Danielle Brooks) – kiszakad a mindennapi életéből, amikor egy titokzatos portálon keresztül egy különös világba kerülnek: A Felsővilágba, egy furcsa, kocka alakú földre, ahol a fantázia uralkodik.\r Ahhoz, hogy visszataláljanak a valóságba, el kell sajátítaniuk ezt a szokatlan világot, és meg kell védeniük magukat az olyan fenyegetésekkel szemben, mint a zombik és a megvadult disznók. Segítségükre van Steve (Jack Black), egy tapasztalt mesterember, aki elkíséri őket az útjukon. Miközben együtt győzik le a kihívásokat, rájönnek, hogy éppen a kreatív képességek, amelyek jellemzik őket, a siker kulcsa – mind a túlvilágon, mind a saját világukban.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Egy Minecraft film"
+			}
+		},
+		{
+			"iso_3166_1": "RU",
+			"iso_639_1": "ru",
+			"name": "Pусский",
+			"english_name": "Russian",
+			"data": {
+				"homepage": "",
+				"overview": "Четыре неудачника — Гарретт «Мусорщик» Гаррисон, Генри, Натали и Дон, сталкиваются с обычными проблемами, когда их внезапно затягивает через таинственный портал в Верхний мир: странную кубическую страну чудес, которая процветает благодаря воображению. Чтобы вернуться домой, им придётся освоить этот мир, отправляясь в магическое путешествие с неожиданным экспертом-ремесленником Стивом. Это приключение бросит вызов всем пятерым, заставит их проявить смелость и восстановить качества, которые делают каждого из них уникальным творческим человеком.",
+				"runtime": 0,
+				"tagline": "«Дайте Волю Своему Воображению»",
+				"title": "Minecraft в Кино"
+			}
+		},
+		{
+			"iso_3166_1": "TW",
+			"iso_639_1": "zh",
+			"name": "普通话",
+			"english_name": "Mandarin",
+			"data": {
+				"homepage": "",
+				"overview": "四位邊緣人「垃圾人」蓋瑞森(傑森摩莫亞 飾)、亨利(賽巴斯汀尤金漢森 飾)、娜塔莉(愛瑪梅耶斯 飾)和譚恩(丹妮爾布魯克斯 飾)，突然被拉進一個神祕入口，進入充滿想像力又古怪的方塊仙境「主世界」中。為了回家，他們必須設法掌控這個世界，並與專業蓋房人史蒂夫(傑克布萊克 飾)，並一同踏上神奇的探索之旅。此趟冒險旅程將挑戰他們五人的勇氣，並重新激發他們每個人具有獨特創造力的特質，而這些正是他們返回現實世界成長茁壯所需的技能。",
+				"runtime": 0,
+				"tagline": "當個創世神",
+				"title": "MINECRAFT麥塊電影"
+			}
+		},
+		{
+			"iso_3166_1": "NO",
+			"iso_639_1": "no",
+			"name": "Norsk",
+			"english_name": "Norwegian",
+			"data": {
+				"homepage": "",
+				"overview": "",
+				"runtime": 0,
+				"tagline": "",
+				"title": ""
+			}
+		},
+		{
+			"iso_3166_1": "SI",
+			"iso_639_1": "sl",
+			"name": "Slovenščina",
+			"english_name": "Slovenian",
+			"data": {
+				"homepage": "",
+				"overview": "Pripravi se na ustvarjanje svojega sveta! V filmu po priljubljeni računalniški igri se zlobni zmaj Ender odpravi na pot uničenja, to pa spodbudi nepričakovano skupino pustolovcev z mladim dekletom na čelu, da se podajo na misijo reševanja Nadsveta.",
+				"runtime": 0,
+				"tagline": "Bodi tam in bodi kvadraten.",
+				"title": "Minecraft Film"
+			}
+		},
+		{
+			"iso_3166_1": "CH",
+			"iso_639_1": "de",
+			"name": "Deutsch",
+			"english_name": "German",
+			"data": {
+				"homepage": "",
+				"overview": "",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Ein Minecraft Film"
+			}
+		},
+		{
+			"iso_3166_1": "EE",
+			"iso_639_1": "et",
+			"name": "Eesti",
+			"english_name": "Estonian",
+			"data": {
+				"homepage": "",
+				"overview": "Tere tulemast Minecrafti maailma, kus loovusest sõltub elus püsimine. Neli heidikut - Garrett “Prügimees” Garrison (Momoa), Henry (Hansen), Natalie (Myers) ja Dawn (Brooks) - vaevlevad tavapäraste probleemide küüsis, kui nad kistakse salapärast portaali kaudu pealmaailma, mis on kujutlusvõimest elatuv veider plokkidest imedemaa. Koju pääsemiseks tuleb neil selles maailmas oskusi näidata (ja kaitsta seda kurjade olendite, näiteks piglinite ja zombide eest) ning neile on sel maagilisel teekonnal abiks meisterehitaja Steve (Black). Seiklus nõuab kõigilt viielt julgust ja nad peavad leidma endas omadused, mis neid ainulaadselt loominguliseks muudavad. Samu oskusi vajavad nad ka päris maailmas edu saavutamiseks.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Minecrafti film"
+			}
+		},
+		{
+			"iso_3166_1": "DE",
+			"iso_639_1": "de",
+			"name": "Deutsch",
+			"english_name": "German",
+			"data": {
+				"homepage": "https://www.warnerbros.de/de-at/filme/minecraft",
+				"overview": "Vier Außenseiter werden durch ein geheimnisvolles Portal gezogen – mitten in ein skurriles kubisches Wunderland, das von der Vorstellungskraft lebt. Um wieder nach Hause zu kommen, begeben sie sich mit dem Handwerker Steve auf eine magische Reise. Es wird ein Abenteuer, das von allen Mut verlangt – auch den, sich wieder mit den Eigenschaften zu verbinden, die jeden von ihnen kreativ machen.",
+				"runtime": 101,
+				"tagline": "",
+				"title": "Ein Minecraft Film"
+			}
+		},
+		{
+			"iso_3166_1": "BY",
+			"iso_639_1": "be",
+			"name": "беларуская мова",
+			"english_name": "Belarusian",
+			"data": {
+				"homepage": "",
+				"overview": "Чатыры няўдачнікі змагаюцца са звычайнымі праблемамі, калі іх раптам цягне праз таямнічы партал у Надземны свет: дзіўную кубічную краіну цудаў, якая квітнее ўяўленнем. Каб вярнуцца дадому, ім давядзецца авалодаць гэтым светам, адпраўляючыся ў магічныя пошукі з нечаканым дасведчаным майстрам Стывам.",
+				"runtime": 101,
+				"tagline": "",
+				"title": "Майнкрафт: фільм"
+			}
+		},
+		{
+			"iso_3166_1": "ES",
+			"iso_639_1": "ca",
+			"name": "Català",
+			"english_name": "Catalan",
+			"data": {
+				"homepage": "",
+				"overview": "Quatre inadaptats es troben lluitant amb problemes mundans quan de sobte es veuen arrossegats a través d'un misteriós portal cap a l'Overworld: una terra de meravelles estranya i cúbica que prospera amb la imaginació. Per tornar a casa, hauran de dominar aquest món mentre s'embarquen en una recerca màgica amb un artesà expert i inesperat, l'Steve.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Una pel·lícula de Minecraft"
+			}
+		},
+		{
+			"iso_3166_1": "LT",
+			"iso_639_1": "lt",
+			"name": "Lietuvių",
+			"english_name": "Lithuanian",
+			"data": {
+				"homepage": "",
+				"overview": "Kokie skirtingi bebūtų, Garetą, Aušrą, Nataliją ir Henrį vienija ta pati savybė: ketveriukei sunkiai sekasi pritapti realiajame pasaulyje. Jie turbūt nebūtų pritapę ir šiame – jei ne Styvas, vidinį Minecraft pasaulį atradęs jau labai seniai. Prieš daugybę metų supratęs, kad čia reikia tiesiog duoti valią savo vaizduotei, Styvas tampa savotišku vedliu keturiems atvykėliams ir naujieji pažįstami kartu leidžiasi į nepamirštamą, nuotykių kupiną kelionę. Jos metu, kad čia išgyventų, kiekvienas penketuko narys bus priverstas atrasti savo vidinę stiprybę, kuri, kaip paaiškės vėliau, yra lygiai tokia pat naudinga ir tikrajame pasaulyje.",
+				"runtime": 101,
+				"tagline": "",
+				"title": "Minecraft filmas"
+			}
+		},
+		{
+			"iso_3166_1": "SE",
+			"iso_639_1": "sv",
+			"name": "svenska",
+			"english_name": "Swedish",
+			"data": {
+				"homepage": "",
+				"overview": "Välkommen till Minecraftvärlden, där kreativitet inte bara hjälper dig att skapa, utan är avgörande för din överlevnad! Fyra udda typer, Garrett \"The Garbage Man\" Garrison, Henry, Natalie och Dawn, kämpar med vardagliga problem när de plötsligt dras in genom en mystisk portal till Övervärlden: ett bisarrt, kubiskt underland som blomstrar av fantasi. För att ta sig tillbaka hem måste de bemästra denna värld, och samtidigt skydda den från onda saker som Piglins och Zombies. De ger sig ut på ett magiskt uppdrag tillsammans med en oväntad byggexpert, Steve. Detta äventyr kommer att utmana dem alla fem till att vara modiga och samtidigt hitta tillbaka till sina unika kreativa egenskaper – egenskaper de behöver för att trivas i den verkliga världen.",
+				"runtime": 0,
+				"tagline": "",
+				"title": ""
+			}
+		},
+		{
+			"iso_3166_1": "NL",
+			"iso_639_1": "nl",
+			"name": "Nederlands",
+			"english_name": "Dutch",
+			"data": {
+				"homepage": "",
+				"overview": "Welkom in de wereld van Minecraft, waar creativiteit niet alleen van pas komt, maar van essentieel belang is om te overleven. Vier buitenbeentjes met ieder hun eigen problemen – Garrett “de Vuilnisman” Garrison, Henry, Natalie en Dawn – belanden plotseling via een mysterieus portaal in de Overworld: een bizar kubistisch wonderland waar alles draait om verbeelding. Om terug te keren, moeten ze zich in die nieuwe wereld zien te redden en strijden tegen kwade wezens als Piglins en Zombies. Met onverwachtse hulp van expert Steve gaan ze op een magische missie. De vijf avonturiers zullen moedig moeten zijn en hun eigen unieke creatieve kwaliteiten ontdekken – vaardigheden die ze ook nodig hebben in het echte leven.",
+				"runtime": 101,
+				"tagline": "",
+				"title": ""
+			}
+		},
+		{
+			"iso_3166_1": "CA",
+			"iso_639_1": "fr",
+			"name": "Français",
+			"english_name": "French",
+			"data": {
+				"homepage": "",
+				"overview": "Un orphelin est projeté avec sa soeur, un ex-champion de jeux vidéo et une agente immobilière dans un univers virtuel enchanté, menacé de disparition.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Un Film Minecraft"
+			}
+		},
+		{
+			"iso_3166_1": "GR",
+			"iso_639_1": "el",
+			"name": "ελληνικά",
+			"english_name": "Greek",
+			"data": {
+				"homepage": "",
+				"overview": "Καλώς ήλθατε στον κόσμο του Minecraft, όπου η δημιουργικότητα βοηθάει, όχι μόνο να χτίσετε, αλλά και να επιβιώσετε! Τέσσερεις περιθωριακοί τύποι - ο «σκουπιδιάρης» Γκάρετ Γκάρισον, ο Χένρι, η Νάταλι και η Ντον - παλεύουν με την καθημερινότητα όταν μία μυστική πύλη τους μεταφέρει ξαφνικά στον Επάνω Κόσμο: μία αλλόκοτη, μαγική χώρα όπου όλα τα αντικείμενα είναι τετραγωνισμένα και όπου η φαντασία ανθίζει. Για να επιστρέψουν, πρέπει να μάθουν αυτόν τον κόσμο απέξω και ανακατωτά (αλλά και να τον προστατέψουν από κακά πράγματα όπως τα Piglins και τα Zombies), ενώ κινούν για μία μαγική αναζήτηση παρέα με τον ειδήμονα κατασκευαστή Στιβ. Η περιπέτεια αυτή θα τους ενθαρρύνει να είναι τολμηροί και να ανακαλύψουν τις ικανότητες που κάνουν τον καθένα τους δημιουργικό, γιατί αυτές είναι που χρειάζονται για να εξελιχθούν και στον πραγματικό κόσμο.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Μια Ταινία Minecraft"
+			}
+		},
+		{
+			"iso_3166_1": "AZ",
+			"iso_639_1": "az",
+			"name": "Azərbaycan",
+			"english_name": "Azerbaijani",
+			"data": {
+				"homepage": "",
+				"overview": "Dörd autsayder sirli portal vasitəsilə qəribə, kubik möcüzələr ölkəsinə düşür. Evə qayıtmaq üçün sehrli sınaqdan keçməli və Stiv adlı ustayla birlikdə hərəkət etməlidirlər.",
+				"runtime": 120,
+				"tagline": "",
+				"title": "Minecraft kinoda"
+			}
+		},
+		{
+			"iso_3166_1": "IR",
+			"iso_639_1": "fa",
+			"name": "فارسی",
+			"english_name": "Persian",
+			"data": {
+				"homepage": "",
+				"overview": "",
+				"runtime": 0,
+				"tagline": "",
+				"title": "ماینکرافت"
+			}
+		},
+		{
+			"iso_3166_1": "LV",
+			"iso_639_1": "lv",
+			"name": "Latviešu",
+			"english_name": "Latvian",
+			"data": {
+				"homepage": "",
+				"overview": "Laipni lūgti “Minecraft” pasaulē, kur radošums ne tikai palīdz jums veidot, bet tas ir arī būtiski izdzīvošanai! Četri atkritēji – Gerets “Grabažu vīrs” Gerisons (Momoa), Henrijs (Hansens), Natālija (Maiersa) un Dona (Bruksa) – nespēj tikt galā ar parastām problēmām, kad pēkšņi viņus izrauj cauri noslēpumainam portālam Augšpasaulē – dīvainā, kubiskā brīnumzemē, kuru veido iztēle.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Minecraft filma"
+			}
+		},
+		{
+			"iso_3166_1": "GE",
+			"iso_639_1": "ka",
+			"name": "ქართული",
+			"english_name": "Georgian",
+			"data": {
+				"homepage": "",
+				"overview": "",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Minecraft კინოში"
+			}
+		},
+		{
+			"iso_3166_1": "DK",
+			"iso_639_1": "da",
+			"name": "Dansk",
+			"english_name": "Danish",
+			"data": {
+				"homepage": "",
+				"overview": "",
+				"runtime": 0,
+				"tagline": "",
+				"title": "En Minecraft Film"
+			}
+		},
+		{
+			"iso_3166_1": "PT",
+			"iso_639_1": "pt",
+			"name": "Português",
+			"english_name": "Portuguese",
+			"data": {
+				"homepage": "",
+				"overview": "Quatro desenquadrados debatem-se com problemas do quotidiano quando são repentinamente transportados através de um portal misterioso para a Superfície: um mundo cúbico e bizarro que vive da imaginação. Para voltarem para casa, terão de conquistar este mundo enquanto embarcam numa missão mágica com um especialista inesperado em construção, Steve.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Um Filme Minecraft"
+			}
+		},
+		{
+			"iso_3166_1": "RO",
+			"iso_639_1": "ro",
+			"name": "Română",
+			"english_name": "Romanian",
+			"data": {
+				"homepage": "",
+				"overview": "Bine ați venit în lumea Minecraft, unde creativitatea nu doar te ajută să creezi, ci este esențială pentru supraviețuire! Patru rebeli - Garrett „The Garbage Man” Garrison, Henry, Natalie și Dawn - se luptă cu probleme obișnuite atunci când sunt subit atrași printr-un portal misterios în Overworld: o țară cubică si bizară care se hrănește cu imaginație. Pentru a se întoarce acasă, ei vor trebui să stăpânească această lume (și să o protejeze și de lucruri rele precum Piglini și Zombi) în timp ce se îmbarcă într-o căutare magică alături de un expert creator neașteptat, Steve. Aventura lor îi va provoca pe toți cei cinci să fie curajoși și să își recapete calitățile care îl face pe fiecare dintre ei creativ în mod unic... exact abilitățile de care au nevoie pentru a reveni în lumea reală.",
+				"runtime": 0,
+				"tagline": "",
+				"title": "Minecraft: Filmul"
+			}
+		}
+	]
+}

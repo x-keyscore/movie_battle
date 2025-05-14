@@ -1,0 +1,102 @@
+{
+	"adult": false,
+	"backdrop_path": "/2Nti3gYAX513wvhp8IiLL6ZDyOm.jpg",
+	"belongs_to_collection": {
+		"id": 1461530,
+		"name": "The Minecraft Movie Collection",
+		"poster_path": null,
+		"backdrop_path": null
+	},
+	"budget": 150000000,
+	"genres": [
+		{
+			"id": 10751,
+			"name": "Familial"
+		},
+		{
+			"id": 35,
+			"name": "Comédie"
+		},
+		{
+			"id": 12,
+			"name": "Aventure"
+		},
+		{
+			"id": 14,
+			"name": "Fantastique"
+		}
+	],
+	"homepage": "",
+	"id": 950387,
+	"imdb_id": "tt3566834",
+	"origin_country": ["US"],
+	"original_language": "en",
+	"original_title": "A Minecraft Movie",
+	"overview": "Bienvenue dans l’univers de Minecraft où la créativité est essentielle à la survie ! Quatre outsiders – Garrett, Henry, Natalie et Dawn – sont soudainement projetés à travers un mystérieux portail menant à L'Overworld – un incroyable monde cubique qui prospère grâce à l’imagination. Pour rentrer chez eux, il leur faudra maîtriser ce monde (et le protéger de créatures maléfiques comme les Piglins et les Zombies), tout en s’engageant dans une quête fantastique aux côtés de Steve, expert fabricateur. Cette aventure les invitera à faire preuve d’audace et à développer leurs qualités singulières de créativité. Autant de facultés dont ils auront besoin pour s’épanouir dans le monde réel.",
+	"popularity": 1004.1124,
+	"poster_path": "/cq9z69AyIXeL2H14bqHE5ukm3M9.jpg",
+	"production_companies": [
+		{
+			"id": 174,
+			"logo_path": "/zhD3hhtKB5qyv7ZeL4uLpNxgMVU.png",
+			"name": "Warner Bros. Pictures",
+			"origin_country": "US"
+		},
+		{
+			"id": 923,
+			"logo_path": "/5UQsZrfbfG2dYJbx8DxfoTr2Bvu.png",
+			"name": "Legendary Pictures",
+			"origin_country": "US"
+		},
+		{
+			"id": 110691,
+			"logo_path": "/i0D9b0veZbValgEFiJjSd0mbb9C.png",
+			"name": "Mojang Studios",
+			"origin_country": "SE"
+		},
+		{
+			"id": 829,
+			"logo_path": "/aXqwCvJSCDbTclkxAYfsT1l4Dsa.png",
+			"name": "Vertigo Entertainment",
+			"origin_country": "US"
+		},
+		{
+			"id": 159602,
+			"logo_path": "/e3KodIPxOSC6xpzgIBISB4COQcu.png",
+			"name": "On the Roam",
+			"origin_country": "US"
+		},
+		{
+			"id": 216687,
+			"logo_path": "/kKVYqekveOvLK1IgqdJojLjQvtu.png",
+			"name": "Domain Entertainment",
+			"origin_country": "US"
+		}
+	],
+	"production_countries": [
+		{
+			"iso_3166_1": "SE",
+			"name": "Sweden"
+		},
+		{
+			"iso_3166_1": "US",
+			"name": "United States of America"
+		}
+	],
+	"release_date": "2025-03-31",
+	"revenue": 323380122,
+	"runtime": 101,
+	"spoken_languages": [
+		{
+			"english_name": "English",
+			"iso_639_1": "en",
+			"name": "English"
+		}
+	],
+	"status": "Released",
+	"tagline": "",
+	"title": "Minecraft, le film",
+	"video": false,
+	"vote_average": 6,
+	"vote_count": 322
+}

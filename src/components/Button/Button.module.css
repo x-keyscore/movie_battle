@@ -1,0 +1,70 @@
+.button {
+	background-color: transparent;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	border: none;
+	cursor: pointer;
+	pointer-events: auto;
+	transition: color .10s ease-in-out, background-color .10s ease-in-out;
+}
+
+.button.ghost {
+	color: var(--color-text);
+}
+
+.button.ghost:hover,
+.button.ghost:focus-visible,
+.button.ghost.active {
+	color: var(--color-accent);
+}
+
+.button.normal {
+	background-color: var(--color-surface);
+	color: var(--color-text);
+}
+
+.button.normal:hover,
+.button.normal:focus-visible,
+.button.normal.active {
+	background-color: var(--color-surface-light);
+	color: var(--color-accent);
+}
+
+.button.mini {
+	min-width: 36px;
+	height: 36px;
+	border-radius: 4px;
+}
+
+.button.small {
+	min-width: 42px;
+	height: 42px;
+	border-radius: 8px;
+}
+
+.button.medium {
+	min-width: 48px;
+	height: 48px;
+	border-radius: 12px;
+}
+
+.button:has(> span) {
+	min-width: 150px;
+}
+
+.button > span {
+	font-size: 1rem;
+	font-weight: 600;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	min-width: 125px;
+	max-width: 200px;
+	padding: 0 10px;
+}
+
+.button > svg {
+	padding: 12px;
+}
