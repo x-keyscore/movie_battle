@@ -1,7 +1,7 @@
 import type { ChangeEventHandler } from "react";
 import type { ToggleAction, ToggleState } from "./types";
-import { useReducer, useEffect } from "react";
-import { Link, useNavigate } from "react-router";
+import { useReducer, useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useApp } from "../../providers/AppProvider";
 import { Icons, Button, Foldable, Image } from "../../components";
 import { CategoryList, WatchList } from "./dropdown";
@@ -26,12 +26,19 @@ const toggleReducer = (
 };
 
 export function Header() {
+    const { pathname } = useLocation();
     const navigate = useNavigate();
     const { searchValue, setSearchValue, topmovie, watchListPush, error } = useApp();
+    const [isMovieDetails, setIsMovieDetails] = useState(false);
     const [toggle, setToggle] = useReducer(toggleReducer, {
         categoryList: false,
         watchList: false
     });
+
+    useEffect(() => {
+        if (pathname.startsWith("/movie/")) setIsMovieDetails(true);
+        else setIsMovieDetails(false);
+    }, [pathname]);
 
     useEffect(() => {
         if (!searchValue) return;
@@ -172,9 +179,11 @@ export function Header() {
                                 ) : null}
                             </div>
                             <div className={styles.action}>
-                                <Button size="small" onClick={() => navigate(`/movie/${topmovie?.id}`)}>
-                                    <span>Voir plus</span>
-                                </Button>
+                                {!isMovieDetails && (
+                                    <Button size="small" onClick={() => navigate(`/movie/${topmovie?.id}`)}>
+                                        <span>Voir plus</span>
+                                    </Button>
+                                )}
                                 <Button
                                     size="small"
                                     aria-label="Ajouter aux films enregistrés"
