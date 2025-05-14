@@ -1,24 +1,20 @@
 import { requests } from "../../../api";
 import { useRequest } from "../../../hooks/useRequest";
-import { fetchUtils } from "../utils/fetchUtils";
-import { questionUtils } from "../utils/questionUtils";
+import { fetchUtils } from "./utils/fetch";
+import { questionUtils } from "./utils/question";
 import { Question } from "./Question";
-import type { dataMovieDetails } from "../types";
-import styles from "./Game.module.css";
+import type { MovieDetailsData } from "../types";
+import styles from "./Quizz.module.css";
 
-interface GameProps {
-	data: dataMovieDetails;
+interface QuizzProps {
+	data: MovieDetailsData;
 }
 
-export function Game({ data }: GameProps) {
-	const { movie, credits, movieImages } = data;
-	// const [questions, setQuestions] = useState<questionType[]>([]);
+export function Quizz({ data }: QuizzProps) {
+	const { movie } = data;
 
 	const [questionData] = useRequest(
-		{
-			initial: null,
-			subscribes: [data],
-		},
+		{ initial: null, subscribes: [data] },
 		async () => {
 			if (!data) return;
 
@@ -86,7 +82,7 @@ export function Game({ data }: GameProps) {
 			]);
 
 			const questionCompany = questionUtils.createQuestionMovie({
-				query: "Parmi ces films, lequel a aussi été produit par",
+				title: "Parmi ces films, lequel a aussi été produit par",
 				correctAnswers: questionUtils.pickRandomMovies(
 					movieWithCompany.data,
 					movie.id,
@@ -102,7 +98,7 @@ export function Game({ data }: GameProps) {
 			});
 
 			const questionReleasedAfter = questionUtils.createQuestionMovie({
-				query: "Parmi ces films, lequel a été sorti apres",
+				title: "Parmi ces films, lequel a été sorti apres",
 				correctAnswers: questionUtils.pickRandomMovies(
 					movieAfterDate.data,
 					movie.id,
@@ -123,7 +119,7 @@ export function Game({ data }: GameProps) {
 			);
 			const questionReturnOnInvestment = correctROI
 				? questionUtils.createQuestion({
-						query: "Par rapport à ce qu’il a coûté, combien a rapporté le film",
+					title: "Par rapport à ce qu’il a coûté, combien a rapporté le film",
 						correctAnswer: `${correctROI}%`,
 						wrongAnswers: questionUtils
 							.generateWrongPercentages(correctROI)
@@ -142,65 +138,19 @@ export function Game({ data }: GameProps) {
 		},
 	);
 
-	//TEMP
-	// const didRun = useRef(false);
-	// useEffect(() => {
-	// 	if (didRun.current) return;
-	// 	didRun.current = true;
-	// 	const tempQuestion = {
-	// 		imagePath: "CHEMIN IMAGE",
-	// 		query: "Qu'elle est la bonne réponse a cette question?",
-	// 		answers: questionUtils.shuffleAnswers(["1", "2", "3", "4"]),
-	// 		correctAnswer: "2",
-	// 	};
-	// 	setQuestions((prev) => [...prev, tempQuestion]);
-	// }, []);
-
 	return (
 		<div className={styles.quizzSection}>
 			<div className={styles.quizzContainer}>
-				<h3 className={styles.questionNumber}>QUESTION 3/4</h3>
+				<h3 className={styles.questionNumber}>QUESTION {`1/${questionData?.length}`}</h3>
 				{questionData
-					? questionData?.map((question, index) =>
+					? questionData?.map((question) =>
 							question ? (
-								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-								<div key={index} style={{ width: "100%" }}>
-									<Question quizzQuestion={question} />
+								<div key={question.title} style={{ width: "100%" }}>
+									<Question questionItem={question} />
 								</div>
 							) : null,
 						)
 					: "Pas de question disponible"}
-				{/* <ul className={styles.questionButtonList}>
-                <li>
-                    <button
-                        type="button"
-                        className={`${styles.questionButton} ${styles.correct}`}
-                    >
-                        1
-                    </button>
-                </li>
-                <li>
-                    <button
-                        type="button"
-                        className={`${styles.questionButton} ${styles.correct}`}
-                    >
-                        2
-                    </button>
-                </li>
-                <li>
-                    <button
-                        type="button"
-                        className={`${styles.questionButton} ${styles.incorrect}`}
-                    >
-                        3
-                    </button>
-                </li>
-                <li>
-                    <button type="button" className={`${styles.questionButton}`}>
-                        4
-                    </button>
-                </li>
-            </ul> */}
 			</div>
 		</div>
 	);

@@ -1,9 +1,9 @@
-import type { MovieList } from "../../../api";
+import type { MovieList } from "../../../../api";
 import type {
 	createQuestionMovieType,
 	createQuestionType,
-	questionType,
-} from "../types";
+	QuestionItem,
+} from "../../types";
 
 function pickRandomMovies(movies: MovieList, id: number, count = 1) {
 	const filteredMovies = movies.results.filter((movie) => movie.id !== id);
@@ -26,36 +26,36 @@ function pickRandomMovies(movies: MovieList, id: number, count = 1) {
 }
 
 function createQuestion({
-	query,
+	title,
 	correctAnswer,
 	wrongAnswers,
 	imagePath,
 	subject,
-}: createQuestionType): questionType | null {
+}: createQuestionType): QuestionItem | null {
 	if (!correctAnswer || !wrongAnswers) return null;
 
-	const message = subject ? `${query} ${subject} ?` : query;
+	const message = subject ? `${title} ${subject} ?` : title;
 	const answers = shuffleAnswers([...wrongAnswers, correctAnswer]);
 
-	return { query: message, correctAnswer, answers, imagePath };
+	return { title: message, correctAnswer, answers, imagePath };
 }
 
 function createQuestionMovie({
-	query,
+	title,
 	correctAnswers,
 	wrongAnswers,
 	imagePath,
 	subject,
-}: createQuestionMovieType): questionType | null {
+}: createQuestionMovieType): QuestionItem | null {
 	if (!correctAnswers || !wrongAnswers) return null;
 
-	const message = subject ? `${query} ${subject} ?` : query;
+	const message = subject ? `${title} ${subject} ?` : title;
 	const correctAnswer = correctAnswers[0].title;
 	const answers = shuffleAnswers(
 		correctAnswers.concat(wrongAnswers).map((movie) => movie.title),
 	);
 
-	return { query: message, correctAnswer, answers, imagePath };
+	return { title: message, correctAnswer, answers, imagePath };
 }
 
 function shuffleAnswers(array: string[]) {

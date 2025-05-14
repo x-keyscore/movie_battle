@@ -1,4 +1,4 @@
-import type { modifyDateType } from "../types";
+import type { modifyDateType } from "../../types";
 
 function modifyDate(
 	date: string,

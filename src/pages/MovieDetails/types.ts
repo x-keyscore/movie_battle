@@ -6,22 +6,22 @@ import type {
 	MovieWithDetails,
 } from "../../api";
 
-export interface dataMovieDetails {
+export interface MovieDetailsData {
 	movie: MovieWithDetails;
 	credits: Credits;
 	similarMovies: MovieList;
 	movieImages: ImageList;
 }
 
-export interface questionType {
-	query: string;
+export interface QuestionItem {
+	title: string;
 	correctAnswer: string;
 	answers: string[];
 	imagePath: string;
 }
 
 export interface createQuestionType {
-	query: string;
+	title: string;
 	correctAnswer: string | null;
 	wrongAnswers: string[] | null;
 	imagePath: string;
@@ -29,7 +29,7 @@ export interface createQuestionType {
 }
 
 export interface createQuestionMovieType {
-	query: string;
+	title: string;
 	correctAnswers: Movie[] | null;
 	wrongAnswers: Movie[] | null;
 	imagePath: string;

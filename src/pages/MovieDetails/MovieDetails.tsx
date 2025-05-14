@@ -1,23 +1,23 @@
+import type { MovieDetailsData } from "./types";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import clsx from "clsx";
 import { useApp } from "../../providers/AppProvider";
 import { useRequest } from "../../hooks/useRequest";
-import { requests } from "../../api";
+import { ActorCard, Image, MovieSection } from "../../components";
 import { formatters } from "../../utils/formatters";
+import { requests } from "../../api";
+import { Quizz } from "./Quizz";
 import language from "../../assets/data/iso3166-french.json";
 import country from "../../assets/data/iso639-french.json";
-import { ActorCard, Image, MovieSection } from "../../components";
-import { Game } from "./Game";
-import type { dataMovieDetails } from "./types";
 import styles from "./MovieDetails.module.css";
+import clsx from "clsx";
 
 export function MovieDetailsPage() {
 	const { movie_id } = useParams();
 	const { setTopmovie } = useApp();
-	const [quizzVisible, setQuizzVisible] = useState<boolean>(false);
+	const [isOpenQuizz, setIsOpenQuizz] = useState<boolean>(false);
 
-	const [data] = useRequest<dataMovieDetails | null | undefined>(
+	const [data] = useRequest<MovieDetailsData | null | undefined>(
 		{
 			initial: null,
 			subscribes: [movie_id],
@@ -46,7 +46,7 @@ export function MovieDetailsPage() {
 	}, [data, setTopmovie]);
 
 	function handleQuizzClick() {
-		setQuizzVisible((prev) => !prev);
+		setIsOpenQuizz((prev) => !prev);
 	}
 
 	function fallback(value: string | number) {
@@ -71,7 +71,7 @@ export function MovieDetailsPage() {
 			<button type="button" onClick={handleQuizzClick}>
 				JOUER
 			</button>
-			{quizzVisible && <Game data={data} />}
+			{isOpenQuizz && <Quizz data={data} />}
 			<div className={clsx(styles.section, styles.similar)}>
 				{data.similarMovies.total_results > 0 ? (
 					<MovieSection

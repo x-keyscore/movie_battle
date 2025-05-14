@@ -1,14 +1,14 @@
+import type { QuestionItem } from "../../types";
 import { useState } from "react";
-import clsx from "clsx";
-import type { questionType } from "../../types";
 import styles from "./Question.module.css";
+import clsx from "clsx";
 
-interface MovieQuestionProps {
-	quizzQuestion: questionType;
+interface QuestionProps {
+	questionItem: QuestionItem;
 }
 
-export function Question({ quizzQuestion }: MovieQuestionProps) {
-	const { imagePath, query, answers, correctAnswer } = quizzQuestion;
+export function Question({ questionItem }: QuestionProps) {
+	const { title, imagePath, answers, correctAnswer } = questionItem;
 	const [selectedAnswer, setSelectAnswer] = useState<string | null>(null);
 
 	const handleSelected = (selected: string) => {
@@ -19,16 +19,15 @@ export function Question({ quizzQuestion }: MovieQuestionProps) {
 
 	return (
 		<div className={styles.questionContainer}>
-			<p className={styles.questionTitle}>{query}</p>
+			<p className={styles.questionTitle}>{title}</p>
 			<div className={styles.flexContainer}>
 				<div className={styles.imgContainer}>
 					<div className={styles.box}>{imagePath}</div>
 				</div>
 				<ul className={styles.questionOptions}>
-					{answers.map((answer, index) => {
+					{answers.map((answer) => {
 						return (
-							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-							<li key={index}>
+							<li key={answer}>
 								<button
 									type="button"
 									onClick={() => handleSelected(answer)}
