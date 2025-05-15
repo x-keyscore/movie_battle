@@ -49,6 +49,10 @@ input {
 	cursor: text;
 }
 
+input, button {
+	-webkit-tap-highlight-color: transparent;
+}
+
 body, button {
 	font-family: "Albert Sans", sans-serif;
 	font-optical-sizing: auto;
