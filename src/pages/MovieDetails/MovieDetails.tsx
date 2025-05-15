@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router";
 import { useApp } from "../../providers/AppProvider";
 import { useRequest } from "../../hooks/useRequest";
-import { ActorCard, Image } from "../../components";
+import { ActorCard, Image, MovieSection } from "../../components";
 import { formatters } from "../../utils/formatters";
 import { requests } from "../../api";
 import language from "../../assets/data/iso3166-french.json";
@@ -25,13 +25,13 @@ export function MovieDetailsPage() {
 			const [movie, credits, similarMovies] = await Promise.all([
 				requests.movie.getMovieDetails({ language: "fr-Fr", movie_id }),
 				requests.credits.getCredits({ language: "fr-Fr", movie_id }),
-				requests.movie.getSimilar({ language: "fr-Fr", movie_id })
+				requests.movie.getSimilar({ language: "fr-Fr", movie_id }),
 			]);
 
 			return {
 				movie: movie.data,
 				credits: credits.data,
-				similarMovies: similarMovies.data
+				similarMovies: similarMovies.data,
 			};
 		},
 	);
@@ -59,6 +59,18 @@ export function MovieDetailsPage() {
 
 	return (
 		<>
+			<div className={clsx(styles.section, styles.similar)}>
+				{data.similarMovies.total_results > 0 ? (
+					<MovieSection
+						title="Similaires"
+						inline={true}
+						movies={data.similarMovies.results.sort(
+							(a, b) => b.vote_count - a.vote_count,
+						)}
+						endIndex={12}
+					/>
+				) : null}
+			</div>
 			<div className={clsx(styles.section, styles.details)}>
 				<Image
 					styles={{

@@ -21,7 +21,7 @@ export function MovieCard({ movie }: MovieCardProps) {
 		} else {
 			watchListPush(movie);
 		}
-	}
+	};
 
 	return (
 		<div className={styles.card}>
@@ -34,7 +34,7 @@ export function MovieCard({ movie }: MovieCardProps) {
 					<Image
 						styles={{
 							box: styles.image,
-							img: styles.imageContent
+							img: styles.imageContent,
 						}}
 						role="presentation"
 						isLoadable={movieImagePath}
@@ -73,4 +73,4 @@ export function MovieCard({ movie }: MovieCardProps) {
 			</figure>
 		</div>
 	);
-};
+}
