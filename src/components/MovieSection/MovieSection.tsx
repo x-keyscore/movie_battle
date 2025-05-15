@@ -12,7 +12,7 @@ interface MovieSectionProps {
 	inline: boolean;
 	startIndex?: number;
 	endIndex?: number;
-	onScrollEnd?: () => (() => void) | void;
+	onScrollEnd?: () => ((() => void) | void);
 }
 
 export function MovieSection({
@@ -22,7 +22,7 @@ export function MovieSection({
 	inline,
 	startIndex = 0,
 	endIndex = 0,
-	onScrollEnd,
+	onScrollEnd
 }: MovieSectionProps) {
 	const listRef = useRef<HTMLUListElement>(null);
 	const sentinelRef = useRef(null);
@@ -42,7 +42,7 @@ export function MovieSection({
 					onScrollEndRef.current?.();
 				}
 			},
-			{ threshold: 1.0 },
+			{ threshold: 1.0 }
 		);
 
 		observer.observe(sentinelRef.current);

@@ -44,7 +44,7 @@ export function MovieDetailsPage() {
 		return value || "Non renseigné";
 	}
 
-	if (!data) return null;
+	if (!data) return (null);
 
 	const actors = data.credits.cast.filter(
 		(member) => member.known_for_department === "Acting",
@@ -60,7 +60,7 @@ export function MovieDetailsPage() {
 	return (
 		<>
 			<div className={clsx(styles.section, styles.similar)}>
-				{data.similarMovies.total_results > 0 ? (
+				{data.similarMovies.total_results ? (
 					<MovieSection
 						title="Similaires"
 						inline={true}
@@ -167,7 +167,7 @@ export function MovieDetailsPage() {
 					<div className={styles.spacer} />
 				</div>
 				<div className={styles.actors}>
-					{actors.length > 0 ? (
+					{actors.length ? (
 						actors.map((actor, index) => (
 							<ActorCard
 								key={`${actor.id}-${index}`}

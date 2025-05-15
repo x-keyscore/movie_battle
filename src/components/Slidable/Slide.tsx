@@ -98,7 +98,7 @@ export function Slide({
             else {
                 if (directive.render) setIsRender(true);
                 if (!directive.render) {
-                    timeoutRef.current = setTimeout(() => {
+                    timeoutRef.current = window.setTimeout(() => {
                         setIsRender(false);
                     }, config.duration);
                 }

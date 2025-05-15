@@ -34,7 +34,7 @@ export function MovieCard({ movie }: MovieCardProps) {
 					<Image
 						styles={{
 							box: styles.image,
-							img: styles.imageContent,
+							img: styles.imageContent
 						}}
 						role="presentation"
 						isLoadable={movieImagePath}

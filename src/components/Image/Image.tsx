@@ -1,6 +1,7 @@
 import type { ImgHTMLAttributes } from "react";
 import { useState } from "react";
 import styles from "./Image.module.css";
+import brandLogo from "../../assets/images/brand-logo.png";
 
 interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "className"> {
 	styles?: {
@@ -41,7 +42,7 @@ export function Image(props: ImageProps) {
 				<div className={styles.placeholder}>
 					<img
 						className={styles.unavailable}
-						src="/images/brand-logo.png"
+						src={brandLogo}
 						draggable="false"
 					/>
 				</div>

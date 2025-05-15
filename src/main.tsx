@@ -44,7 +44,7 @@ const router = createBrowserRouter([
 			},
 		]
 	}
-]);
+], { basename: import.meta.env.VITE_BASENAME || '/' });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<StrictMode>
