@@ -54,7 +54,7 @@
 	bottom: calc(100vh / 2);
 }
 
-@media (any-pointer: coarse) {
+@media (pointer: coarse) {
 	.section-movies.inline {
 		scroll-snap-type: x mandatory;
 	}

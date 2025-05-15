@@ -1,5 +1,5 @@
 import type { Movie } from "../../api/types/movie";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { MovieCard } from "./../MovieCard";
 import styles from "./MovieSection.module.css";
@@ -12,7 +12,7 @@ interface MovieSectionProps {
 	inline: boolean;
 	startIndex?: number;
 	endIndex?: number;
-	onScrollEnd?: () => ((() => void) | void);
+	onScrollEnd?: () => (() => void) | void;
 }
 
 export function MovieSection({
@@ -22,7 +22,7 @@ export function MovieSection({
 	inline,
 	startIndex = 0,
 	endIndex = 0,
-	onScrollEnd
+	onScrollEnd,
 }: MovieSectionProps) {
 	const listRef = useRef<HTMLUListElement>(null);
 	const sentinelRef = useRef(null);
@@ -42,7 +42,7 @@ export function MovieSection({
 					onScrollEndRef.current?.();
 				}
 			},
-			{ threshold: 1.0 }
+			{ threshold: 1.0 },
 		);
 
 		observer.observe(sentinelRef.current);
@@ -55,10 +55,9 @@ export function MovieSection({
 		if (!container) return;
 
 		const onMouseDown = (e: MouseEvent) => {
-			
 			setIsDragging(false);
-			let startX = e.pageX - container.offsetLeft;
-			let  scrollLeft = container.scrollLeft;
+			const startX = e.pageX - container.offsetLeft;
+			const scrollLeft = container.scrollLeft;
 
 			const onMouseMove = (e: MouseEvent) => {
 				const x = e.pageX - container.offsetLeft;
@@ -130,4 +129,4 @@ export function MovieSection({
 			{onScrollEnd && <div className={styles.sentinel} ref={sentinelRef} />}
 		</div>
 	);
-};
+}
