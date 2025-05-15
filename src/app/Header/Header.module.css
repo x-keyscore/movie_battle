@@ -248,6 +248,9 @@
     justify-content: center;
     width: 100%;
     height: 100vh;
+    padding:24px;
+    text-align: center;
+    box-sizing: border-box;
 }
 
 .topmovie-error .title {
