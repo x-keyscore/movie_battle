@@ -2,6 +2,9 @@
 
 Cinéscope is a web application that allows users to search over 1 million movies, explore by genre, view detailed movie information, and manage a personal watchlist. Built with [The Movie Database (TMDb)](https://www.themoviedb.org/) API.
 
+## Link
+https://x-keyscore.github.io/movie_battle/
+
 ## Features
 
 ### 🎥 Header
